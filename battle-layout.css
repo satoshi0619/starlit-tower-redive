@@ -1,0 +1,227 @@
+/* Battle is a viewport-sized game board. Artwork, hand and controls share the
+   available height; the document itself never scrolls during combat. */
+body[data-screen=battle]{height:100dvh;min-height:0;overflow:hidden;display:grid;grid-template-rows:48px minmax(0,1fr);--hand-height:238px}
+body[data-screen=battle]>.topbar{height:48px;min-height:0;padding:3px 16px;gap:12px;flex-wrap:nowrap}
+body[data-screen=battle] .brand{font-size:19px;gap:7px;width:auto;min-height:40px;white-space:nowrap}
+body[data-screen=battle] .brand-star{font-size:25px}
+body[data-screen=battle] .brand small{display:none}
+body[data-screen=battle] .topbar nav{width:auto;gap:3px;justify-content:flex-end;flex-wrap:nowrap}
+body[data-screen=battle] .topbar nav>button{min-height:38px;padding:5px 10px;font-size:14px}
+body[data-screen=battle] #app{height:100%;min-height:0;overflow:hidden}
+body[data-screen=battle]>footer{display:none}
+.battle-page{height:100%;width:100%;max-width:1920px;min-height:0;margin:0 auto;padding:7px 14px 8px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.battle-page>.battle-toolbar{flex:0 0 32px;min-height:0;margin:0;gap:12px;flex-wrap:nowrap;align-items:center}
+.battle-toolbar>div:first-child{min-width:0;display:flex;align-items:center;gap:14px}
+.battle-toolbar h2{margin:0;font-size:19px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.battle-toolbar .eyebrow{font-size:12px;white-space:nowrap;margin:0}
+.battle-toolbar>div>p:not(.eyebrow){display:none}
+.battle-toolbar .round-label{font-size:14px;margin-left:8px}
+.battle-toolbar .actions{flex-wrap:nowrap;gap:6px}
+.battle-toolbar .actions button{min-height:32px;padding:4px 10px;font-size:14px}
+.battle-toolbar .pill{font-size:12px;padding:3px 5px}
+.battle-page>.arena{flex:1 1 0;min-height:0;max-height:none;padding:18px 12px 5px;gap:20px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);align-items:stretch;overflow:hidden}
+.battle-page .arena-label{top:3px;left:14px;font-size:10px;letter-spacing:1px;line-height:1.3}
+.battle-page .arena-label.enemy-label{display:block;left:53%}
+.battle-page .fighters{height:100%;min-height:0;gap:9px;padding:0;align-items:stretch}
+.battle-page .fighter{height:100%;min-height:0;max-width:240px;gap:0;overflow:visible}
+.battle-page .fighter-art{flex:1 1 0;min-height:0;height:auto;margin:0 0 4px;overflow:hidden}
+.battle-page .fighter-art img{width:100%;height:100%;min-height:0;object-fit:contain;object-position:center bottom;padding:0 2px}
+.battle-page .allies .fighter-front{top:0;left:3px;transform:none;font-size:10px;padding:1px 4px;line-height:1.4}
+.battle-page .fighter-info{flex:0 0 auto;min-height:0;padding:5px 7px;box-shadow:none}
+.battle-page .fighter-name{flex-wrap:nowrap;align-items:center;font-size:14px;line-height:1.35;gap:4px;margin-bottom:3px}
+.battle-page .fighter-name>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.battle-page .hp-number{font-size:12px}
+.battle-page .hp-track{height:5px}
+.battle-page .statuses{height:20px;min-height:0;margin:3px 0;flex-wrap:nowrap;overflow:hidden;gap:3px}
+.battle-page .status{font-size:12px;padding:1px 4px;line-height:1.4;white-space:nowrap;flex-shrink:0}
+.battle-page .tp-row{margin:3px 0;gap:3px}
+.battle-page .tp-row i{height:3px}
+.battle-page .ub-button{min-height:32px;height:32px;padding:3px 4px;flex-direction:row;gap:5px;line-height:1.2}
+.battle-page .ub-button span{font-size:13px;white-space:nowrap}
+.battle-page .ub-button small{font-size:12px;white-space:nowrap}
+.battle-page .fighter.enemy .intent{flex:0 0 auto;min-height:36px;padding:3px 4px;font-size:12px;line-height:1.35;margin:0 0 3px;overflow:hidden}
+.battle-page .intent span{font-size:12px;line-height:1.4;white-space:nowrap}
+.battle-page .fighter.enemy .enemy-art,.battle-page .arena.boss-arena .fighter.boss .enemy-art,.battle-page .arena.boss-arena .fighter.enemy:not(.boss) .enemy-art{flex:1 1 0;height:auto;min-height:0;width:100%;overflow:hidden;margin:0 0 3px}
+.battle-page .enemy-art .fighter-front{font-size:10px;padding:1px 3px}
+.battle-page .fighter.enemy .fighter-info,.battle-page .arena.boss-arena .fighter.boss .fighter-info{flex:0 0 auto;min-height:0;padding:4px 6px}
+.battle-page .arena.boss-arena .fighter.boss{max-width:430px;flex:1.7}
+.battle-page .arena.boss-arena .fighter.enemy:not(.boss){max-width:180px;flex:.85}
+.battle-page>.boss-health{flex:0 0 42px;min-height:0;padding:4px 12px;margin:0;border-radius:6px;display:grid;grid-template-columns:minmax(0,1fr) 1fr;grid-template-rows:20px 8px;gap:3px 15px;align-items:center}
+.battle-page .boss-heading{display:flex;gap:12px;margin:0;min-width:0;grid-row:1/3}
+.battle-page .boss-heading .eyebrow{font-size:11px;white-space:nowrap}
+.battle-page .boss-heading h3{font-size:19px;line-height:1.2;margin:0;white-space:nowrap}
+.battle-page .boss-heading strong{font-size:14px;margin-left:auto}
+.battle-page .boss-hp-track{height:8px;grid-column:2;grid-row:2}
+.battle-page .boss-phase{font-size:12px;line-height:1.4;margin:0;grid-column:2;grid-row:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.battle-page>.tutorial-panel{flex:0 0 auto;min-height:0;margin:0;padding:7px 12px;gap:12px;flex-wrap:nowrap;border-radius:7px}
+.battle-page .tutorial-copy{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:center}
+.battle-page .tutorial-progress{font-size:12px;line-height:1.35;margin:0}
+.battle-page .tutorial-copy h3{font-size:17px;line-height:1.3;margin:0}
+.battle-page .tutorial-copy p{grid-column:1/-1;font-size:14px;line-height:1.45;margin:0}
+.battle-page .tutorial-actions{max-width:none;flex-wrap:nowrap;gap:6px;width:auto}
+.battle-page .tutorial-actions button{min-width:0;min-height:36px;padding:4px 10px;font-size:14px;white-space:nowrap}
+.battle-page .tutorial-actions .tutorial-help{display:none}
+.battle-page>.hand-panel{flex:0 0 var(--hand-height);height:var(--hand-height);min-height:0;display:flex;flex-direction:column;margin:0;gap:3px}
+.battle-page .hand-toolbar{flex:0 0 28px;min-height:0;margin:0;gap:8px;flex-wrap:nowrap;align-items:center}
+.battle-page .hand-order-note{font-size:13px;white-space:nowrap;color:#c5d0e3}
+.battle-page .draw-counters{gap:5px;flex-wrap:nowrap}
+.battle-page .draw-counters button{font-size:13px;line-height:1.3;min-height:28px;padding:3px 10px;white-space:nowrap}
+.battle-page .hand{flex:1;min-height:0;height:auto;display:flex;align-items:stretch;gap:10px;padding:4px 4px 6px;margin:0;overflow-x:auto;overflow-y:hidden;scroll-padding-inline:5px;scroll-snap-type:none}
+.battle-page .hand .card{flex:0 0 calc((100% - 54px)/5);min-width:190px;max-width:270px;min-height:0;height:100%;padding:8px 10px;display:grid;grid-template-rows:30px 24px minmax(0,1fr) 18px;gap:4px;position:relative}
+.battle-page .hand .hand-group-start{margin-left:0;box-shadow:-5px 0 0 -3px var(--hero)}
+.battle-page .card .card-top{height:30px;min-height:0;margin:0;align-items:center}
+.battle-page .card-avatar{height:30px;width:30px;flex-basis:30px;border-width:1px}
+.battle-page .card-cost{width:27px;height:27px;font-size:18px}
+.battle-page .card h3{font-size:20px;line-height:1.2;margin:0;white-space:nowrap}
+.battle-page .card p{font-size:15px;line-height:1.45;margin:0;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:5}
+.battle-page .card-tags{height:18px;overflow:hidden;white-space:nowrap;gap:4px;margin:0}
+.battle-page .card-tags span{font-size:11px;line-height:1.4;padding:1px 4px}
+.battle-page .card .upgraded{position:absolute;right:45px;top:12px;font-size:12px}
+.battle-page .hand .card:hover:not(:disabled),.battle-page .hand .card.selected{transform:none;outline-offset:-2px}
+.battle-page .hand-panel>.log-box{display:none}
+.battle-page>.battle-dock{flex:0 0 auto;position:relative;left:auto;right:auto;bottom:auto;z-index:10;padding:0 4px env(safe-area-inset-bottom,0px);width:100%;max-height:none;gap:0;border-radius:6px;box-shadow:none;backdrop-filter:none}
+.battle-page .dock-context{min-height:23px;max-height:62px;padding:2px 0;font-size:14px;line-height:1.45;gap:6px;overflow:auto}
+.battle-page .dock-context>.explain{font-size:12px;line-height:1.3}
+.battle-page .dock-context>.muted{font-size:14px;line-height:1.45}
+.battle-page .battle-dock .target-panel{min-height:0;padding:2px 0;gap:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:nowrap;width:100%}
+.battle-page .target-summary{min-width:0;flex:1}
+.battle-page .target-panel .gold{font-size:14px;line-height:1.4}
+.battle-page .target-panel .preview-text{font-size:13px;line-height:1.4}
+.battle-page .target-panel .actions{flex-wrap:nowrap;gap:7px;flex-shrink:0}
+.battle-page .target-panel label{font-size:13px;line-height:1.4}
+.battle-page .target-panel input[type=range]{min-height:20px;width:90px;min-width:60px}
+.battle-page .target-panel button{font-size:13px;min-height:32px;padding:4px 9px}
+.battle-page .dock-main{min-height:50px;height:50px;padding:3px 0;gap:10px;display:flex;flex-wrap:nowrap}
+.battle-page .dock-main .actions{display:flex;flex:0 0 auto;gap:8px}
+.battle-page .dock-main .end-turn{min-height:44px;height:44px;min-width:155px;padding:5px 17px;font-size:16px}
+.battle-page .dock-main button.small{min-height:38px;padding:4px 12px;font-size:14px}
+.battle-page .energy-dot{height:22px;width:22px}
+.battle-page .energy-text{font-size:14px;white-space:nowrap}
+.battle-page .dock-main .shortcut{font-size:12px}
+body[data-screen=battle] #toast{bottom:calc(var(--hand-height) + var(--battle-dock-height,80px) + 12px)}
+body[data-screen=battle] .burst-tail{top:54px;font-size:14px;max-width:calc(100vw - 24px)}
+.battle-inspection{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.battle-inspection article{border:1px solid #ffffff25;border-radius:7px;padding:15px;background:#ffffff04}
+.battle-inspection h3{font-size:21px;margin:0 0 9px}
+.battle-inspection p,.battle-inspection .status{font-size:15px;line-height:1.8}
+.battle-inspection .intent{font-size:15px;line-height:1.7}
+.battle-inspection .intent span{display:block;font-size:15px}
+@media(min-height:900px) and (min-width:761px){
+  body[data-screen=battle]{--hand-height:260px;grid-template-rows:56px minmax(0,1fr)}
+  body[data-screen=battle]>.topbar{height:56px}
+  .battle-page{padding:10px 22px;gap:9px}
+  .battle-page .fighter-info{padding:7px 10px}.battle-page .fighter-name{font-size:16px}.battle-page .hp-number{font-size:14px}
+  .battle-page .ub-button{height:40px;min-height:40px}.battle-page .ub-button span{font-size:15px}.battle-page .ub-button small{font-size:13px}
+  .battle-page .fighter.enemy .intent,.battle-page .intent span{font-size:14px}.battle-page .fighter.enemy .intent{min-height:44px}
+  .battle-page .hand .card{padding:10px 13px;gap:6px}.battle-page .card-avatar{width:34px;height:34px;flex-basis:34px}.battle-page .card .card-top{height:34px}.battle-page .hand .card{grid-template-rows:34px 27px minmax(0,1fr) 20px}
+  .battle-page .card h3{font-size:23px}.battle-page .card p{font-size:16px;line-height:1.65}
+}
+@media(max-width:760px) and (min-height:501px){
+  body[data-screen=battle]{--hand-height:239px;grid-template-rows:44px minmax(0,1fr)}
+  body[data-screen=battle]>.topbar{height:44px;padding:2px 8px;justify-content:space-between}
+  body[data-screen=battle] .brand{font-size:17px;gap:4px;min-height:36px}
+  body[data-screen=battle] .brand-star{font-size:22px}.topbar .edition{display:none}
+  body[data-screen=battle] .topbar nav>button{padding:4px 6px;min-height:36px;font-size:13px}
+  body[data-screen=battle] #run-meta{display:none}
+  .battle-page{padding:4px 6px 4px;gap:4px}
+  .battle-page>.battle-toolbar{flex-basis:28px;gap:5px}
+  .battle-toolbar>div:first-child{display:block}.battle-toolbar .eyebrow{display:none}
+  .battle-toolbar h2{font-size:16px;letter-spacing:0}.battle-toolbar .round-label{font-size:12px;margin-left:4px}
+  .battle-toolbar .actions{gap:3px}.battle-toolbar .actions button{font-size:12px;min-height:28px;padding:3px 6px}.battle-toolbar .pill{display:none}
+  .battle-page>.arena{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,.85fr) minmax(0,1fr);padding:4px 5px;gap:5px}
+  .battle-page .arena-label{display:none!important}
+  .battle-page .fighters.enemies{grid-row:1;gap:6px}.battle-page .fighters.allies{grid-row:2;gap:6px}
+  .battle-page .fighter{max-width:none}.battle-page .fighter-art{margin-bottom:2px}
+  .battle-page .fighter-info{padding:3px 5px}.battle-page .fighter-name{font-size:13px;gap:3px;margin-bottom:2px}.battle-page .hp-number{font-size:11px}
+  .battle-page .statuses{height:17px;margin:2px 0}.battle-page .status{font-size:11px;line-height:1.35;padding:1px 3px}
+  .battle-page .ub-button{height:30px;min-height:30px;padding:2px;gap:2px}.battle-page .ub-button span{font-size:12px}.battle-page .ub-button small{font-size:11px}
+  .battle-page .ub-button small{display:none}
+  .battle-page .ub-button span{font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis}.battle-page .ub-button:after{content:attr(data-tp);font-size:12px;color:#ddc48d;white-space:nowrap}
+  .battle-page .fighter.enemy{display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:2px 4px;max-width:none}
+  .battle-page .fighter.enemy .intent{grid-column:2;grid-row:1;align-self:center;min-height:0;margin:0;padding:3px;font-size:11px;line-height:1.35}
+  .battle-page .intent span{font-size:12px;white-space:normal;line-height:1.35}
+  .battle-page .fighter.enemy .enemy-art,.battle-page .arena.boss-arena .fighter.boss .enemy-art,.battle-page .arena.boss-arena .fighter.enemy:not(.boss) .enemy-art{grid-column:1;grid-row:1/3;height:100%;min-height:0;margin:0}
+  .battle-page .fighter.enemy .fighter-info,.battle-page .arena.boss-arena .fighter.boss .fighter-info{grid-column:2;grid-row:2;padding:3px;min-height:0}
+  .battle-page .fighter.enemy .fighter-name{font-size:12px;flex-wrap:wrap}.battle-page .fighter.enemy .statuses{height:16px;margin:1px 0}
+  .battle-page .arena.boss-arena .fighter.boss{flex:1.5;max-width:none}.battle-page .arena.boss-arena .fighter.enemy:not(.boss){flex:1;max-width:none}
+  .battle-page .enemy-art .fighter-front{display:none}
+  .battle-page>.boss-health{flex-basis:37px;padding:3px 7px;grid-template-columns:minmax(0,1fr) 1fr;grid-template-rows:16px 6px;gap:3px 8px}
+  .battle-page .boss-heading{gap:5px}.battle-page .boss-heading .eyebrow{display:none}.battle-page .boss-heading h3{font-size:17px}.battle-page .boss-heading strong{font-size:12px}.battle-page .boss-phase{font-size:10px}.battle-page .boss-hp-track{height:6px}
+  .battle-page>.tutorial-panel{padding:5px 7px;gap:5px;align-items:flex-start}.battle-page .tutorial-copy{display:block}.battle-page .tutorial-progress{font-size:11px}.battle-page .tutorial-copy h3{font-size:15px}.battle-page .tutorial-copy p{font-size:13px;line-height:1.4}
+  .battle-page .tutorial-actions{flex-direction:column;gap:3px}.battle-page .tutorial-actions button{font-size:12px;min-height:29px;padding:3px 5px}
+  .battle-page .hand-order-note{display:none}.battle-page .hand-toolbar{flex-basis:28px;justify-content:flex-end}.battle-page .draw-counters{width:100%;justify-content:space-between;gap:4px}.battle-page .draw-counters button{padding:3px 8px;font-size:13px;min-height:28px}
+  .battle-page .hand{gap:8px;padding:3px 3px 6px}.battle-page .hand .card{flex-basis:202px;min-width:202px;max-width:202px;padding:7px 9px}
+  .battle-page .card p{font-size:15px;line-height:1.45}.battle-page .card h3{font-size:20px}
+  .battle-page .dock-context{max-height:70px;min-height:22px;padding:1px 0}.battle-page .dock-context>.explain{display:none}.battle-page .dock-context>.muted{font-size:13px;line-height:1.4}
+  .battle-page .battle-dock .target-panel{gap:5px;align-items:flex-start}.battle-page .target-panel .preview-text{font-size:12px;line-height:1.35}.battle-page .target-panel .gold{font-size:13px}
+  .battle-page .target-panel .actions{gap:4px;flex-wrap:nowrap;max-width:none;justify-content:flex-end}.battle-page .target-panel button{min-height:30px;font-size:12px;padding:3px 6px}.battle-page .target-panel input[type=range]{width:58px}
+  .battle-page .dock-main{height:54px;min-height:54px;gap:4px;padding:3px 0}.battle-page .dock-main .shortcut{display:none}.battle-page .dock-main .actions{gap:5px}.battle-page .dock-main .end-turn{min-width:124px;min-height:48px;height:48px;padding:5px 8px;font-size:16px}.battle-page .dock-main button.small{padding:4px 7px;font-size:13px;min-height:40px}
+  .battle-page .energy-dot{width:16px;height:16px;margin-right:1px}.battle-page .energy-dot>span{font-size:9px}.battle-page .energy-display{gap:2px}.battle-page .energy-text{font-size:12px;margin-left:2px}
+}
+/* Short windows / landscape phones use a side hand instead of shrinking text. */
+@media(max-width:760px) and (min-height:501px) and (max-height:740px){
+  .battle-page .fighters.allies .statuses,.battle-page .fighters.allies .tp-row{display:none}
+  .battle-page .dock-context{max-height:46px}
+  .battle-page .fighter-info{padding:3px 5px}
+}
+@media(max-width:760px) and (min-height:501px) and (max-height:640px){
+  body[data-screen=battle]{--hand-height:clamp(150px,30dvh,190px)}
+  .battle-page>.tutorial-panel{height:36px;flex-basis:36px;padding:3px 5px;align-items:center;gap:4px}
+  .battle-page .tutorial-copy{overflow:hidden}.battle-page .tutorial-copy h3{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .battle-page .tutorial-progress,.battle-page .tutorial-copy p{display:none}
+  .battle-page .tutorial-actions{flex-direction:row;gap:3px}
+  .battle-page .tutorial-actions button{min-height:28px;padding:3px 5px;font-size:12px}
+  .battle-page .tutorial-actions .tutorial-help{display:block}
+  .battle-page .hand .card{grid-template-rows:24px 22px minmax(0,1fr) 16px;padding:5px 8px;gap:2px}
+  .battle-page .card .card-top{height:24px}.battle-page .card-avatar{height:24px;width:24px;flex-basis:24px}.battle-page .card-cost{height:24px;width:24px;font-size:16px}
+  .battle-page .card h3{font-size:19px}.battle-page .card p{font-size:15px;line-height:1.45}
+}
+@media(max-height:500px) and (min-width:600px){
+  body[data-screen=battle]{grid-template-rows:38px minmax(0,1fr)}
+  body[data-screen=battle]>.topbar{height:38px;padding:1px 10px}.topbar .edition{display:none}
+  body[data-screen=battle] .topbar nav>button{min-height:32px;font-size:12px}.brand{min-height:32px!important}
+  .battle-page{display:grid;grid-template-columns:minmax(0,1fr) 310px;grid-template-rows:28px minmax(0,1fr) 64px;grid-template-areas:'heading hand' 'arena hand' 'dock dock';gap:4px;padding:3px 6px}
+  .battle-page>.battle-toolbar{grid-area:heading;height:28px;min-height:0}.battle-toolbar .eyebrow,.battle-toolbar .pill{display:none}.battle-toolbar h2{font-size:15px;letter-spacing:0}.battle-toolbar .round-label{font-size:12px}.battle-toolbar .actions button{font-size:12px;min-height:26px;padding:2px 5px}
+  .battle-page>.arena{grid-area:arena;padding:4px;gap:8px;height:100%}.battle-page .arena-label{display:none!important}
+  .battle-page .fighter-name{flex-wrap:wrap;font-size:12px;line-height:1.2;gap:1px;margin:0}.battle-page .hp-number{font-size:11px}.battle-page .fighter-info{padding:3px}.battle-page .statuses{height:15px;margin:1px 0}.battle-page .status{font-size:10px;padding:0 2px}.battle-page .tp-row{margin:2px 0}
+  .battle-page .ub-button{min-height:28px;height:28px;padding:2px;gap:1px;flex-direction:column}.battle-page .ub-button span{font-size:11px}.battle-page .ub-button small{font-size:10px;line-height:1}
+  .battle-page .fighter.enemy .intent{min-height:29px;font-size:11px;padding:2px;line-height:1.25}.battle-page .intent span{font-size:10px;line-height:1.25;white-space:normal}.battle-page .fighters{gap:4px}.battle-page .allies .fighter-front{font-size:9px;padding:0 2px}
+  .battle-page>.hand-panel{grid-area:hand;height:100%;min-height:0}.battle-page .hand-toolbar{height:28px;flex-basis:28px}.battle-page .hand-order-note{display:none}.battle-page .draw-counters{width:100%;justify-content:space-between;gap:3px}.battle-page .draw-counters button{font-size:11px;padding:2px 5px;min-height:26px}
+  .battle-page .hand{height:100%;min-height:0;gap:7px;padding:3px 3px 6px}.battle-page .hand .card{flex-basis:240px;min-width:240px;max-width:240px;height:100%;grid-template-rows:30px 24px minmax(0,1fr) 18px}
+  .battle-page>.battle-dock{grid-area:dock;height:64px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;padding:0 3px;gap:8px}.battle-page .dock-context{max-height:60px;min-height:0;padding:2px 0;display:block}.battle-page .dock-context>.explain{display:none}.battle-page .dock-context>.muted{font-size:12px}.battle-page .battle-dock .target-panel{gap:5px}.battle-page .target-panel .preview-text{font-size:12px}.battle-page .target-panel .actions{gap:4px;flex-wrap:wrap;max-width:135px}.battle-page .target-panel button{min-height:28px;padding:2px 5px;font-size:12px}
+  .battle-page .dock-main{height:58px;min-height:58px;border:0;padding:0}.battle-page .dock-main .shortcut{display:none}.battle-page .dock-main .actions{gap:4px}.battle-page .dock-main .end-turn{min-width:120px;font-size:15px}.battle-page .dock-main button.small{font-size:12px;padding:4px 6px}.battle-page .energy-dot{width:16px;height:16px}.battle-page .energy-text{font-size:12px}
+  .battle-page>.boss-health{grid-area:heading;height:28px;padding:2px 6px;grid-template-rows:14px 5px;gap:2px 8px}.battle-page:has(>.boss-health)>.battle-toolbar{display:none}.battle-page .boss-heading h3{font-size:16px}.battle-page .boss-heading .eyebrow{display:none}.battle-page .boss-heading strong{font-size:12px}.battle-page .boss-phase{font-size:10px}.battle-page .boss-hp-track{height:5px}
+  .battle-page>.tutorial-panel{grid-area:heading;height:28px;padding:2px 5px;overflow:hidden}.battle-page:has(>.tutorial-panel)>.battle-toolbar{display:none}.battle-page .tutorial-copy{display:block}.battle-page .tutorial-progress,.battle-page .tutorial-copy p{display:none}.battle-page .tutorial-copy h3{font-size:14px;line-height:1.4}.battle-page .tutorial-actions{gap:4px}.battle-page .tutorial-actions button{min-height:24px;font-size:11px;padding:1px 5px}
+  .battle-page .tutorial-actions .tutorial-help{display:block}
+}
+
+/* Action choices share the bottom row. The former name/damage preview strip is
+   absent; opening a choice overlays the hand without reserving another row. */
+.battle-page>.battle-dock{display:block;height:auto;max-height:none}
+.battle-page .dock-options{display:flex;align-items:center;gap:8px;margin-left:auto;flex:0 0 auto}
+.battle-page .dock-options:empty{display:none}
+.battle-page .dock-main .shortcut{flex:1;text-align:center}
+.combat-choice{position:relative;font-size:14px;line-height:1.5}
+.combat-choice summary{cursor:pointer;min-height:38px;padding:7px 10px;border:1px solid #d9bd8966;border-radius:6px;white-space:nowrap;color:#f1d7a7;background:#243046;touch-action:manipulation}
+.combat-choice-panel{position:absolute;right:0;bottom:calc(100% + 10px);width:max-content;max-width:min(300px,82vw);padding:14px;border:1px solid #d9bd8980;border-radius:8px;background:#15223bf7;box-shadow:0 4px 20px #0008;z-index:30}
+.combat-choice-panel label{display:flex;align-items:center;gap:9px;font-size:15px;line-height:1.7}
+.combat-choice-panel input[type=range]{width:120px;min-height:32px;accent-color:var(--gold)}
+.combat-choice-panel input[type=checkbox]{width:20px;height:20px;flex-shrink:0;accent-color:var(--gold)}
+.battle-page .dock-options>button{min-height:40px;font-size:14px;padding:5px 12px}
+@media(max-width:760px){
+  .battle-page .dock-main{gap:5px}
+  .battle-page .dock-options{gap:5px}
+  .combat-choice summary{font-size:13px;min-height:36px;padding:6px 7px}
+  .battle-page .is-selecting .energy-dot{display:none}
+  .battle-page .is-selecting [data-action=turn-forecast]{display:none}
+  .battle-page .has-burst-confirm .energy-display{display:none}
+  .battle-page .dock-options>button{font-size:13px;min-height:38px;padding:4px 7px}
+  .battle-page .dock-main .actions>[data-action=cancel-select]{min-width:39px;padding:4px 6px}
+}
+
+@media(max-width:380px){
+  .battle-page .has-burst-confirm .dock-main .end-turn{min-width:108px;padding:5px;font-size:15px}
+  .battle-page .has-burst-confirm .dock-options>button{padding:4px 5px;font-size:12px}
+  .battle-page .has-burst-confirm .combat-choice summary{font-size:12px;padding:6px 5px}
+  .battle-page .has-burst-confirm .dock-main .actions>[data-action=cancel-select]{min-width:32px;padding:4px}
+}

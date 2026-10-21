@@ -1,0 +1,23 @@
+/* An illustration never inherits the height of its longer rules paragraph. */
+.relic-art-box{display:block;flex:0 0 auto;width:78px;height:78px;min-width:78px;min-height:78px;aspect-ratio:1/1;margin:0 auto 18px;overflow:hidden;border-radius:10px;background:#182139}
+.relic-art-box img,.relic-card .relic-art-box img,.shop-item .relic-art-box img{display:block;width:100%;height:100%;min-height:0;max-width:100%;aspect-ratio:1/1;object-fit:contain;margin:0;border-radius:inherit}
+.relic-reward{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;white-space:normal;min-width:0}
+.relic-reward h3{margin:0 0 12px}
+.relic-reward .rule-copy{margin:0;text-align:left;font-size:15px;line-height:1.7;overflow-wrap:anywhere}
+.rule-copy{white-space:pre-line;overflow-wrap:anywhere}
+.relic-shop .relic-art-box{width:68px;height:68px;min-width:68px;min-height:68px;margin-left:0}
+.relic-detail{display:grid;grid-template-columns:100px minmax(0,1fr);gap:24px;align-items:start}
+.relic-detail .relic-art-box{width:100px;height:100px;min-width:100px;min-height:100px;margin:0}
+.relic-detail p{margin-top:0;font-size:16px;line-height:1.8}
+.relic-strip>button.relic-icon{display:block;flex:0 0 43px;width:43px;height:43px;min-height:43px;aspect-ratio:1;padding:0;overflow:hidden}
+.relic-strip>button.relic-icon>img{display:block;object-fit:contain;min-height:0}
+.test-victory{border:1px dashed #e9bd67;color:#f8d78f;background:#4a341e55;white-space:nowrap}
+.test-victory::before{content:'⚑ ';font-size:.9em}
+.test-run-label{color:#f2ce86}
+.card p,.hero-copy p,.hero-info .explain{white-space:pre-line}
+/* Arisa's bow is wider than her body. Give that original, uncropped image
+   lateral room so her head-to-feet scale matches the other party members. */
+.battle-page .allies .fighter[data-id=arisa] .fighter-art{overflow:visible}
+.battle-page .allies .fighter[data-id=arisa] .fighter-art img{width:145%;max-width:none;flex:0 0 145%;height:100%;object-fit:contain}
+.hero-choice[data-id=arisa] img{object-fit:cover;object-position:center bottom;padding:8px 0 0}
+@media(max-width:600px){.relic-reward{flex:1 0 190px;max-width:270px}.reward-cards:has(.relic-reward){flex-wrap:wrap;gap:14px;align-items:stretch}.relic-detail{grid-template-columns:78px minmax(0,1fr);gap:16px}.relic-detail .relic-art-box{width:78px;height:78px;min-width:78px;min-height:78px}.test-victory{padding:5px 8px;font-size:12px}}

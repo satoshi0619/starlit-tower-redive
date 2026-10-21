@@ -1,0 +1,29 @@
+/* Story introduction and a visible starting point for party selection. */
+.landing-copy{padding-top:6vh;padding-bottom:5vh;width:min(760px,100%)}
+.landing-copy h1{font-size:clamp(43px,5.1vw,71px);letter-spacing:3px;margin-bottom:24px}
+.landing-story{max-width:535px;color:#c7d0e2;font-size:16px;line-height:1.95}
+.landing-story p{margin-bottom:14px}.landing-story strong{color:#f4dcae;font-weight:500}
+.landing-copy .actions{margin-top:25px}.landing-notes{margin-top:30px;padding-top:18px}
+.landing-footnote{font-size:13px;color:#96a7c0;margin:19px 0 0;line-height:1.7}
+.recommended-teams{padding:24px;border:1px solid #e9c78d70;border-radius:12px;background:linear-gradient(130deg,#60513d33,#17273d88 65%);box-shadow:0 9px 36px #0002;margin-bottom:32px}
+.recommended-heading{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:20px}
+.recommended-heading .eyebrow{margin-bottom:5px;letter-spacing:2px}
+.recommended-heading h3{font-size:27px;margin:0 0 6px;color:#ffe4af}
+.recommended-heading p,.custom-party-heading p{font-size:15px;color:#bbc8de;margin:0}
+.recommend-hint{color:#e9c78d;font-size:14px;border-left:2px solid #e9c78d66;padding-left:14px}
+.recommended-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.recommended-team{display:flex;flex-direction:column;text-align:left;padding:19px;min-width:0;background:#111c30dc;border:1px solid #ffffff35;border-radius:9px;position:relative;gap:10px}
+.recommended-team.is-picked{border-color:#f2cf90;box-shadow:inset 0 0 0 1px #f2cf9050,0 0 20px #f2cf9010;background:linear-gradient(145deg,#5e4c323f,#142037)}
+.recommend-tag{font-size:13px;color:#c9c9d8;line-height:1.5}.recommended-team:first-child .recommend-tag{color:#f3d398}
+.recommend-title{font:26px "Yu Mincho","Songti SC",serif;color:#fff2da;letter-spacing:1px}
+.recommend-members{display:flex;gap:13px;margin:3px 0 5px;justify-content:flex-start}
+.recommend-members>span{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:14px;color:#d4ddef;min-width:52px}
+.recommend-members img{width:52px;height:52px;border:1px solid #eac9926b;border-radius:50%;object-fit:cover;background:#233049}
+.recommend-plan{font-size:14px;color:#c2d0e5;line-height:1.7;flex:1}
+.recommend-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;margin-top:1px;border-top:1px solid #ffffff1d;font-size:12px;color:#a6bad5}
+.recommend-footer strong{font-size:14px;color:#ffe0a5;font-weight:600}.is-picked .recommend-footer strong{color:#b9e8c4}
+.recommend-caution{font-size:14px;color:#c2cde0;line-height:1.8;margin:17px 0 0}
+.custom-party-heading{margin-bottom:18px}.custom-party-heading h3{margin-bottom:5px;font-size:23px}
+@media(max-width:1000px){.recommended-teams{padding:20px}.recommended-grid{gap:10px}.recommended-team{padding:14px}.recommend-members{gap:8px}.recommend-members img{width:46px;height:46px}.recommend-members>span{min-width:43px;font-size:13px}.recommend-title{font-size:24px}.recommend-hint{max-width:190px}}
+@media(max-width:760px){.landing{min-height:0}.landing-copy{padding:42px 6% 35px}.landing-copy h1{font-size:clamp(41px,8.5vw,59px);margin-bottom:23px}.landing-story{font-size:16px;max-width:100%}.landing-story br{display:none}.landing-art{opacity:.27}.landing-notes{gap:18px}.landing-notes span{font-size:13px}.landing-footnote{font-size:12px}.recommended-teams{padding:17px}.recommended-heading{display:block;margin-bottom:17px}.recommended-heading h3{font-size:25px}.recommend-hint{display:block;max-width:none;margin-top:12px}.recommended-grid{grid-template-columns:1fr;gap:12px}.recommended-team{padding:16px;display:grid;grid-template-columns:1fr auto;gap:7px 12px}.recommend-tag,.recommend-title{grid-column:1}.recommend-members{grid-column:2;grid-row:1/3;gap:7px;margin:0;align-self:center}.recommend-members img{width:42px;height:42px}.recommend-members>span{font-size:12px;min-width:40px}.recommend-plan,.recommend-footer{grid-column:1/-1}.recommend-caution{font-size:14px}.custom-party-heading p{font-size:14px}}
+@media(max-width:400px){.recommended-team{display:flex}.recommend-members{justify-content:flex-start;margin:4px 0}.recommend-members img{width:48px;height:48px}.recommend-members>span{font-size:13px;min-width:48px}.recommended-heading p{font-size:14px}}

@@ -1,0 +1,4442 @@
+// Generated media data; paths are relative to the game root.
+window.TowerMedia = {
+  "schemaVersion": 2,
+  "preparedDate": "2026-10-20",
+  "characters": {
+    "pecorine": {
+      "unitId": "105801",
+      "displayName": "佩可莉姆",
+      "ub": {
+        "voice": "assets/media/pecorine/ub.m4a",
+        "cutinVoice": "assets/media/pecorine/cutin.m4a",
+        "video": "assets/media/pecorine/cutin.mp4",
+        "poster": "assets/media/pecorine/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 1.980998,
+        "cutinVoiceDurationSeconds": 1.932993,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": true,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/pecorine/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 34033,
+          "sha256": "66eac913d77731aa124fef2d6ef7fef01a398b35541a1ee0f34b376fa665dd32",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.980998,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "87",
+              "duration": "1.980998"
+            }
+          ],
+          "cue": "vo_btl_105801_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 1.981,
+          "source": {
+            "logicalName": "v/vo_btl_105801.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/85/85803892da63e274",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "28276cb72dd036eec42eaba92f0693b6",
+            "bytes": 620128,
+            "sha256": "067cf9cc1381e837e4d39bfb451492289311099dc48208df5cc284fcb259a9bb",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "pecorine",
+            "key": "voice",
+            "passed": true,
+            "durationSeconds": 1.980998,
+            "currentTime": 1.980998,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 32879
+          }
+        },
+        "cutinVoice": {
+          "path": "assets/media/pecorine/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 32954,
+          "sha256": "521ff1b964b4d7d05043398cc8dff201b66a93d9ece104f092967a9640385bfb",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.932993,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "85",
+              "duration": "1.932993"
+            }
+          ],
+          "cue": "vo_btl_105801_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 1.933,
+          "source": {
+            "logicalName": "v/vo_btl_105801.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/85/85803892da63e274",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "28276cb72dd036eec42eaba92f0693b6",
+            "bytes": 620128,
+            "sha256": "067cf9cc1381e837e4d39bfb451492289311099dc48208df5cc284fcb259a9bb",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "pecorine",
+            "key": "cutinVoice",
+            "passed": true,
+            "durationSeconds": 1.932993,
+            "currentTime": 1.932993,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 31808
+          }
+        },
+        "video": {
+          "path": "assets/media/pecorine/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1582185,
+          "sha256": "630a05a0c63c03bf541a2306508a0433eb7d14ebce8dc3124a7398a9b1df3baa",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_105801.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/37/377849a69048859b",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "a400423c3f5b33c631e135771be02e00",
+            "bytes": 3567072,
+            "sha256": "8e17d6c8b1fa974a656d196957e0366c8e240f9f1864c8c370db96bca94c7b9b",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/pecorine/poster.jpg",
+          "originalCutin": true,
+          "browserPlayback": {
+            "id": "pecorine",
+            "key": "video",
+            "passed": true,
+            "durationSeconds": 2.366667,
+            "currentTime": 2.366667,
+            "width": 960,
+            "height": 720,
+            "frames": 70,
+            "audioDecodedBytes": null
+          }
+        }
+      }
+    },
+    "kokkoro": {
+      "unitId": "105901",
+      "displayName": "可可萝",
+      "ub": {
+        "voice": "assets/media/kokkoro/ub.m4a",
+        "cutinVoice": "assets/media/kokkoro/cutin.m4a",
+        "video": "assets/media/kokkoro/cutin.mp4",
+        "poster": "assets/media/kokkoro/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 2.137007,
+        "cutinVoiceDurationSeconds": 1.371995,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": true,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/kokkoro/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 37527,
+          "sha256": "b659279645965cf1a4c69e6185728a344e21521669c83b3d9efbb19b40b1a29b",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.137007,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "94",
+              "duration": "2.137007"
+            }
+          ],
+          "cue": "vo_btl_105901_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 2.137,
+          "source": {
+            "logicalName": "v/vo_btl_105901.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fc/fc1db559a0ec8415",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "eee990d46ac82ab710b66e350c9b3025",
+            "bytes": 626656,
+            "sha256": "a415c1f0a4b3abca7c221811215795f97058b43396da5cedbf065cd35bc1032c",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "kokkoro",
+            "key": "voice",
+            "passed": true,
+            "durationSeconds": 2.137007,
+            "currentTime": 2.137007,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 36345
+          }
+        },
+        "cutinVoice": {
+          "path": "assets/media/kokkoro/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 23458,
+          "sha256": "a0c6a952b6c42c21c193d555ce8464b0dd5ff7992b49802c32ba188480aff889",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.371995,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "61",
+              "duration": "1.371995"
+            }
+          ],
+          "cue": "vo_btl_105901_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 1.372,
+          "source": {
+            "logicalName": "v/vo_btl_105901.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fc/fc1db559a0ec8415",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "eee990d46ac82ab710b66e350c9b3025",
+            "bytes": 626656,
+            "sha256": "a415c1f0a4b3abca7c221811215795f97058b43396da5cedbf065cd35bc1032c",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "kokkoro",
+            "key": "cutinVoice",
+            "passed": true,
+            "durationSeconds": 1.371995,
+            "currentTime": 1.371995,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 22408
+          }
+        },
+        "video": {
+          "path": "assets/media/kokkoro/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1781722,
+          "sha256": "6935f3cc8f4743bf3fce99a2b5ac9dfa92dccf12fcf92bedb05ab136b2b285dc",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_105901.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/63/637420f54c1c8bac",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "c14cdff3c5f5f2396c0fb0a69356a120",
+            "bytes": 3771200,
+            "sha256": "42d1ecb48d0b7b8eab55dc1e886457432f48b3d0225114dd4d84bc9da5a0e4e1",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/kokkoro/poster.jpg",
+          "originalCutin": true,
+          "browserPlayback": {
+            "id": "kokkoro",
+            "key": "video",
+            "passed": true,
+            "durationSeconds": 2.366667,
+            "currentTime": 2.366667,
+            "width": 960,
+            "height": 720,
+            "frames": 70,
+            "audioDecodedBytes": null
+          }
+        }
+      }
+    },
+    "kyaru": {
+      "unitId": "106001",
+      "displayName": "凯露",
+      "ub": {
+        "voice": "assets/media/kyaru/ub.m4a",
+        "cutinVoice": "assets/media/kyaru/cutin.m4a",
+        "video": "assets/media/kyaru/cutin.mp4",
+        "poster": "assets/media/kyaru/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 2.35,
+        "cutinVoiceDurationSeconds": 2.187007,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": true,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/kyaru/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 40255,
+          "sha256": "fc61ee310148463f04c3cec7fceddde27a7f0151ba38220f0085a5e963ed0d5d",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.35,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "103",
+              "duration": "2.350000"
+            }
+          ],
+          "cue": "vo_btl_106001_ub_100",
+          "subsong": 20,
+          "sourceDurationSeconds": 2.351,
+          "source": {
+            "logicalName": "v/vo_btl_106001.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/68/6895884ed9e2abe1",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "616a8479641bbb43e317ce4526346653",
+            "bytes": 590016,
+            "sha256": "8401704cb611c354ff8dc78f8d0e231621076e85da308a59c5057d4321215b34",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "kyaru",
+            "key": "voice",
+            "passed": true,
+            "durationSeconds": 2.35,
+            "currentTime": 2.35,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 39037
+          }
+        },
+        "cutinVoice": {
+          "path": "assets/media/kyaru/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 37408,
+          "sha256": "624a0d6ca87da0df7051d8a97c861f8849d555e6953dff304164d3439706bfe4",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.187007,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "96",
+              "duration": "2.187007"
+            }
+          ],
+          "cue": "vo_btl_106001_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 2.187,
+          "source": {
+            "logicalName": "v/vo_btl_106001.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/68/6895884ed9e2abe1",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "616a8479641bbb43e317ce4526346653",
+            "bytes": 590016,
+            "sha256": "8401704cb611c354ff8dc78f8d0e231621076e85da308a59c5057d4321215b34",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "kyaru",
+            "key": "cutinVoice",
+            "passed": true,
+            "durationSeconds": 2.187007,
+            "currentTime": 2.187007,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 36218
+          }
+        },
+        "video": {
+          "path": "assets/media/kyaru/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1540649,
+          "sha256": "696719bce540cca5a37a991ad539a7a6aa8e4008627a28d1a0b4fa2924654443",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_106001.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/3b/3b28b9b2f78fd719",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "ffa08bed1486a0e90e1e40e84114f963",
+            "bytes": 3592096,
+            "sha256": "87d0ee75b504ff612ebe331f9c33c4ce09623f437395c0f73378a694076722c3",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/kyaru/poster.jpg",
+          "originalCutin": true,
+          "browserPlayback": {
+            "id": "kyaru",
+            "key": "video",
+            "passed": true,
+            "durationSeconds": 2.366667,
+            "currentTime": 2.366667,
+            "width": 960,
+            "height": 720,
+            "frames": 70,
+            "audioDecodedBytes": null
+          }
+        }
+      }
+    },
+    "rei": {
+      "unitId": "100301",
+      "displayName": "怜",
+      "ub": {
+        "voice": "assets/media/rei/ub.m4a",
+        "cutinVoice": "assets/media/rei/cutin.m4a",
+        "video": "assets/media/rei/cutin.mp4",
+        "poster": "assets/media/rei/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 1.54,
+        "cutinVoiceDurationSeconds": 1.826009,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": true,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/rei/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 27305,
+          "sha256": "6f8799f0396af976ce460755c531b90e40e888713cde1bd322ab6a108b1f7468",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.54,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "68",
+              "duration": "1.540000"
+            }
+          ],
+          "cue": "vo_btl_100301_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 1.541,
+          "source": {
+            "logicalName": "v/vo_btl_100301.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/ff/ff314cf6784eb3aa",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "fb98eef2938e4c02231bfa231acc0402",
+            "bytes": 604256,
+            "sha256": "83a981c32a9c005ab87b7a282c82f031f85d48c67d48a07d13503a2c119618c3",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "rei",
+            "key": "voice",
+            "passed": true,
+            "durationSeconds": 1.54,
+            "currentTime": 1.54,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 26227
+          }
+        },
+        "cutinVoice": {
+          "path": "assets/media/rei/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 31650,
+          "sha256": "3cd80a3bb23d827aade43d2fa314c19c268b0537a68245dd2261cb8fb3667470",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.826009,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "80",
+              "duration": "1.826009"
+            }
+          ],
+          "cue": "vo_btl_100301_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 1.827,
+          "source": {
+            "logicalName": "v/vo_btl_100301.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/ff/ff314cf6784eb3aa",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "fb98eef2938e4c02231bfa231acc0402",
+            "bytes": 604256,
+            "sha256": "83a981c32a9c005ab87b7a282c82f031f85d48c67d48a07d13503a2c119618c3",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "rei",
+            "key": "cutinVoice",
+            "passed": true,
+            "durationSeconds": 1.826009,
+            "currentTime": 1.826009,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 30524
+          }
+        },
+        "video": {
+          "path": "assets/media/rei/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1251351,
+          "sha256": "9fd6f30cac35b0856d216719441e29a25bdcbd125f7b908493d92809d32c297a",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_100301.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/79/79944a31408f286a",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "7723ebc63babac18b233b09f13c148f7",
+            "bytes": 3497120,
+            "sha256": "b8857235ee0abc8b15a174a5b95e2783c0d9c304c8dca45736b09b24f3c63896",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/rei/poster.jpg",
+          "originalCutin": true,
+          "browserPlayback": {
+            "id": "rei",
+            "key": "video",
+            "passed": true,
+            "durationSeconds": 2.366667,
+            "currentTime": 2.366667,
+            "width": 960,
+            "height": 720,
+            "frames": 70,
+            "audioDecodedBytes": null
+          }
+        }
+      }
+    },
+    "hatsune": {
+      "unitId": "101201",
+      "displayName": "初音",
+      "ub": {
+        "voice": "assets/media/hatsune/ub.m4a",
+        "cutinVoice": "assets/media/hatsune/cutin.m4a",
+        "video": "assets/media/hatsune/cutin.mp4",
+        "poster": "assets/media/hatsune/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 1.906009,
+        "cutinVoiceDurationSeconds": 2.257007,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": true,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/hatsune/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 32248,
+          "sha256": "f11d9622d0b7d4a76e879e34f6a0d90d1dbe15b11d1eebf0ccf70ea57833f76b",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.906009,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "84",
+              "duration": "1.906009"
+            }
+          ],
+          "cue": "vo_btl_101201_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 1.906,
+          "source": {
+            "logicalName": "v/vo_btl_101201.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/63/639cb97ab3f71362",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "7c2ea9a36e6ec412f5e753de0ec2bb85",
+            "bytes": 723456,
+            "sha256": "9a5207b80ac85a9b8185f6901e7debec003944955c294b3795a0e5ca8fde3394",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "hatsune",
+            "key": "voice",
+            "passed": true,
+            "durationSeconds": 1.906009,
+            "currentTime": 1.906009,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 31106
+          }
+        },
+        "cutinVoice": {
+          "path": "assets/media/hatsune/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 37968,
+          "sha256": "8fb073764a3f0dc950bde146604783a16028958f2e5120a0b8b0e457713bb59a",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.257007,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "99",
+              "duration": "2.257007"
+            }
+          ],
+          "cue": "vo_btl_101201_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 2.257,
+          "source": {
+            "logicalName": "v/vo_btl_101201.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/63/639cb97ab3f71362",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "7c2ea9a36e6ec412f5e753de0ec2bb85",
+            "bytes": 723456,
+            "sha256": "9a5207b80ac85a9b8185f6901e7debec003944955c294b3795a0e5ca8fde3394",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "hatsune",
+            "key": "cutinVoice",
+            "passed": true,
+            "durationSeconds": 2.257007,
+            "currentTime": 2.257007,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 36766
+          }
+        },
+        "video": {
+          "path": "assets/media/hatsune/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 2031825,
+          "sha256": "c4fb7379f94dd490193b995c68b5f011a28d05d9f3267137028673173380f191",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_101201.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/26/26d374660c9b80d2",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "d5b08d70d29bac742e757196d30291f7",
+            "bytes": 3754880,
+            "sha256": "1dea2eb7b3e03d89e83bfe358fa66f57f77a789669bb45acc6f342ab30e7ca4e",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/hatsune/poster.jpg",
+          "originalCutin": true,
+          "browserPlayback": {
+            "id": "hatsune",
+            "key": "video",
+            "passed": true,
+            "durationSeconds": 2.366667,
+            "currentTime": 2.366667,
+            "width": 960,
+            "height": 720,
+            "frames": 70,
+            "audioDecodedBytes": null
+          }
+        }
+      }
+    },
+    "yui": {
+      "unitId": "100201",
+      "displayName": "优衣",
+      "ub": {
+        "voice": "assets/media/yui/ub.m4a",
+        "cutinVoice": "assets/media/yui/cutin.m4a",
+        "video": "assets/media/yui/cutin.mp4",
+        "poster": "assets/media/yui/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 1.989002,
+        "cutinVoiceDurationSeconds": 2.115011,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": true,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/yui/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 33837,
+          "sha256": "7256a12b7c727cda33d6ea70e2add02ecdbf12a5debe0691dd998a33f56aa435",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.989002,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "87",
+              "duration": "1.989002"
+            }
+          ],
+          "cue": "vo_btl_100201_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 1.99,
+          "source": {
+            "logicalName": "v/vo_btl_100201.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/e8/e888385187e9627e",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "c7037bb9133e17df16c1d41d3f3a8206",
+            "bytes": 606816,
+            "sha256": "712b5b58970af2ae8767dd54371dcfbed0cf617eee9908253ce1df2aa5f17c1e",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "yui",
+            "key": "voice",
+            "passed": true,
+            "durationSeconds": 1.989002,
+            "currentTime": 1.989002,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 32683
+          }
+        },
+        "cutinVoice": {
+          "path": "assets/media/yui/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 35485,
+          "sha256": "6152d87cbe11c9cd5e5ede4cf45cf5d7968889fac75eae4671d1b19464979fb9",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.115011,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "93",
+              "duration": "2.115011"
+            }
+          ],
+          "cue": "vo_btl_100201_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 2.115,
+          "source": {
+            "logicalName": "v/vo_btl_100201.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/e8/e888385187e9627e",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "c7037bb9133e17df16c1d41d3f3a8206",
+            "bytes": 606816,
+            "sha256": "712b5b58970af2ae8767dd54371dcfbed0cf617eee9908253ce1df2aa5f17c1e",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "browserPlayback": {
+            "id": "yui",
+            "key": "cutinVoice",
+            "passed": true,
+            "durationSeconds": 2.115011,
+            "currentTime": 2.115011,
+            "width": null,
+            "height": null,
+            "frames": null,
+            "audioDecodedBytes": 34307
+          }
+        },
+        "video": {
+          "path": "assets/media/yui/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1472356,
+          "sha256": "ec89d8e08fd3c7181a4d1d765c7605a5c4b27b7ffa2a67317082158992713e62",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_100201.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/e4/e40ce811f80be4e2",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "09fa5bf2b7b8bfe77cabcdfcbe45abbc",
+            "bytes": 3523072,
+            "sha256": "6a727daf7a4af1a552414d312627cf166fc1efc7b396c14b2fd799bb3137a8d6",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/yui/poster.jpg",
+          "originalCutin": true,
+          "browserPlayback": {
+            "id": "yui",
+            "key": "video",
+            "passed": true,
+            "durationSeconds": 2.366667,
+            "currentTime": 2.366667,
+            "width": 960,
+            "height": 720,
+            "frames": 70,
+            "audioDecodedBytes": null
+          }
+        }
+      }
+    },
+    "miyako": {
+      "unitId": "100701",
+      "displayName": "宫子",
+      "identityEvidence": {
+        "unitId": "100701",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true,
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/miyako.png"
+      },
+      "ub": {
+        "voice": "assets/media/miyako/ub.m4a",
+        "cutinVoice": "assets/media/miyako/cutin.m4a",
+        "video": "assets/media/miyako/cutin.mp4",
+        "poster": "assets/media/miyako/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 2.141995,
+        "cutinVoiceDurationSeconds": 2.119002,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/miyako/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 35982,
+          "sha256": "87e4ecce2faf52b0695120fd0598f6b671b8cae2cc163c828e09ee55d26ef15a",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.141995,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "94",
+              "duration": "2.141995"
+            }
+          ],
+          "cue": "vo_btl_100701_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 2.142,
+          "source": {
+            "logicalName": "v/vo_btl_100701.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/3a/3a3930e5719586b8",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "f54046271a80608e1ae157f179f1b632",
+            "bytes": 820224,
+            "sha256": "b4d9bfad8d0aaf7dc6bd2b6b18f8a3f348507f35fea756fd5fce9eb2333f8347",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_100701_ub_100"
+          ]
+        },
+        "cutinVoice": {
+          "path": "assets/media/miyako/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 35621,
+          "sha256": "2993e1ac7dd2a47bfaad7364dc2ed0fa1394b4211d9f1bb049b6b528f89464ae",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.119002,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "93",
+              "duration": "2.119002"
+            }
+          ],
+          "cue": "vo_btl_100701_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 2.119,
+          "source": {
+            "logicalName": "v/vo_btl_100701.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/3a/3a3930e5719586b8",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "f54046271a80608e1ae157f179f1b632",
+            "bytes": 820224,
+            "sha256": "b4d9bfad8d0aaf7dc6bd2b6b18f8a3f348507f35fea756fd5fce9eb2333f8347",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_100701_cutin_001"
+          ]
+        },
+        "video": {
+          "path": "assets/media/miyako/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1806516,
+          "sha256": "a54c970dccc5773861db13b07d346b30347a3e5c6ded2d8c0ad9ddc6f5bc2243",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_100701.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/2d/2d6ff03c4508118f",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "0360210162bfdeb6ef58699099af6ccb",
+            "bytes": 3710784,
+            "sha256": "afe62fa25915ea9be142952421dc71f6531a3716d3b6369811ebc0ff88d704d7",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/miyako/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    },
+    "jun": {
+      "unitId": "104701",
+      "displayName": "纯",
+      "identityEvidence": {
+        "unitId": "104701",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true,
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/jun.png"
+      },
+      "ub": {
+        "voice": "assets/media/jun/ub.m4a",
+        "cutinVoice": "assets/media/jun/cutin.m4a",
+        "video": "assets/media/jun/cutin.mp4",
+        "poster": "assets/media/jun/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 1.8,
+        "cutinVoiceDurationSeconds": 1.83,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/jun/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 30378,
+          "sha256": "6ede97f12a722fceabca882ee7225a125550ead0fae12b7c34716f0c4d1a4247",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.8,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "48000",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "86",
+              "duration": "1.800000"
+            }
+          ],
+          "cue": "vo_btl_104701_ub_100",
+          "subsong": 20,
+          "sourceDurationSeconds": 1.8,
+          "source": {
+            "logicalName": "v/vo_btl_104701.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/bd/bdbb77b2dae9f6be",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "67cd476df89d6814701f9386dfe912e8",
+            "bytes": 562880,
+            "sha256": "29a4c97cebd984d19a37992d46605806fb00afedf364e2596bf38550b012105c",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_104701_ub_100",
+            "vo_btl_104701_ub_200"
+          ]
+        },
+        "cutinVoice": {
+          "path": "assets/media/jun/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 30788,
+          "sha256": "cbfe5b8d8c530af6e9e4c2769873c33b4c52e2445103a57cca27c4bab12f0ab0",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.83,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "48000",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "87",
+              "duration": "1.830000"
+            }
+          ],
+          "cue": "vo_btl_104701_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 1.83,
+          "source": {
+            "logicalName": "v/vo_btl_104701.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/bd/bdbb77b2dae9f6be",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "67cd476df89d6814701f9386dfe912e8",
+            "bytes": 562880,
+            "sha256": "29a4c97cebd984d19a37992d46605806fb00afedf364e2596bf38550b012105c",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_104701_cutin_001",
+            "vo_btl_104701_cutin_002"
+          ]
+        },
+        "video": {
+          "path": "assets/media/jun/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1659729,
+          "sha256": "96c5af0568d443fac5262ee315ec41a09c25ea5ae1ea805954ba174d3c63fc93",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_104701.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/51/51096cd1d6131e18",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "7f0ae40ddf05359f96c840d367703a10",
+            "bytes": 3643968,
+            "sha256": "034e8cfda36f3686409516f47be1e101f3fabd1f72cb49b1caed232236c5abaf",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/jun/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    },
+    "nozomi": {
+      "unitId": "102901",
+      "displayName": "望",
+      "identityEvidence": {
+        "unitId": "102901",
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/nozomi.png",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true
+      },
+      "ub": {
+        "voice": "assets/media/nozomi/ub.m4a",
+        "cutinVoice": "assets/media/nozomi/cutin.m4a",
+        "video": "assets/media/nozomi/cutin.mp4",
+        "poster": "assets/media/nozomi/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 1.573991,
+        "cutinVoiceDurationSeconds": 1.928005,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/nozomi/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 26786,
+          "sha256": "c4273e61e7c3fe83b54d140726ea0fb3c1d954837e6b2937b693937bbd0114a0",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.573991,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "69",
+              "duration": "1.573991"
+            }
+          ],
+          "cue": "vo_btl_102901_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 1.574,
+          "source": {
+            "logicalName": "v/vo_btl_102901.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/ed/ed2d0a5a586b3ae2",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "d3b654fb7629c3028469cab42885dd15",
+            "bytes": 572512,
+            "sha256": "435d243f61cfeea4399cb43189670316d17bd157ecdb238cb1b518e07294ffd5",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_102901_ub_100"
+          ]
+        },
+        "cutinVoice": {
+          "path": "assets/media/nozomi/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 32605,
+          "sha256": "bc1d03d81977f1ff70083efe11fc69e4db5afb739cedc91b21e36e0c1cbe250c",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.928005,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "85",
+              "duration": "1.928005"
+            }
+          ],
+          "cue": "vo_btl_102901_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 1.929,
+          "source": {
+            "logicalName": "v/vo_btl_102901.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/ed/ed2d0a5a586b3ae2",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "d3b654fb7629c3028469cab42885dd15",
+            "bytes": 572512,
+            "sha256": "435d243f61cfeea4399cb43189670316d17bd157ecdb238cb1b518e07294ffd5",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_102901_cutin_001"
+          ]
+        },
+        "video": {
+          "path": "assets/media/nozomi/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1687171,
+          "sha256": "e1967cc438500bf34b6e15d8e6d79744d7fbbfe3c2182c9a6fd17cb2946bb3f6",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_102901.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/e4/e46aab81f15f5342",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "80ff1d48ebc700c3988eac6c5dfefd31",
+            "bytes": 3725344,
+            "sha256": "2650996251d493d06472fcdd4578575d60757a57218e45fd285a3e1ef5098e64",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/nozomi/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    },
+    "shizuru": {
+      "unitId": "104901",
+      "displayName": "静流",
+      "identityEvidence": {
+        "unitId": "104901",
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/shizuru.png",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true
+      },
+      "ub": {
+        "voice": "assets/media/shizuru/ub.m4a",
+        "cutinVoice": "assets/media/shizuru/cutin.m4a",
+        "video": "assets/media/shizuru/cutin.mp4",
+        "poster": "assets/media/shizuru/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 2.113991,
+        "cutinVoiceDurationSeconds": 2.329002,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/shizuru/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 35443,
+          "sha256": "7f256e1dcf4bf9593a3a01234ad32adb0d112f5a6ca4d73871174ea33a33b33a",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.113991,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "93",
+              "duration": "2.113991"
+            }
+          ],
+          "cue": "vo_btl_104901_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 2.115,
+          "source": {
+            "logicalName": "v/vo_btl_104901.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/bd/bd74ac962f959b6a",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "3267f73d9e22b62b0fef2504be1df108",
+            "bytes": 701792,
+            "sha256": "3b0ad1744654164c3d19ced11a1716b965d40b13c55f6782f00ad054f68d63be",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_104901_ub_100"
+          ]
+        },
+        "cutinVoice": {
+          "path": "assets/media/shizuru/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 39196,
+          "sha256": "4be400783022fd026f3383fd5ddf17eefa94465eb2edf506a2d5f822ae414d0f",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.329002,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "102",
+              "duration": "2.329002"
+            }
+          ],
+          "cue": "vo_btl_104901_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 2.329,
+          "source": {
+            "logicalName": "v/vo_btl_104901.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/bd/bd74ac962f959b6a",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "3267f73d9e22b62b0fef2504be1df108",
+            "bytes": 701792,
+            "sha256": "3b0ad1744654164c3d19ced11a1716b965d40b13c55f6782f00ad054f68d63be",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_104901_cutin_001"
+          ]
+        },
+        "video": {
+          "path": "assets/media/shizuru/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1596003,
+          "sha256": "f5d6420598ee861d2f8d309a93036efdc08a83268556e35a2cb8e08dad2f307e",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_104901.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/0e/0eb2edacbdc7069a",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "0c8e3a53144bfc0bbc86d060fdc06471",
+            "bytes": 3716128,
+            "sha256": "a4b125c7fc76378b3ceab937a267fd1274317199063cc6e83323df8b908233c8",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/shizuru/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    },
+    "makoto": {
+      "unitId": "104301",
+      "displayName": "真琴",
+      "identityEvidence": {
+        "unitId": "104301",
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/makoto.png",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true
+      },
+      "ub": {
+        "voice": "assets/media/makoto/ub.m4a",
+        "cutinVoice": "assets/media/makoto/cutin.m4a",
+        "video": "assets/media/makoto/cutin.mp4",
+        "poster": "assets/media/makoto/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 1.757007,
+        "cutinVoiceDurationSeconds": 1.639002,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/makoto/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 30014,
+          "sha256": "adc4bf8f28201bf8c80c69d4d154189da2a976f6dcfd8c1e65c50ba3b509a6a6",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.757007,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "77",
+              "duration": "1.757007"
+            }
+          ],
+          "cue": "vo_btl_104301_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 1.757,
+          "source": {
+            "logicalName": "v/vo_btl_104301.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/0d/0d6d83399cd12dc3",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "fcc1de415fc68f7587f27b4cabbbfb6f",
+            "bytes": 670816,
+            "sha256": "a9666de5b843a752582fdbf2d6f6bff0f76cb69a5b2b593dcc1500dfe91c0d7d",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_104301_ub_100"
+          ]
+        },
+        "cutinVoice": {
+          "path": "assets/media/makoto/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 28055,
+          "sha256": "866544e15f69115fb6b8cad2fb752a664edf3f14451fac8eeff1870697bd8789",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.639002,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "72",
+              "duration": "1.639002"
+            }
+          ],
+          "cue": "vo_btl_104301_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 1.639,
+          "source": {
+            "logicalName": "v/vo_btl_104301.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/0d/0d6d83399cd12dc3",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "fcc1de415fc68f7587f27b4cabbbfb6f",
+            "bytes": 670816,
+            "sha256": "a9666de5b843a752582fdbf2d6f6bff0f76cb69a5b2b593dcc1500dfe91c0d7d",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_104301_cutin_001"
+          ]
+        },
+        "video": {
+          "path": "assets/media/makoto/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1602512,
+          "sha256": "7ed4ecf8a4bb80bda843bc65908663fa35971968a6db45e31dca5360e29b04ce",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_104301.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/ac/ac8bcd29478a8cee",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "7bfb6a14eafea9fc6019633a826b922a",
+            "bytes": 3620864,
+            "sha256": "8e43af3734b1f66a43bc972657b719a46401d4f549171baf373443079f93d5f4",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/makoto/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    },
+    "kaori": {
+      "unitId": "101701",
+      "displayName": "香织",
+      "identityEvidence": {
+        "unitId": "101701",
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/kaori.png",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true
+      },
+      "ub": {
+        "voice": "assets/media/kaori/ub.m4a",
+        "cutinVoice": "assets/media/kaori/cutin.m4a",
+        "video": "assets/media/kaori/cutin.mp4",
+        "poster": "assets/media/kaori/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 2.749002,
+        "cutinVoiceDurationSeconds": 2.007007,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/kaori/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 48030,
+          "sha256": "7e16943499288c3e54d20b2753a7d4fd977a66c76010c00f25a07b1ed2987b32",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.749002,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "120",
+              "duration": "2.749002"
+            }
+          ],
+          "cue": "vo_btl_101701_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 2.75,
+          "source": {
+            "logicalName": "v/vo_btl_101701.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/6f/6fff03e503ebc643",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "a32c15aac483f713bb56cbb3116dad2b",
+            "bytes": 729440,
+            "sha256": "fc7087850a1f1836a63c858c1dbb096293b8df2ec4a5f58e82d890f025357720",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_101701_ub_100"
+          ]
+        },
+        "cutinVoice": {
+          "path": "assets/media/kaori/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 33924,
+          "sha256": "16b5ba683dad51fc7b7f3e2fe64fb49dc07d7ee015a07836223fdc144f2beba2",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.007007,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "88",
+              "duration": "2.007007"
+            }
+          ],
+          "cue": "vo_btl_101701_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 2.007,
+          "source": {
+            "logicalName": "v/vo_btl_101701.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/6f/6fff03e503ebc643",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "a32c15aac483f713bb56cbb3116dad2b",
+            "bytes": 729440,
+            "sha256": "fc7087850a1f1836a63c858c1dbb096293b8df2ec4a5f58e82d890f025357720",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_101701_cutin_001"
+          ]
+        },
+        "video": {
+          "path": "assets/media/kaori/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1841394,
+          "sha256": "f82a819f0167206cb0f447ff7bfd509726439a1a9d5ed8cfcc26f68fdc95930d",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_101701.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/34/3433c0472be65dc5",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "56ce32e953a07180c008f88f47643b21",
+            "bytes": 3693824,
+            "sha256": "f299a05b2a27502f513c90caf56ee6570e927ca0e78a2487f7eb7ad3873254cb",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/kaori/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    },
+    "suzuna": {
+      "unitId": "101601",
+      "displayName": "铃奈",
+      "identityEvidence": {
+        "unitId": "101601",
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/suzuna.png",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true
+      },
+      "ub": {
+        "voice": "assets/media/suzuna/ub.m4a",
+        "cutinVoice": "assets/media/suzuna/cutin.m4a",
+        "video": "assets/media/suzuna/cutin.mp4",
+        "poster": "assets/media/suzuna/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 1.721995,
+        "cutinVoiceDurationSeconds": 2.532993,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/suzuna/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 29336,
+          "sha256": "1327d3ac0bf530234e14a8fc56f3a85e8eaa49816a9aa3f8c6574e23727e478d",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.721995,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "76",
+              "duration": "1.721995"
+            }
+          ],
+          "cue": "vo_btl_101601_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 1.722,
+          "source": {
+            "logicalName": "v/vo_btl_101601.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/75/75e2c479147b2647",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "9c0edce414f96c101711559636460822",
+            "bytes": 664064,
+            "sha256": "c411f38a7ec72b4488e8246f46f441018a75422f4fc84111979a4c1d9dca9f04",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_101601_ub_100"
+          ]
+        },
+        "cutinVoice": {
+          "path": "assets/media/suzuna/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 42816,
+          "sha256": "9f79c46ee6c2f68b95a90ac8ed27a81cbecac46b50fa639709abec087ae64372",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.532993,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "111",
+              "duration": "2.532993"
+            }
+          ],
+          "cue": "vo_btl_101601_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 2.533,
+          "source": {
+            "logicalName": "v/vo_btl_101601.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/75/75e2c479147b2647",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "9c0edce414f96c101711559636460822",
+            "bytes": 664064,
+            "sha256": "c411f38a7ec72b4488e8246f46f441018a75422f4fc84111979a4c1d9dca9f04",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false,
+          "aliases": [
+            "vo_btl_101601_cutin_001"
+          ]
+        },
+        "video": {
+          "path": "assets/media/suzuna/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 2196198,
+          "sha256": "dece3cb537adb7be6d184f7fb044a945e32a26b8c86bf5c0e29634de646ed540",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_101601.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/1d/1d6f958bc33aee1d",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "d891011c74454cc9d9759a7f7af225f8",
+            "bytes": 3934624,
+            "sha256": "69029623e34ece7a43859ee68268eadc253d71579e1bf4fc08a1f1e7564f100e",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/suzuna/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    },
+    "arisa": {
+      "unitId": "106301",
+      "displayName": "亚里莎",
+      "identityEvidence": {
+        "unitId": "106301",
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/arisa.png",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true
+      },
+      "ub": {
+        "voice": "assets/media/arisa/ub.m4a",
+        "cutinVoice": "assets/media/arisa/cutin.m4a",
+        "video": "assets/media/arisa/cutin.mp4",
+        "poster": "assets/media/arisa/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 2.713991,
+        "cutinVoiceDurationSeconds": 1.86,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/arisa/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 45760,
+          "sha256": "8a6cfb413e5161d610bfd0881c41ef4a0a703675d3387136a82df6346ad3faca",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.713991,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "118",
+              "duration": "2.713991"
+            }
+          ],
+          "cue": "vo_btl_106301_ub_101",
+          "subsong": 21,
+          "sourceDurationSeconds": 2.714,
+          "aliases": [
+            "vo_btl_106301_ub_101",
+            "vo_btl_106301_ub_102"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_106301.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/39/3929c7926b5ea57e",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "e5321e2ed9ea5629f5dd4ac6123aa96d",
+            "bytes": 530336,
+            "sha256": "507adbcd66488c6de1e8ffff31ce8b14628c9ee83b90885389dbd7d7a1fc903e",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "cutinVoice": {
+          "path": "assets/media/arisa/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 31871,
+          "sha256": "e6a3afc8c97c2d71bc94987776375b4417f8dad6efaf6f79145412bfd2780af1",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.86,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "82",
+              "duration": "1.860000"
+            }
+          ],
+          "cue": "vo_btl_106301_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 1.86,
+          "aliases": [
+            "vo_btl_106301_cutin_001"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_106301.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/39/3929c7926b5ea57e",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "e5321e2ed9ea5629f5dd4ac6123aa96d",
+            "bytes": 530336,
+            "sha256": "507adbcd66488c6de1e8ffff31ce8b14628c9ee83b90885389dbd7d7a1fc903e",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "video": {
+          "path": "assets/media/arisa/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 2238130,
+          "sha256": "da5f5a623db4021fffc7a4e0ddf6973778ec204ef931bf211d2340d71fa59e6e",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_106301.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/8e/8ecce7b17f89ddae",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "fab73f8cb31e1b0c4a188fdcc59ae5fe",
+            "bytes": 4092704,
+            "sha256": "51a742a8e101566625dac366866ac067b5cbec5fc3056903d2c9d66b3af687d2",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/arisa/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    },
+    "anna": {
+      "unitId": "100901",
+      "displayName": "安娜",
+      "identityEvidence": {
+        "unitId": "100901",
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/anna.png",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true
+      },
+      "ub": {
+        "voice": "assets/media/anna/ub.m4a",
+        "cutinVoice": "assets/media/anna/cutin.m4a",
+        "video": "assets/media/anna/cutin.mp4",
+        "poster": "assets/media/anna/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 2.658005,
+        "cutinVoiceDurationSeconds": 2.83,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/anna/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 44943,
+          "sha256": "3c6541bf256eb31148560f45b653b23ab7c905909c0f8c12aec73586c59d1483",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.658005,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "116",
+              "duration": "2.658005"
+            }
+          ],
+          "cue": "vo_btl_100901_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 2.658,
+          "aliases": [
+            "vo_btl_100901_ub_100"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_100901.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/a7/a7fce979d4210464",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "83cc6785a644015974e06b9b61572c8d",
+            "bytes": 679776,
+            "sha256": "63d2aecce0f72a802937cc4f01b80e021160b49a3e8b65bf333cd4472e97dd6b",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "cutinVoice": {
+          "path": "assets/media/anna/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 47112,
+          "sha256": "b85464e5a70353d7a8f7ddc078ce907b531207ea8ff30e868301518fbfa8d8b7",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.83,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "123",
+              "duration": "2.830000"
+            }
+          ],
+          "cue": "vo_btl_100901_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 2.83,
+          "aliases": [
+            "vo_btl_100901_cutin_001"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_100901.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/a7/a7fce979d4210464",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "83cc6785a644015974e06b9b61572c8d",
+            "bytes": 679776,
+            "sha256": "63d2aecce0f72a802937cc4f01b80e021160b49a3e8b65bf333cd4472e97dd6b",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "video": {
+          "path": "assets/media/anna/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1591651,
+          "sha256": "7ca818ff9fa0f90ba17d46e1c836869433f5159b2f3ce019861093e174225311",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_100901.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/58/58e3eda4bf0efa38",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "c8bd094ce53cff2a34564bebdbd89d80",
+            "bytes": 3706816,
+            "sha256": "f7713004948c3efc0d40027dadb07ba78d78cb02be367a8b3abeaebc4c11744c",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/anna/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    },
+    "yori": {
+      "unitId": "102201",
+      "displayName": "依里",
+      "identityEvidence": {
+        "unitId": "102201",
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/yori.png",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true
+      },
+      "ub": {
+        "voice": "assets/media/yori/ub.m4a",
+        "cutinVoice": "assets/media/yori/cutin.m4a",
+        "video": "assets/media/yori/cutin.mp4",
+        "poster": "assets/media/yori/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 2.465011,
+        "cutinVoiceDurationSeconds": 2.267007,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/yori/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 41347,
+          "sha256": "fabe63cfc2a00af569a205eb0c601d375d620b3d6e5516fdec404d8616152f0a",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.465011,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "108",
+              "duration": "2.465011"
+            }
+          ],
+          "cue": "vo_btl_102201_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 2.465,
+          "aliases": [
+            "vo_btl_102201_ub_100"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_102201.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/6e/6ef8422716fd5578",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "be603539ecef6bc83a0c65fe9faee636",
+            "bytes": 790368,
+            "sha256": "ff7cd517542895ab9a41e4ffc46ee0356f7b1715abc86e7f3cc44bfa6f387435",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "cutinVoice": {
+          "path": "assets/media/yori/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 38392,
+          "sha256": "ffa5619406db5292ec64e85cd8b44607161a446abf24da7b3ff4ab14c3daae0c",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.267007,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "99",
+              "duration": "2.267007"
+            }
+          ],
+          "cue": "vo_btl_102201_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 2.267,
+          "aliases": [
+            "vo_btl_102201_cutin_001"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_102201.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/6e/6ef8422716fd5578",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "be603539ecef6bc83a0c65fe9faee636",
+            "bytes": 790368,
+            "sha256": "ff7cd517542895ab9a41e4ffc46ee0356f7b1715abc86e7f3cc44bfa6f387435",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "video": {
+          "path": "assets/media/yori/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1816060,
+          "sha256": "20a71612e9d2f77ed8475475017d75283c5f7735fd732e0a1191d10d02368f3d",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_102201.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/4f/4fcf51d2b43e8426",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "056d88a55c0c82ffac9e7c8a9001b1ce",
+            "bytes": 3731488,
+            "sha256": "218da12c18e27311df69d4dc43c71483c41bf56c3121adf03d88b88ff4a4e0ba",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/yori/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    },
+    "saren": {
+      "unitId": "102801",
+      "displayName": "咲恋",
+      "identityEvidence": {
+        "unitId": "102801",
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/saren.png",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true
+      },
+      "ub": {
+        "voice": "assets/media/saren/ub.m4a",
+        "cutinVoice": "assets/media/saren/cutin.m4a",
+        "video": "assets/media/saren/cutin.mp4",
+        "poster": "assets/media/saren/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 2.433991,
+        "cutinVoiceDurationSeconds": 2.437007,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/saren/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 41093,
+          "sha256": "1dc98dbfa59cdb8ea41ca611922f02a527db80ed37fef9d28d260822cfc79e3a",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.433991,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "106",
+              "duration": "2.433991"
+            }
+          ],
+          "cue": "vo_btl_102801_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 2.434,
+          "aliases": [
+            "vo_btl_102801_ub_100"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_102801.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/68/68ef02a20cc9ded0",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "eb2a37f47c96cbcf85c2ddb2943381cd",
+            "bytes": 708768,
+            "sha256": "762e7f991a9bb7d9454d47a6fc3b55eedff64b915ae984f3aed5041da0dee240",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "cutinVoice": {
+          "path": "assets/media/saren/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 41013,
+          "sha256": "af9f3605471deddcef66ec9b4c67aaf3d08d1c8eec45ec704aa843b0b3cbcef9",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.437007,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "106",
+              "duration": "2.437007"
+            }
+          ],
+          "cue": "vo_btl_102801_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 2.437,
+          "aliases": [
+            "vo_btl_102801_cutin_001"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_102801.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/68/68ef02a20cc9ded0",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "eb2a37f47c96cbcf85c2ddb2943381cd",
+            "bytes": 708768,
+            "sha256": "762e7f991a9bb7d9454d47a6fc3b55eedff64b915ae984f3aed5041da0dee240",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "video": {
+          "path": "assets/media/saren/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1662800,
+          "sha256": "29c059b44312c4bd53dde71c856215c5abb30dcd88e6a561224704cc8a935b8c",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_102801.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/ce/ce8d114c4a46832b",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "5d33c88188b36b9ab0c7e5ee95769795",
+            "bytes": 3544512,
+            "sha256": "a4cd1598c946fe826f307db8d5003eda9d7e8362002d9045ed812016f6416e55",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/saren/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    },
+    "monika": {
+      "unitId": "105301",
+      "displayName": "莫妮卡",
+      "identityEvidence": {
+        "unitId": "105301",
+        "officialCharacterIndex": "https://priconne-redive.jp/character/",
+        "localAppearanceReference": "assets/portraits/monika.png",
+        "method": "Exact same-unit USM and ACB names from the official resource manifest; extracted movie frame checked against the character's known original appearance.",
+        "visualCharacterMatch": true
+      },
+      "ub": {
+        "voice": "assets/media/monika/ub.m4a",
+        "cutinVoice": "assets/media/monika/cutin.m4a",
+        "video": "assets/media/monika/cutin.mp4",
+        "poster": "assets/media/monika/poster.jpg",
+        "videoHasAudio": false,
+        "voiceDurationSeconds": 1.846009,
+        "cutinVoiceDurationSeconds": 1.373991,
+        "videoDurationSeconds": 2.366667,
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true
+        }
+      },
+      "files": {
+        "voice": {
+          "path": "assets/media/monika/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 32145,
+          "sha256": "06233fa66d68bf768a0df8051bd3725e04be2bc48bed8a139e6f24b53ee74c4e",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.846009,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "81",
+              "duration": "1.846009"
+            }
+          ],
+          "cue": "vo_btl_105301_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 1.846,
+          "aliases": [
+            "vo_btl_105301_ub_100"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_105301.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/53/53aaca1256bc3b42",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "97db0c923c027094fcfeaae9ad8dedb8",
+            "bytes": 669792,
+            "sha256": "526dcabd0bccbbbc76be92d6886804eb3a414b71c34e2009a353789730547a60",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "cutinVoice": {
+          "path": "assets/media/monika/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 23527,
+          "sha256": "d8dca313f478f55fe148cbe819291adb777a6a4460678741326f390c8bb66abd",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 1.373991,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "61",
+              "duration": "1.373991"
+            }
+          ],
+          "cue": "vo_btl_105301_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 1.375,
+          "aliases": [
+            "vo_btl_105301_cutin_001"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_105301.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/53/53aaca1256bc3b42",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "97db0c923c027094fcfeaae9ad8dedb8",
+            "bytes": 669792,
+            "sha256": "526dcabd0bccbbbc76be92d6886804eb3a414b71c34e2009a353789730547a60",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "video": {
+          "path": "assets/media/monika/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 1495956,
+          "sha256": "7ba87d7421ad8e343a5e01b75d341868b7d90ef40865dfbc0977efbf058e0492",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_105301.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/e0/e027b791161dee52",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "f8598f9c7b3e6396f91edce9ed187e18",
+            "bytes": 3643264,
+            "sha256": "7a068692d0bd5172faca0b81645f8569c460f9e8be2bc84a4facd315dca8b981",
+            "officialManifestMatch": true
+          },
+          "codec": "H.264",
+          "audioIncluded": false,
+          "width": 960,
+          "height": 720,
+          "poster": "assets/media/monika/poster.jpg",
+          "originalCutin": true
+        }
+      }
+    }
+  },
+  "verificationBoundary": "Codec/full-file decode verified locally. Browser playback is recorded separately. Voice cue names are verified against official ACB banks; Japanese speech transcription and audiovisual synchronization have not been human-reviewed.",
+  "sources": {
+    "assetOwner": "Cygames",
+    "officialManifestHost": "https://prd-priconne-redive.akamaized.net/",
+    "referenceVoiceIndex": "https://redive.estertion.win/sound/",
+    "toolSources": [
+      "https://github.com/imageio/imageio-ffmpeg",
+      "https://github.com/vgmstream/vgmstream-releases/releases/tag/nightly"
+    ]
+  },
+  "browserPlaybackReport": "work/media-research-2026-10-20/browser-playback.json",
+  "visualReviewReport": "work/media-research-2026-10-20/visual-review.json",
+  "standingCharacters": {
+    "miyako": {
+      "id": "miyako",
+      "displayName": "宫子",
+      "portrait": "assets/portraits/miyako.png",
+      "art": "assets/encounter-cast/heroes/miyako-full.svg",
+      "icon": "assets/encounter-cast/avatars/miyako.svg",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/d/d2/Miyako_%28game%29.png/revision/latest?cb=20180219102259",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Miyako -- Miyako (game).png",
+        "fileTitle": "File:Miyako (game).png"
+      },
+      "pixels": {
+        "width": 429,
+        "height": 570,
+        "bytes": 219706,
+        "sha256": "6237775d1e29838a22cb14fba409dedf774f354d7450394b4acafefc16c2cf8d",
+        "transparentPixels": 90726,
+        "visibleBounds": {
+          "x": 6,
+          "y": 7,
+          "width": 417,
+          "height": 557
+        }
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    },
+    "jun": {
+      "id": "jun",
+      "displayName": "纯",
+      "portrait": "assets/portraits/jun.png",
+      "art": "assets/encounter-cast/heroes/jun-full.svg",
+      "icon": "assets/encounter-cast/avatars/jun.svg",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/3/38/Jun_%28game%29.png/revision/latest?cb=20180219102301",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Jun -- Jun (game).png",
+        "fileTitle": "File:Jun (game).png"
+      },
+      "pixels": {
+        "width": 469,
+        "height": 738,
+        "bytes": 275389,
+        "sha256": "8408bf819de9dc9d0c496476a04488ea52fa9999c54a9854ea7473bfb07e998f",
+        "transparentPixels": 139508,
+        "visibleBounds": {
+          "x": 5,
+          "y": 7,
+          "width": 460,
+          "height": 728
+        }
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    },
+    "nozomi": {
+      "id": "nozomi",
+      "displayName": "望",
+      "portrait": "assets/portraits/nozomi.png",
+      "art": "assets/encounter-cast/heroes/nozomi-full.svg",
+      "icon": "assets/encounter-cast/avatars/nozomi.svg",
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/0a51791fa70e4e0eaf1b1b3e1ab782ea/whole_nozomi.png",
+        "page": "https://priconne-redive.jp/character/nozomi/",
+        "field": "image_astrum",
+        "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+        "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+      },
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5401802,
+        "partialAlphaPixels": 17548,
+        "visibleBounds": {
+          "x": 665,
+          "y": 399,
+          "width": 951,
+          "height": 1606
+        },
+        "bytes": 1256958,
+        "sha256": "64e783315aa4e5816d13663453c59831b5ec6d678afeb8fea2aa1f0588193e49"
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    },
+    "shizuru": {
+      "id": "shizuru",
+      "displayName": "静流",
+      "portrait": "assets/portraits/shizuru.png",
+      "art": "assets/encounter-cast/heroes/shizuru-full.svg",
+      "icon": "assets/encounter-cast/avatars/shizuru.svg",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/b/ba/Shizuru_%28game%29.png/revision/latest?cb=20180219103455",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Shizuru -- Shizuru (game).png",
+        "fileTitle": "File:Shizuru (game).png"
+      },
+      "pixels": {
+        "width": 445,
+        "height": 662,
+        "bytes": 256354,
+        "sha256": "cfcf3e93f98549969c0e6fdb3d18a0772982c2acea89460134c396a4dcb2b7ac",
+        "transparentPixels": 116590,
+        "visibleBounds": {
+          "x": 3,
+          "y": 2,
+          "width": 437,
+          "height": 657
+        }
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    },
+    "makoto": {
+      "id": "makoto",
+      "displayName": "真琴",
+      "portrait": "assets/portraits/makoto.png",
+      "art": "assets/encounter-cast/heroes/makoto-full.svg",
+      "icon": "assets/encounter-cast/avatars/makoto.svg",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/c/ca/Makoto_%28game%29.png/revision/latest?cb=20180219095642",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Makoto -- Makoto (game).png",
+        "fileTitle": "File:Makoto (game).png"
+      },
+      "pixels": {
+        "width": 455,
+        "height": 700,
+        "bytes": 209400,
+        "sha256": "d30758df20ef446305b7d8398a8c389b2645fe16245d7f8f7d28a8b17ddfa095",
+        "transparentPixels": 155770,
+        "visibleBounds": {
+          "x": 4,
+          "y": 5,
+          "width": 444,
+          "height": 692
+        }
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    },
+    "kaori": {
+      "id": "kaori",
+      "displayName": "香织",
+      "portrait": "assets/portraits/kaori.png",
+      "art": "assets/encounter-cast/heroes/kaori-full.svg",
+      "icon": "assets/encounter-cast/avatars/kaori.svg",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/c/c4/Kaori_%28game%29.png/revision/latest?cb=20180219095159",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Kaori -- Kaori (game).png",
+        "fileTitle": "File:Kaori (game).png"
+      },
+      "pixels": {
+        "width": 405,
+        "height": 634,
+        "bytes": 228752,
+        "sha256": "6fc409d0d2269163f4afbf1ac7fe80989839f48640074511cf1c1c2aeccd9182",
+        "transparentPixels": 101256,
+        "visibleBounds": {
+          "x": 3,
+          "y": 4,
+          "width": 395,
+          "height": 627
+        }
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    },
+    "suzuna": {
+      "id": "suzuna",
+      "displayName": "铃奈",
+      "portrait": "assets/portraits/suzuna.png",
+      "art": "assets/encounter-cast/heroes/suzuna-full.svg",
+      "icon": "assets/encounter-cast/avatars/suzuna.svg",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/7/79/Suzuna_%28game%29.png/revision/latest?cb=20180219093417",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Suzuna -- Suzuna (game).png",
+        "fileTitle": "File:Suzuna (game).png"
+      },
+      "pixels": {
+        "width": 392,
+        "height": 631,
+        "bytes": 238472,
+        "sha256": "0582248caf0dc3e0a9a5fbb1f6cdc00a3471946bd826b96536573424fea6fab9",
+        "transparentPixels": 84671,
+        "visibleBounds": {
+          "x": 4,
+          "y": 6,
+          "width": 381,
+          "height": 621
+        }
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    },
+    "arisa": {
+      "id": "arisa",
+      "displayName": "亚里莎",
+      "portrait": "assets/portraits/arisa.png",
+      "art": "assets/encounter-cast/heroes/arisa-full.svg",
+      "icon": "assets/encounter-cast/avatars/arisa.svg",
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/2fba24f73e574c109e911ae3ab46c9fe/whole_arisa.png",
+        "page": "https://priconne-redive.jp/character/arisa/",
+        "field": "image_astrum",
+        "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+        "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+      },
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 4909040,
+        "partialAlphaPixels": 23174,
+        "visibleBounds": {
+          "x": 261,
+          "y": 388,
+          "width": 1975,
+          "height": 1925
+        },
+        "bytes": 1793419,
+        "sha256": "20080c172a2ee486567e9bad8a778b4fa725862024abcdbf1f1d4852a7b3cc77"
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    },
+    "anna": {
+      "id": "anna",
+      "displayName": "安娜",
+      "portrait": "assets/portraits/anna.png",
+      "art": "assets/encounter-cast/heroes/anna-full.svg",
+      "icon": "assets/encounter-cast/avatars/anna.svg",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/7/75/Anna_%28game%29.png/revision/latest?cb=20180219094034",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Anna -- Anna (game).png",
+        "fileTitle": "File:Anna (game).png"
+      },
+      "pixels": {
+        "width": 409,
+        "height": 665,
+        "bytes": 222472,
+        "sha256": "1ec99d0574273e6ae2cd5945814797ecda2a1e4b2cadf1967e3165bcb636ea10",
+        "transparentPixels": 108661,
+        "visibleBounds": {
+          "x": 2,
+          "y": 7,
+          "width": 402,
+          "height": 654
+        }
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    },
+    "yori": {
+      "id": "yori",
+      "displayName": "依里",
+      "portrait": "assets/portraits/yori.png",
+      "art": "assets/encounter-cast/heroes/yori-full.svg",
+      "icon": "assets/encounter-cast/avatars/yori.svg",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/0/0b/Yori_%28game%29.png/revision/latest?cb=20180219102536",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Yori -- Yori (game).png",
+        "fileTitle": "File:Yori (game).png"
+      },
+      "pixels": {
+        "width": 364,
+        "height": 566,
+        "bytes": 167447,
+        "sha256": "bde705420cae8bb3c8043d2045beda9a94b48b93267ebedf42a6325a9548592f",
+        "transparentPixels": 89229,
+        "visibleBounds": {
+          "x": 6,
+          "y": 8,
+          "width": 349,
+          "height": 555
+        }
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    },
+    "saren": {
+      "id": "saren",
+      "displayName": "咲恋",
+      "portrait": "assets/portraits/saren.png",
+      "art": "assets/encounter-cast/heroes/saren-full.svg",
+      "icon": "assets/encounter-cast/avatars/saren.svg",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/0/0b/Saren_%28game%29.png/revision/latest?cb=20180219100930",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Saren -- Saren (game).png",
+        "fileTitle": "File:Saren (game).png"
+      },
+      "pixels": {
+        "width": 425,
+        "height": 690,
+        "bytes": 214516,
+        "sha256": "ea87f3e78fbf58058826ff8ec99f4f12e206bb3cb1d8da074d7aa3a966b70796",
+        "transparentPixels": 131553,
+        "visibleBounds": {
+          "x": 2,
+          "y": 8,
+          "width": 418,
+          "height": 678
+        }
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    },
+    "monika": {
+      "id": "monika",
+      "displayName": "莫妮卡",
+      "portrait": "assets/portraits/monika.png",
+      "art": "assets/encounter-cast/heroes/monika-full.svg",
+      "icon": "assets/encounter-cast/avatars/monika.svg",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/7/74/Monika_%28game%29.png/revision/latest?cb=20180219093415",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Monika -- Monika (game).png",
+        "fileTitle": "File:Monika (game).png"
+      },
+      "pixels": {
+        "width": 431,
+        "height": 613,
+        "bytes": 198404,
+        "sha256": "b76f699a50f14925e64fe0dc878539afd49e9ee613156803d829cf0dda2aa23f",
+        "transparentPixels": 99942,
+        "visibleBounds": {
+          "x": 3,
+          "y": 3,
+          "width": 424,
+          "height": 607
+        }
+      },
+      "ubMediaAvailable": true,
+      "boundary": "Original standing art plus exact same-character original short cut-in and ACB cut-in/UB cues. Complete in-battle UB animation and manual AV synchronization are not claimed."
+    }
+  },
+  "characterAvailability": {
+    "pecorine": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-six full short-cut-in data preserved",
+      "semanticListening": false,
+      "avSync": false
+    },
+    "kokkoro": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-six full short-cut-in data preserved",
+      "semanticListening": false,
+      "avSync": false
+    },
+    "kyaru": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-six full short-cut-in data preserved",
+      "semanticListening": false,
+      "avSync": false
+    },
+    "rei": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-six full short-cut-in data preserved",
+      "semanticListening": false,
+      "avSync": false
+    },
+    "hatsune": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-six full short-cut-in data preserved",
+      "semanticListening": false,
+      "avSync": false
+    },
+    "yui": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-six full short-cut-in data preserved",
+      "semanticListening": false,
+      "avSync": false
+    },
+    "miyako": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    },
+    "jun": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    },
+    "nozomi": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    },
+    "shizuru": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    },
+    "makoto": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    },
+    "kaori": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    },
+    "suzuna": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    },
+    "arisa": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    },
+    "anna": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    },
+    "yori": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    },
+    "saren": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    },
+    "monika": {
+      "standing": true,
+      "cutin": true,
+      "voice": true,
+      "coverage": "original-short-cutin-and-exact-acb-cues",
+      "missing": [],
+      "semanticListening": false,
+      "avSync": false
+    }
+  },
+  "bosses": {
+    "fubuki": {
+      "id": "fubuki",
+      "displayName": "布武机",
+      "movieId": "130201",
+      "bankId": "130201",
+      "ub": {
+        "video": "assets/media/bosses/fubuki/cutin.mp4",
+        "poster": "assets/media/bosses/fubuki/poster.jpg",
+        "voice": "assets/media/bosses/fubuki/ub.m4a",
+        "cutinVoice": "assets/media/bosses/fubuki/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.750998,
+        "cutinVoiceDurationSeconds": 3.031995,
+        "audioPaths": [
+          "assets/media/bosses/fubuki/cutin.m4a",
+          "assets/media/bosses/fubuki/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "130201:subsong:5",
+          "130201:subsong:20"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "entry": {
+        "source": {
+          "logicalName": "v/vo_btl_130201.acb",
+          "md5": "745fc62dfe67aa81eeee239692b11da4",
+          "poolHash": "a1101147f90ac178",
+          "bytes": 664000,
+          "manifestLine": 23667,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/a1/a1101147f90ac178",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130201.acb",
+          "actualBytes": 664000,
+          "sha256": "e64a7cd08a58da266fcdd9adf8a6b77451e5c03a7c749469827e2efbc28a8935",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/fubuki/entry.m4a",
+        "bytes": 32990,
+        "sha256": "225122feb4995537a1826d2aa2a58df9231e33de63e43ed55f2af16e9e7ce834",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_130201_wavestart",
+        "aliases": [
+          "vo_btl_130201_wavestart"
+        ],
+        "sampleId": "130201:subsong:23",
+        "durationSeconds": 1.920998,
+        "sourceDurationSeconds": 1.921156,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "files": {
+        "video": {
+          "path": "assets/media/bosses/fubuki/cutin.mp4",
+          "sha256": "755c6e7a3690b83ad14fe3ffbec25c9ba777cb5ed199f8dcdb6e6208d8137f17",
+          "fullDecodePassed": true,
+          "source": {
+            "logicalName": "m/cutin_130201.usm",
+            "md5": "7f4ac9a340a63ff375269e1f3fabec92",
+            "poolHash": "2059415aa452c37d",
+            "bytes": 2372864,
+            "manifestLine": 947,
+            "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/20/2059415aa452c37d",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_130201.usm",
+            "actualBytes": 2372864,
+            "sha256": "778a5082ae46449c8e775b7cc220e0ea53892bbf94ea2a9c65e9902632db9a84",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          }
+        },
+        "cutinVoice": {
+          "source": {
+            "logicalName": "v/vo_btl_130201.acb",
+            "md5": "745fc62dfe67aa81eeee239692b11da4",
+            "poolHash": "a1101147f90ac178",
+            "bytes": 664000,
+            "manifestLine": 23667,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/a1/a1101147f90ac178",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130201.acb",
+            "actualBytes": 664000,
+            "sha256": "e64a7cd08a58da266fcdd9adf8a6b77451e5c03a7c749469827e2efbc28a8935",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/fubuki/cutin.m4a",
+          "bytes": 49591,
+          "sha256": "16c62b1650eff419a1590ecdadb6fdb11a550d6167a5be1064bde653f7ba34f0",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_130201_cutin_001",
+          "aliases": [
+            "vo_btl_130201_cutin_001",
+            "vo_btl_130201_cutin_002"
+          ],
+          "sampleId": "130201:subsong:5",
+          "durationSeconds": 3.031995,
+          "sourceDurationSeconds": 3.032517,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        },
+        "voice": {
+          "source": {
+            "logicalName": "v/vo_btl_130201.acb",
+            "md5": "745fc62dfe67aa81eeee239692b11da4",
+            "poolHash": "a1101147f90ac178",
+            "bytes": 664000,
+            "manifestLine": 23667,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/a1/a1101147f90ac178",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130201.acb",
+            "actualBytes": 664000,
+            "sha256": "e64a7cd08a58da266fcdd9adf8a6b77451e5c03a7c749469827e2efbc28a8935",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/fubuki/ub.m4a",
+          "bytes": 45522,
+          "sha256": "0ee29ada0c73b64054009a6b4f716791487daf9fd6cc3de1f08e35b98c76b516",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_130201_ub_100",
+          "aliases": [
+            "vo_btl_130201_ub_100",
+            "vo_btl_130201_ub_101",
+            "vo_btl_130201_ub_102",
+            "vo_btl_130201_ub_103"
+          ],
+          "sampleId": "130201:subsong:20",
+          "durationSeconds": 2.750998,
+          "sourceDurationSeconds": 2.75093,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        },
+        "entry": {
+          "source": {
+            "logicalName": "v/vo_btl_130201.acb",
+            "md5": "745fc62dfe67aa81eeee239692b11da4",
+            "poolHash": "a1101147f90ac178",
+            "bytes": 664000,
+            "manifestLine": 23667,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/a1/a1101147f90ac178",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130201.acb",
+            "actualBytes": 664000,
+            "sha256": "e64a7cd08a58da266fcdd9adf8a6b77451e5c03a7c749469827e2efbc28a8935",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/fubuki/entry.m4a",
+          "bytes": 32990,
+          "sha256": "225122feb4995537a1826d2aa2a58df9231e33de63e43ed55f2af16e9e7ce834",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_130201_wavestart",
+          "aliases": [
+            "vo_btl_130201_wavestart"
+          ],
+          "sampleId": "130201:subsong:23",
+          "durationSeconds": 1.920998,
+          "sourceDurationSeconds": 1.921156,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        }
+      },
+      "verificationBoundary": {
+        "standing": false,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      }
+    },
+    "yamato": {
+      "id": "yamato",
+      "displayName": "倭",
+      "movieId": "130001",
+      "bankId": "130001",
+      "ub": {
+        "video": "assets/media/bosses/yamato/cutin.mp4",
+        "poster": "assets/media/bosses/yamato/poster.jpg",
+        "voice": "assets/media/bosses/yamato/ub.m4a",
+        "cutinVoice": "assets/media/bosses/yamato/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.585011,
+        "cutinVoiceDurationSeconds": 3.056009,
+        "audioPaths": [
+          "assets/media/bosses/yamato/cutin.m4a",
+          "assets/media/bosses/yamato/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "130001:subsong:5",
+          "130001:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "entry": {
+        "source": {
+          "logicalName": "v/vo_btl_130001.acb",
+          "md5": "6db1eed17be2e30075fd43fc89ab7dc5",
+          "poolHash": "fc79c4cdf210f092",
+          "bytes": 615040,
+          "manifestLine": 23665,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fc/fc79c4cdf210f092",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130001.acb",
+          "actualBytes": 615040,
+          "sha256": "45a6d65649846f608085b0c2e37c3d1427cf70e844cbd5f3c30279b5d1f9c2c3",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/yamato/entry.m4a",
+        "bytes": 20428,
+        "sha256": "cfd3e753e39f248edcd95464c7c4f2342dd293425f31b2230e2eb94d927ab1d4",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_130001_wavestart",
+        "aliases": [
+          "vo_btl_130001_wavestart"
+        ],
+        "sampleId": "130001:subsong:24",
+        "durationSeconds": 1.169002,
+        "sourceDurationSeconds": 1.168798,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "files": {
+        "video": {
+          "path": "assets/media/bosses/yamato/cutin.mp4",
+          "sha256": "dead29d76a9fdbee4af260c56fb98f3a5507cb5489dd620bcccd162ca1f7cef6",
+          "fullDecodePassed": true,
+          "source": {
+            "logicalName": "m/cutin_130001.usm",
+            "md5": "366febe662934d7ae626027691197066",
+            "poolHash": "dc8980cffc20ee01",
+            "bytes": 2494848,
+            "manifestLine": 945,
+            "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/dc/dc8980cffc20ee01",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_130001.usm",
+            "actualBytes": 2494848,
+            "sha256": "44f4792928c1f734a3c86b7b6c0a86747a2856411b61e8c2bf9fb3e9f218884c",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          }
+        },
+        "cutinVoice": {
+          "source": {
+            "logicalName": "v/vo_btl_130001.acb",
+            "md5": "6db1eed17be2e30075fd43fc89ab7dc5",
+            "poolHash": "fc79c4cdf210f092",
+            "bytes": 615040,
+            "manifestLine": 23665,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fc/fc79c4cdf210f092",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130001.acb",
+            "actualBytes": 615040,
+            "sha256": "45a6d65649846f608085b0c2e37c3d1427cf70e844cbd5f3c30279b5d1f9c2c3",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/yamato/cutin.m4a",
+          "bytes": 47413,
+          "sha256": "34827f1348ebd8922d4f81d258bafb507f06736619297a184d78fab122633cea",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_130001_cutin_001",
+          "aliases": [
+            "vo_btl_130001_cutin_001",
+            "vo_btl_130001_cutin_002"
+          ],
+          "sampleId": "130001:subsong:5",
+          "durationSeconds": 3.056009,
+          "sourceDurationSeconds": 3.056485,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        },
+        "voice": {
+          "source": {
+            "logicalName": "v/vo_btl_130001.acb",
+            "md5": "6db1eed17be2e30075fd43fc89ab7dc5",
+            "poolHash": "fc79c4cdf210f092",
+            "bytes": 615040,
+            "manifestLine": 23665,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fc/fc79c4cdf210f092",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130001.acb",
+            "actualBytes": 615040,
+            "sha256": "45a6d65649846f608085b0c2e37c3d1427cf70e844cbd5f3c30279b5d1f9c2c3",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/yamato/ub.m4a",
+          "bytes": 43077,
+          "sha256": "8119d4700d8e131844705775745a624c2585d8db4dfbdcae695e6ad14afc4a10",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_130001_ub_100",
+          "aliases": [
+            "vo_btl_130001_ub_100"
+          ],
+          "sampleId": "130001:subsong:21",
+          "durationSeconds": 2.585011,
+          "sourceDurationSeconds": 2.584989,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        },
+        "entry": {
+          "source": {
+            "logicalName": "v/vo_btl_130001.acb",
+            "md5": "6db1eed17be2e30075fd43fc89ab7dc5",
+            "poolHash": "fc79c4cdf210f092",
+            "bytes": 615040,
+            "manifestLine": 23665,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fc/fc79c4cdf210f092",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130001.acb",
+            "actualBytes": 615040,
+            "sha256": "45a6d65649846f608085b0c2e37c3d1427cf70e844cbd5f3c30279b5d1f9c2c3",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/yamato/entry.m4a",
+          "bytes": 20428,
+          "sha256": "cfd3e753e39f248edcd95464c7c4f2342dd293425f31b2230e2eb94d927ab1d4",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_130001_wavestart",
+          "aliases": [
+            "vo_btl_130001_wavestart"
+          ],
+          "sampleId": "130001:subsong:24",
+          "durationSeconds": 1.169002,
+          "sourceDurationSeconds": 1.168798,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        }
+      },
+      "verificationBoundary": {
+        "standing": false,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      }
+    },
+    "ranpha": {
+      "id": "ranpha",
+      "displayName": "兰法",
+      "movieId": "118101",
+      "bankId": "118101",
+      "ub": {
+        "video": "assets/media/bosses/ranpha/cutin.mp4",
+        "poster": "assets/media/bosses/ranpha/poster.jpg",
+        "voice": "assets/media/bosses/ranpha/ub.m4a",
+        "cutinVoice": "assets/media/bosses/ranpha/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 3.883991,
+        "cutinVoiceDurationSeconds": 2.367007,
+        "audioPaths": [
+          "assets/media/bosses/ranpha/cutin.m4a",
+          "assets/media/bosses/ranpha/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "118101:subsong:5",
+          "118101:subsong:20"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "entry": {
+        "source": {
+          "logicalName": "v/vo_btl_118101.acb",
+          "md5": "733a1357cebacea2637914ff7922df3b",
+          "poolHash": "5ab206d8900e29e4",
+          "bytes": 619744,
+          "manifestLine": 23572,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/5a/5ab206d8900e29e4",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118101.acb",
+          "actualBytes": 619744,
+          "sha256": "7a9c2cb2d39610333b9a9826bf4b6b4b7efaf0a22a37874c83d3b8ddf6029588",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/ranpha/entry.m4a",
+        "bytes": 31299,
+        "sha256": "d2783600b1391ad27a1c57a46f9f151ec4b3a7b5e73754db375dead6e3b0bf9d",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_118101_wavestart",
+        "aliases": [
+          "vo_btl_118101_wavestart"
+        ],
+        "sampleId": "118101:subsong:22",
+        "durationSeconds": 1.8,
+        "sourceDurationSeconds": 1.8,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "files": {
+        "video": {
+          "path": "assets/media/bosses/ranpha/cutin.mp4",
+          "sha256": "b2adb39df84b6592919d9ff075c895dbf8e85db5fc970cab7e10ac426ca763fe",
+          "fullDecodePassed": true,
+          "source": {
+            "logicalName": "m/cutin_118101.usm",
+            "md5": "ad36ea7c89e4e634d54c2117b140d214",
+            "poolHash": "e8a2ba43ba0a0274",
+            "bytes": 2263264,
+            "manifestLine": 854,
+            "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/e8/e8a2ba43ba0a0274",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_118101.usm",
+            "actualBytes": 2263264,
+            "sha256": "d3e0bc0d740e2b6840b803460119952de0190417ee573d8ffb58051440aafaef",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          }
+        },
+        "cutinVoice": {
+          "source": {
+            "logicalName": "v/vo_btl_118101.acb",
+            "md5": "733a1357cebacea2637914ff7922df3b",
+            "poolHash": "5ab206d8900e29e4",
+            "bytes": 619744,
+            "manifestLine": 23572,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/5a/5ab206d8900e29e4",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118101.acb",
+            "actualBytes": 619744,
+            "sha256": "7a9c2cb2d39610333b9a9826bf4b6b4b7efaf0a22a37874c83d3b8ddf6029588",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/ranpha/cutin.m4a",
+          "bytes": 39483,
+          "sha256": "6f319af65f8e2ca0d82ea18287e9ab4a1c9c46e430c553fa5d9191fa707a9e4a",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_118101_cutin_001",
+          "aliases": [
+            "vo_btl_118101_cutin_001",
+            "vo_btl_118101_cutin_002"
+          ],
+          "sampleId": "118101:subsong:5",
+          "durationSeconds": 2.367007,
+          "sourceDurationSeconds": 2.367007,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        },
+        "voice": {
+          "source": {
+            "logicalName": "v/vo_btl_118101.acb",
+            "md5": "733a1357cebacea2637914ff7922df3b",
+            "poolHash": "5ab206d8900e29e4",
+            "bytes": 619744,
+            "manifestLine": 23572,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/5a/5ab206d8900e29e4",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118101.acb",
+            "actualBytes": 619744,
+            "sha256": "7a9c2cb2d39610333b9a9826bf4b6b4b7efaf0a22a37874c83d3b8ddf6029588",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/ranpha/ub.m4a",
+          "bytes": 64223,
+          "sha256": "2899b1211ca50562236bcec52e148dd86659484c1f578665a4c5d45fa4f7f701",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_118101_ub_100",
+          "aliases": [
+            "vo_btl_118101_ub_100"
+          ],
+          "sampleId": "118101:subsong:20",
+          "durationSeconds": 3.883991,
+          "sourceDurationSeconds": 3.884172,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        },
+        "entry": {
+          "source": {
+            "logicalName": "v/vo_btl_118101.acb",
+            "md5": "733a1357cebacea2637914ff7922df3b",
+            "poolHash": "5ab206d8900e29e4",
+            "bytes": 619744,
+            "manifestLine": 23572,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/5a/5ab206d8900e29e4",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118101.acb",
+            "actualBytes": 619744,
+            "sha256": "7a9c2cb2d39610333b9a9826bf4b6b4b7efaf0a22a37874c83d3b8ddf6029588",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/ranpha/entry.m4a",
+          "bytes": 31299,
+          "sha256": "d2783600b1391ad27a1c57a46f9f151ec4b3a7b5e73754db375dead6e3b0bf9d",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_118101_wavestart",
+          "aliases": [
+            "vo_btl_118101_wavestart"
+          ],
+          "sampleId": "118101:subsong:22",
+          "durationSeconds": 1.8,
+          "sourceDurationSeconds": 1.8,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        }
+      },
+      "verificationBoundary": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      }
+    },
+    "misora": {
+      "id": "misora",
+      "displayName": "美空",
+      "movieId": "118201",
+      "bankId": "118201",
+      "ub": {
+        "video": "assets/media/bosses/misora/cutin.mp4",
+        "poster": "assets/media/bosses/misora/poster.jpg",
+        "voice": "assets/media/bosses/misora/ub.m4a",
+        "cutinVoice": "assets/media/bosses/misora/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.259002,
+        "cutinVoiceDurationSeconds": 2.471995,
+        "audioPaths": [
+          "assets/media/bosses/misora/cutin.m4a",
+          "assets/media/bosses/misora/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "118201:subsong:5",
+          "118201:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "entry": {
+        "source": {
+          "logicalName": "v/vo_btl_118201.acb",
+          "md5": "0045dc6a2702eca1148897fe96ed42d0",
+          "poolHash": "b158ad184657c58d",
+          "bytes": 674496,
+          "manifestLine": 23573,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/b1/b158ad184657c58d",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118201.acb",
+          "actualBytes": 674496,
+          "sha256": "c82f6909adf97c68a76c8da866f4791b823fbef91dedfdb7aed24e32295615ef",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/misora/entry.m4a",
+        "bytes": 35098,
+        "sha256": "53fcf9d338efd3825265dfbdb0dd91a1716f219b89dfb2584aeb5c48e845fae1",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_118201_wavestart",
+        "aliases": [
+          "vo_btl_118201_wavestart"
+        ],
+        "sampleId": "118201:subsong:25",
+        "durationSeconds": 2.046009,
+        "sourceDurationSeconds": 2.04678,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "files": {
+        "video": {
+          "path": "assets/media/bosses/misora/cutin.mp4",
+          "sha256": "740e0f257dd3b999c321cd01ef83ce3afea886c874297f5def9092fab9ec709a",
+          "fullDecodePassed": true,
+          "source": {
+            "logicalName": "m/cutin_118201.usm",
+            "md5": "4d60517e7ebcf924adb8433bad2830ea",
+            "poolHash": "6fb81864c6166d8a",
+            "bytes": 1971552,
+            "manifestLine": 855,
+            "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/6f/6fb81864c6166d8a",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_118201.usm",
+            "actualBytes": 1971552,
+            "sha256": "07ab76092e6f5e808cfe12e81b9d962d60e5252ed4002042cb0801a97cbb8f7a",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          }
+        },
+        "cutinVoice": {
+          "source": {
+            "logicalName": "v/vo_btl_118201.acb",
+            "md5": "0045dc6a2702eca1148897fe96ed42d0",
+            "poolHash": "b158ad184657c58d",
+            "bytes": 674496,
+            "manifestLine": 23573,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/b1/b158ad184657c58d",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118201.acb",
+            "actualBytes": 674496,
+            "sha256": "c82f6909adf97c68a76c8da866f4791b823fbef91dedfdb7aed24e32295615ef",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/misora/cutin.m4a",
+          "bytes": 40857,
+          "sha256": "b5c240c99b577a497fbf37b29ce90481bdf4f710c49ff0e0043b0eb5be936801",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_118201_cutin_001",
+          "aliases": [
+            "vo_btl_118201_cutin_001",
+            "vo_btl_118201_cutin_002"
+          ],
+          "sampleId": "118201:subsong:5",
+          "durationSeconds": 2.471995,
+          "sourceDurationSeconds": 2.472676,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        },
+        "voice": {
+          "source": {
+            "logicalName": "v/vo_btl_118201.acb",
+            "md5": "0045dc6a2702eca1148897fe96ed42d0",
+            "poolHash": "b158ad184657c58d",
+            "bytes": 674496,
+            "manifestLine": 23573,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/b1/b158ad184657c58d",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118201.acb",
+            "actualBytes": 674496,
+            "sha256": "c82f6909adf97c68a76c8da866f4791b823fbef91dedfdb7aed24e32295615ef",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/misora/ub.m4a",
+          "bytes": 37320,
+          "sha256": "34335577c8f2618b4ccb4f37d7c082d1d48dac92770950f5f5c932cc1e24754d",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_118201_ub_100",
+          "aliases": [
+            "vo_btl_118201_ub_100"
+          ],
+          "sampleId": "118201:subsong:21",
+          "durationSeconds": 2.259002,
+          "sourceDurationSeconds": 2.259229,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        },
+        "entry": {
+          "source": {
+            "logicalName": "v/vo_btl_118201.acb",
+            "md5": "0045dc6a2702eca1148897fe96ed42d0",
+            "poolHash": "b158ad184657c58d",
+            "bytes": 674496,
+            "manifestLine": 23573,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/b1/b158ad184657c58d",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118201.acb",
+            "actualBytes": 674496,
+            "sha256": "c82f6909adf97c68a76c8da866f4791b823fbef91dedfdb7aed24e32295615ef",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/misora/entry.m4a",
+          "bytes": 35098,
+          "sha256": "53fcf9d338efd3825265dfbdb0dd91a1716f219b89dfb2584aeb5c48e845fae1",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_118201_wavestart",
+          "aliases": [
+            "vo_btl_118201_wavestart"
+          ],
+          "sampleId": "118201:subsong:25",
+          "durationSeconds": 2.046009,
+          "sourceDurationSeconds": 2.04678,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "playable"
+        }
+      },
+      "verificationBoundary": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      }
+    },
+    "kaiser": {
+      "id": "kaiser",
+      "displayName": "霸瞳皇帝",
+      "movieId": "309800",
+      "bankId": "309801",
+      "ub": {
+        "video": "assets/media/bosses/kaiser/cutin.mp4",
+        "poster": "assets/media/bosses/kaiser/poster.jpg",
+        "voice": "assets/media/bosses/kaiser/cutin.m4a",
+        "cutinVoice": null,
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 3.163991,
+        "cutinVoiceDurationSeconds": 0,
+        "audioPaths": [
+          "assets/media/bosses/kaiser/cutin.m4a"
+        ],
+        "uniqueSampleIds": [
+          "309801:subsong:1"
+        ],
+        "deduplicatedCutinUbAlias": true,
+        "variant": "original-Boss-short-cut-in",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "entry": {
+        "source": {
+          "logicalName": "v/vo_btl_309801.acb",
+          "md5": "361fa3e01fab1eb17f28cfc45073e10b",
+          "poolHash": "faa0e907af3b33b7",
+          "bytes": 185344,
+          "manifestLine": 23778,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fa/faa0e907af3b33b7",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_309801.acb",
+          "actualBytes": 185344,
+          "sha256": "fd1a9fa1ab6b0c7e96ab565d2bd9f3fa055fd1719148a01c3e5da8b698e01b94",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/kaiser/entry.m4a",
+        "bytes": 46279,
+        "sha256": "4cff931629e6ee4aaa87312251102cc7841efdb104bf7dcf0b469319893d39da",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_309801_wavestart",
+        "aliases": [
+          "vo_btl_309801_wavestart"
+        ],
+        "sampleId": "309801:subsong:6",
+        "durationSeconds": 2.785011,
+        "sourceDurationSeconds": 2.784989,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "boss_variant_309801",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "files": {
+        "video": {
+          "path": "assets/media/bosses/kaiser/cutin.mp4",
+          "sha256": "05e649c7ee03e7f8f732fd99f026a04045f8b5e71ab9d1c47fdc032eab22e4f5",
+          "fullDecodePassed": true,
+          "source": {
+            "logicalName": "m/cutin_309800.usm",
+            "md5": "9ac6ddf968a8937741a616d16227c764",
+            "poolHash": "c4c501e10535a495",
+            "bytes": 2990272,
+            "manifestLine": 1044,
+            "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/c4/c4c501e10535a495",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_309800.usm",
+            "actualBytes": 2990272,
+            "sha256": "de5b21abf80b6a0e2ae5826b33315988e5e60898d57e430da5363b6e9db3f85f",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          }
+        },
+        "cutinVoice": {
+          "source": {
+            "logicalName": "v/vo_btl_309801.acb",
+            "md5": "361fa3e01fab1eb17f28cfc45073e10b",
+            "poolHash": "faa0e907af3b33b7",
+            "bytes": 185344,
+            "manifestLine": 23778,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fa/faa0e907af3b33b7",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_309801.acb",
+            "actualBytes": 185344,
+            "sha256": "fd1a9fa1ab6b0c7e96ab565d2bd9f3fa055fd1719148a01c3e5da8b698e01b94",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/kaiser/cutin.m4a",
+          "bytes": 52690,
+          "sha256": "d653d3b6a24224d46a631f936e97a0bd9c563b5f53cd629cd136b6e78b633df2",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_309801_cutin_001",
+          "aliases": [
+            "vo_btl_309801_cutin_001",
+            "vo_btl_309801_cutin_002",
+            "vo_btl_309801_ub_100"
+          ],
+          "sampleId": "309801:subsong:1",
+          "durationSeconds": 3.163991,
+          "sourceDurationSeconds": 3.164218,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "boss_variant_309801"
+        },
+        "voice": {
+          "source": {
+            "logicalName": "v/vo_btl_309801.acb",
+            "md5": "361fa3e01fab1eb17f28cfc45073e10b",
+            "poolHash": "faa0e907af3b33b7",
+            "bytes": 185344,
+            "manifestLine": 23778,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fa/faa0e907af3b33b7",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_309801.acb",
+            "actualBytes": 185344,
+            "sha256": "fd1a9fa1ab6b0c7e96ab565d2bd9f3fa055fd1719148a01c3e5da8b698e01b94",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/kaiser/cutin.m4a",
+          "bytes": 52690,
+          "sha256": "d653d3b6a24224d46a631f936e97a0bd9c563b5f53cd629cd136b6e78b633df2",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_309801_cutin_001",
+          "aliases": [
+            "vo_btl_309801_cutin_001",
+            "vo_btl_309801_cutin_002",
+            "vo_btl_309801_ub_100"
+          ],
+          "sampleId": "309801:subsong:1",
+          "durationSeconds": 3.163991,
+          "sourceDurationSeconds": 3.164218,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "boss_variant_309801"
+        },
+        "entry": {
+          "source": {
+            "logicalName": "v/vo_btl_309801.acb",
+            "md5": "361fa3e01fab1eb17f28cfc45073e10b",
+            "poolHash": "faa0e907af3b33b7",
+            "bytes": 185344,
+            "manifestLine": 23778,
+            "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+            "manifestVersion": "10071200",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fa/faa0e907af3b33b7",
+            "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_309801.acb",
+            "actualBytes": 185344,
+            "sha256": "fd1a9fa1ab6b0c7e96ab565d2bd9f3fa055fd1719148a01c3e5da8b698e01b94",
+            "sizeMd5Match": true,
+            "downloadedThisRound": true,
+            "reusedRound1": false,
+            "httpStatus": 200
+          },
+          "path": "assets/media/bosses/kaiser/entry.m4a",
+          "bytes": 46279,
+          "sha256": "4cff931629e6ee4aaa87312251102cc7841efdb104bf7dcf0b469319893d39da",
+          "copiedWithoutReencoding": true,
+          "cue": "vo_btl_309801_wavestart",
+          "aliases": [
+            "vo_btl_309801_wavestart"
+          ],
+          "sampleId": "309801:subsong:6",
+          "durationSeconds": 2.785011,
+          "sourceDurationSeconds": 2.784989,
+          "fullDecodePassed": true,
+          "semanticListening": false,
+          "avSync": false,
+          "sourceBankVariant": "boss_variant_309801"
+        }
+      },
+      "verificationBoundary": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      }
+    }
+  },
+  "localIntegrationDate": "2026-10-21",
+  "coverage": {
+    "completeHeroShortCutinRecords": 18,
+    "standingOnlyAdditionalHeroes": 0,
+    "bossShortCutinRecords": 5,
+    "bossCompleteOriginalUBs": 0,
+    "semanticListening": false,
+    "avSync": false,
+    "heroShortCutinVideoRecords": 18,
+    "heroIndependentVoicePairs": 18
+  },
+  "localIntegrationReceipt": "outputs/implementation-v3/media/local-assets-receipt.json",
+  "releaseHeroMediaReceipt": "work/media-release-v3.1/verification.json"
+};

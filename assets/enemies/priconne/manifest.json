@@ -1,0 +1,1447 @@
+{
+  "version": 2,
+  "createdAt": "2026-10-20T14:07:50.083Z",
+  "purpose": "Original Princess Connect Re:Dive enemy art for the local fangame; gameplay identities and values remain separate.",
+  "rendering": {
+    "method": "Offline rendering of original Spine binary + atlas + texture using official Spine 3.6 Canvas renderer plus the public viewer binary-compatibility reader",
+    "runtime": {
+      "url": "https://raw.githubusercontent.com/EsotericSoftware/spine-runtimes/3.6/spine-ts/build/spine-canvas.js",
+      "bytes": 247274,
+      "sha256": "3d73413d2fc5c3474e548b06151ba67c9db7253f656cb47e95c5f8305bf00299",
+      "local": "assets/enemies/priconne/sources/spine-canvas-3.6.js"
+    },
+    "binaryCompatibility": {
+      "url": "https://wthee.xyz/spine/spine-webgl.min.js",
+      "bytes": 193635,
+      "sha256": "2e3e07cba5af8639cf2a68d61c0ffcca85455381bbe71e830dad5a4720868004",
+      "local": "assets/enemies/priconne/sources/viewer-spine-webgl-3.6.js"
+    },
+    "license": "See sources/SPINE-LICENSE.txt. Runtime is an offline conversion tool, not loaded by the game.",
+    "generatedWithAI": false,
+    "modelPoses": "A complete idle pose at t=0.08 seconds; attack pose only when idle is absent. No generated drawing or reconstructed missing body parts."
+  },
+  "sources": [
+    "https://wthee.xyz/spine/classMapEnemy.json",
+    "https://wthee.xyz/spine/main.js",
+    "https://princess-connect.fandom.com/wiki/Common_Enemies",
+    "https://princess-connect.fandom.com/wiki/Boss_Enemies"
+  ],
+  "assets": [
+    {
+      "id": "203300",
+      "slug": "goblin-guard",
+      "name": "Goblin Guard",
+      "kind": "common",
+      "indexName": "哥布林護衛",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Common_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=203300",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/goblin-guard.png",
+      "sha256": "e34a8b527e367328403348f3d78ed437b2ae50c1b09886fc70922f115bc463bb",
+      "bytes": 290177,
+      "width": 632,
+      "height": 590,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 512,
+        "height": 512
+      },
+      "renderScale": 1.5950819335771198,
+      "transparentPixels": 154245,
+      "visiblePixels": 218635,
+      "partialAlphaPixels": 170502,
+      "alphaBounds": {
+        "left": 19,
+        "top": 24,
+        "right": 603,
+        "bottom": 572
+      },
+      "boundsTouchCanvas": false,
+      "pose": "203300_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "203300_attack",
+        "203300_damage",
+        "203300_die",
+        "203300_idle",
+        "203300_run",
+        "203300_run_gamestart",
+        "203300_standBy",
+        "203300_walk"
+      ],
+      "attachmentCounts": {
+        "region": 17,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/203300_CHARA_BASE.cysp",
+          "bytes": 2641,
+          "sha256": "149b879e266ed16c62ba297b56423617a52d112fd37c955b987e8d9d4ec8d7af",
+          "local": "assets/enemies/priconne/sources/203300/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/203300_BATTLE.cysp",
+          "bytes": 51754,
+          "sha256": "702fbfd97ad4fd8be8390ed421e0ef6fb419649d4a5afc3ddd6bc85c28727e19",
+          "local": "assets/enemies/priconne/sources/203300/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/203300.atlas",
+          "bytes": 2250,
+          "sha256": "e81135a5fdf4a2c84b1e23d82054b6aaf94f6fe8f6f6cb2a7113abc8779c3145",
+          "local": "assets/enemies/priconne/sources/203300/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/203300.png",
+          "bytes": 72330,
+          "sha256": "00eefeeac395eb52f8b94383441e7c3b706f999815138d4f54468567fd9c0a71",
+          "local": "assets/enemies/priconne/sources/203300/texture.png",
+          "kind": "texture"
+        }
+      ]
+    },
+    {
+      "id": "201100",
+      "slug": "kobold",
+      "name": "Kobold",
+      "kind": "common",
+      "indexName": "狗頭人",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Common_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201100",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/kobold.png",
+      "sha256": "8a452484a5dafe116cea91e3798c76837822dda176d085aaa901ad280c670e73",
+      "bytes": 214849,
+      "width": 632,
+      "height": 485,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 512,
+        "height": 512
+      },
+      "renderScale": 1.455871803370982,
+      "transparentPixels": 182428,
+      "visiblePixels": 124092,
+      "partialAlphaPixels": 78502,
+      "alphaBounds": {
+        "left": 41,
+        "top": 30,
+        "right": 610,
+        "bottom": 442
+      },
+      "boundsTouchCanvas": false,
+      "pose": "201100_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "201100_attack",
+        "201100_damage",
+        "201100_die",
+        "201100_idle",
+        "201100_run",
+        "201100_run_gamestart",
+        "201100_standBy",
+        "201100_walk"
+      ],
+      "attachmentCounts": {
+        "region": 22,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201100_CHARA_BASE.cysp",
+          "bytes": 2745,
+          "sha256": "0ecb80a7c852a88c25e0b4d4655bf0765dec33d81635bf1093846ed9cf16acad",
+          "local": "assets/enemies/priconne/sources/201100/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201100_BATTLE.cysp",
+          "bytes": 66084,
+          "sha256": "e81e30f85a5dbb7e5a7dd809b1796087e643c886300a08057a59d586511fd5a0",
+          "local": "assets/enemies/priconne/sources/201100/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201100.atlas",
+          "bytes": 2343,
+          "sha256": "db87bb83c294e0059d9b0a32e4fa9a4de2476472de69cea8e763affd54776da8",
+          "local": "assets/enemies/priconne/sources/201100/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/201100.png",
+          "bytes": 56159,
+          "sha256": "47365e000b9916c7ccb5ace395d20e82373aa1fd322d5d3c825b7ba2e5249647",
+          "local": "assets/enemies/priconne/sources/201100/texture.png",
+          "kind": "texture"
+        }
+      ]
+    },
+    {
+      "id": "203000",
+      "slug": "gellatina",
+      "name": "Gellatina",
+      "kind": "common",
+      "indexName": "軟泥怪",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Common_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=203000",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/gellatina.png",
+      "sha256": "dc33a0f63814629981f45975aec000250508d6bde5526e347799302b1cbe0126",
+      "bytes": 161906,
+      "width": 632,
+      "height": 522,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 256,
+        "height": 256
+      },
+      "renderScale": 2.1177319060419513,
+      "transparentPixels": 177159,
+      "visiblePixels": 152745,
+      "partialAlphaPixels": 119622,
+      "alphaBounds": {
+        "left": 31,
+        "top": 23,
+        "right": 615,
+        "bottom": 505
+      },
+      "boundsTouchCanvas": false,
+      "pose": "203000_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "203000_attack",
+        "203000_damage",
+        "203000_die",
+        "203000_idle",
+        "203000_run",
+        "203000_run_gamestart",
+        "203000_standBy",
+        "203000_walk"
+      ],
+      "attachmentCounts": {
+        "region": 6,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/203000_CHARA_BASE.cysp",
+          "bytes": 1068,
+          "sha256": "2a57bd52e091b6947e3f3844b79220cadfcf3e141463961bab493e14e7ec7546",
+          "local": "assets/enemies/priconne/sources/203000/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/203000_BATTLE.cysp",
+          "bytes": 18803,
+          "sha256": "e494a3872a5db0e74cccdd7e4e4289ead8c5d64b5f07b984bc8ce324f7859810",
+          "local": "assets/enemies/priconne/sources/203000/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/203000.atlas",
+          "bytes": 846,
+          "sha256": "b1c57e6681536b12c83e41d815b3cd4fcb9b9fae39bb9382f3cb9bd5085c6305",
+          "local": "assets/enemies/priconne/sources/203000/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/203000.png",
+          "bytes": 27869,
+          "sha256": "4b1ff8ee2cac1008184719fcb938724291573f008f88da5f84d38847b38e9e98",
+          "local": "assets/enemies/priconne/sources/203000/texture.png",
+          "kind": "texture"
+        }
+      ]
+    },
+    {
+      "id": "200700",
+      "slug": "wood-soul",
+      "name": "Wood Soul",
+      "kind": "common",
+      "indexName": "木靈",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Common_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=200700",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/wood-soul.png",
+      "sha256": "85805c3740e5bfcb470a1fab1729db1b787d2608b0e296bdd1fb00afaa9a39f5",
+      "bytes": 178796,
+      "width": 526,
+      "height": 632,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 512,
+        "height": 512
+      },
+      "renderScale": 1.3461869713500745,
+      "transparentPixels": 228631,
+      "visiblePixels": 103801,
+      "partialAlphaPixels": 81064,
+      "alphaBounds": {
+        "left": 24,
+        "top": 20,
+        "right": 506,
+        "bottom": 615
+      },
+      "boundsTouchCanvas": false,
+      "pose": "200700_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "200700_attack",
+        "200700_damage",
+        "200700_die",
+        "200700_idle",
+        "200700_run",
+        "200700_run_gamestart",
+        "200700_standBy",
+        "200700_walk"
+      ],
+      "attachmentCounts": {
+        "region": 11,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/200700_CHARA_BASE.cysp",
+          "bytes": 2154,
+          "sha256": "fd93791613d4eb4d859f6efda4c991deb7d7b805a20f20a1edba983e407a36ed",
+          "local": "assets/enemies/priconne/sources/200700/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/200700_BATTLE.cysp",
+          "bytes": 38099,
+          "sha256": "9137e5f54d9c0ae94d57756cce345b5b96c155153514cb543af79f86c1da0073",
+          "local": "assets/enemies/priconne/sources/200700/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/200700.atlas",
+          "bytes": 1498,
+          "sha256": "54131414036495149f8b42d2dc15f6ea00cdf7da02d9bd608406caec456cc7e1",
+          "local": "assets/enemies/priconne/sources/200700/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/200700.png",
+          "bytes": 74497,
+          "sha256": "0273d8ce677d8d6ea2c5a63371b5d1b2efa4300b7359c41fd0fb0ce1f1f65166",
+          "local": "assets/enemies/priconne/sources/200700/texture.png",
+          "kind": "texture"
+        }
+      ]
+    },
+    {
+      "id": "201200",
+      "slug": "golem",
+      "name": "Golem",
+      "kind": "common",
+      "indexName": "魔像",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Common_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201200",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/golem.png",
+      "sha256": "16716511cf67d38afa9f350cc5dfa54ee3ee1aa2dd11b80a4251b538201d356d",
+      "bytes": 290946,
+      "width": 632,
+      "height": 585,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 1024,
+        "height": 1024
+      },
+      "renderScale": 0.8726908537962889,
+      "transparentPixels": 202005,
+      "visiblePixels": 167715,
+      "partialAlphaPixels": 99426,
+      "alphaBounds": {
+        "left": 47,
+        "top": 16,
+        "right": 614,
+        "bottom": 568
+      },
+      "boundsTouchCanvas": false,
+      "pose": "201200_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "201200_attack",
+        "201200_damage",
+        "201200_die",
+        "201200_idle",
+        "201200_run",
+        "201200_run_gamestart",
+        "201200_skill1",
+        "201200_standBy",
+        "201200_summon0",
+        "201200_walk"
+      ],
+      "attachmentCounts": {
+        "region": 15,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201200_CHARA_BASE.cysp",
+          "bytes": 3446,
+          "sha256": "7e42dae97ded73421a9e0c73ffce7fd18df999a5bacca9d25a0cb1d90c7b82ab",
+          "local": "assets/enemies/priconne/sources/201200/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201200_BATTLE.cysp",
+          "bytes": 104333,
+          "sha256": "501f2538cde1fc2d831f533fc6ffb864ab45fc608ac31717f67cede6576b91cb",
+          "local": "assets/enemies/priconne/sources/201200/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201200.atlas",
+          "bytes": 2638,
+          "sha256": "2714470e2fc8da839faec6d9f4c8d3d7b66f5247056e238467938bf452983a7e",
+          "local": "assets/enemies/priconne/sources/201200/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/201200.png",
+          "bytes": 828286,
+          "sha256": "9aff9a599d33ab8b233615ee1a5307efe0bcb8931abb75c7f327976a066d0999",
+          "local": "assets/enemies/priconne/sources/201200/texture.png",
+          "kind": "texture"
+        }
+      ]
+    },
+    {
+      "id": "201201",
+      "slug": "blue-golem",
+      "name": "Blue Golem",
+      "kind": "common",
+      "indexName": "青藍魔像",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Common_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201201",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/blue-golem.png",
+      "sha256": "f3c5a1430daf857f38fa3f38f93ef9b6956d7cb2acde64d2fc70eaeedc3d2d51",
+      "bytes": 276078,
+      "width": 632,
+      "height": 596,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 512,
+        "height": 512
+      },
+      "renderScale": 0.8858024543645807,
+      "transparentPixels": 199665,
+      "visiblePixels": 177007,
+      "partialAlphaPixels": 107155,
+      "alphaBounds": {
+        "left": 53,
+        "top": 16,
+        "right": 614,
+        "bottom": 579
+      },
+      "boundsTouchCanvas": false,
+      "pose": "201201_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "201201_attack",
+        "201201_damage",
+        "201201_die",
+        "201201_idle",
+        "201201_run",
+        "201201_run_gamestart",
+        "201201_standBy",
+        "201201_summon0",
+        "201201_walk"
+      ],
+      "attachmentCounts": {
+        "region": 15,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201201_CHARA_BASE.cysp",
+          "bytes": 3260,
+          "sha256": "30dc600de297f1bd251e51c45ec638f5bbb679bb3351c7085226ac9aedbb501e",
+          "local": "assets/enemies/priconne/sources/201201/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201201_BATTLE.cysp",
+          "bytes": 91429,
+          "sha256": "70a3a13e3d71de0066c42ebed63ce59d1576d5c3a80d04894d3a6e5e3f7920bb",
+          "local": "assets/enemies/priconne/sources/201201/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201201.atlas",
+          "bytes": 2181,
+          "sha256": "69a4f8b41d010dfe6f516d1b320b55cefc31e0b5aeb59032307adebfa299906c",
+          "local": "assets/enemies/priconne/sources/201201/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/201201.png",
+          "bytes": 180376,
+          "sha256": "066b6294ced8790e25a2641018c020f875ba18f06fc1b556989bfe58447bc310",
+          "local": "assets/enemies/priconne/sources/201201/texture.png",
+          "kind": "texture"
+        }
+      ]
+    },
+    {
+      "id": "202300",
+      "slug": "fire-mage",
+      "name": "Fire Mage",
+      "kind": "common",
+      "indexName": "火焰咒士",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Common_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=202300",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/fire-mage.png",
+      "sha256": "5a8e821649f29736eda46b63ebb43dae19739bf26d2e53f5d4af92d181829d20",
+      "bytes": 153190,
+      "width": 425,
+      "height": 632,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 512,
+        "height": 512
+      },
+      "renderScale": 1.391415054406057,
+      "transparentPixels": 163027,
+      "visiblePixels": 105573,
+      "partialAlphaPixels": 76989,
+      "alphaBounds": {
+        "left": 16,
+        "top": 16,
+        "right": 408,
+        "bottom": 615
+      },
+      "boundsTouchCanvas": false,
+      "pose": "202300_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "202300_attack",
+        "202300_damage",
+        "202300_die",
+        "202300_idle",
+        "202300_run",
+        "202300_run_gamestart",
+        "202300_standBy",
+        "202300_walk"
+      ],
+      "attachmentCounts": {
+        "region": 14,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/202300_CHARA_BASE.cysp",
+          "bytes": 2453,
+          "sha256": "61783b5d5bd40ddd2836bd5532934d53c38d416af6ae7edfcdb344b33e1ec75c",
+          "local": "assets/enemies/priconne/sources/202300/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/202300_BATTLE.cysp",
+          "bytes": 35434,
+          "sha256": "5ea8888973c8b297e832aa8382eff25113c3a5bd53822bae5680b6968de5d1a3",
+          "local": "assets/enemies/priconne/sources/202300/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/202300.atlas",
+          "bytes": 2331,
+          "sha256": "ff4a97c0cf3674a276d6afc239fbd4fff52c42c5a889f8cc8fa3748e3cdb5fcb",
+          "local": "assets/enemies/priconne/sources/202300/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/202300.png",
+          "bytes": 60072,
+          "sha256": "93e3f8d9c8383e5276098fefa0228fbb3e64f72d5345a4fe3ee29fdeee990c84",
+          "local": "assets/enemies/priconne/sources/202300/texture.png",
+          "kind": "texture"
+        }
+      ]
+    },
+    {
+      "id": "200400",
+      "slug": "werewolf",
+      "name": "Werewolf",
+      "kind": "common",
+      "indexName": "狼人",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Common_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=200400",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/werewolf.png",
+      "sha256": "29c522422434ced67b26c692b115b47ca2854dc916fc292bc1965f5c173e7f02",
+      "bytes": 261988,
+      "width": 632,
+      "height": 553,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 512,
+        "height": 512
+      },
+      "renderScale": 1.1106001392113034,
+      "transparentPixels": 187801,
+      "visiblePixels": 161695,
+      "partialAlphaPixels": 98535,
+      "alphaBounds": {
+        "left": 17,
+        "top": 17,
+        "right": 615,
+        "bottom": 536
+      },
+      "boundsTouchCanvas": false,
+      "pose": "200400_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "200400_attack",
+        "200400_damage",
+        "200400_die",
+        "200400_idle",
+        "200400_run",
+        "200400_run_gamestart",
+        "200400_skill2",
+        "200400_standBy",
+        "200400_walk"
+      ],
+      "attachmentCounts": {
+        "region": 20,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/200400_CHARA_BASE.cysp",
+          "bytes": 3530,
+          "sha256": "0ddda50573c784e5e462292e318c875453d4e23f00121605adf6cd9d64ba11a4",
+          "local": "assets/enemies/priconne/sources/200400/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/200400_BATTLE.cysp",
+          "bytes": 72856,
+          "sha256": "7f8141e61edbf3ee84541af96d1c59dd6ba06d10059c66a53f515055b29aa95c",
+          "local": "assets/enemies/priconne/sources/200400/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/200400.atlas",
+          "bytes": 2871,
+          "sha256": "bc4343133cd6a573bb380777711b1615fb7dde6c81bdf94998741fc17a2f862e",
+          "local": "assets/enemies/priconne/sources/200400/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/200400.png",
+          "bytes": 130680,
+          "sha256": "6769676778964bdb446e39755c548f86f42fe74bd6dad931b189d640b0cef276",
+          "local": "assets/enemies/priconne/sources/200400/texture.png",
+          "kind": "texture"
+        }
+      ]
+    },
+    {
+      "id": "201000",
+      "slug": "flaming-skulls",
+      "name": "Flaming Skulls",
+      "kind": "common",
+      "indexName": "怨火之顱",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Common_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201000",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/flaming-skulls.png",
+      "sha256": "91f46bb42056ba497ff3387f7f73d15cdeb2414335eb8315545c1e6a7d3514e3",
+      "bytes": 154837,
+      "width": 474,
+      "height": 632,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 512,
+        "height": 512
+      },
+      "renderScale": 1.3546730268583298,
+      "transparentPixels": 178150,
+      "visiblePixels": 121418,
+      "partialAlphaPixels": 83411,
+      "alphaBounds": {
+        "left": 16,
+        "top": 16,
+        "right": 457,
+        "bottom": 615
+      },
+      "boundsTouchCanvas": false,
+      "pose": "201000_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "201000_attack",
+        "201000_damage",
+        "201000_die",
+        "201000_idle",
+        "201000_run",
+        "201000_run_gamestart",
+        "201000_standBy",
+        "201000_walk"
+      ],
+      "attachmentCounts": {
+        "region": 7,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201000_CHARA_BASE.cysp",
+          "bytes": 1318,
+          "sha256": "20f51343040e1768d370063ef1725a2f4cff41a2c1eefa5c81f04c47bb40093e",
+          "local": "assets/enemies/priconne/sources/201000/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201000_BATTLE.cysp",
+          "bytes": 21082,
+          "sha256": "4f43fa6cf93e31ba515e8644beaa0494cfc5f2757e1fa37fcbe4a286d198563a",
+          "local": "assets/enemies/priconne/sources/201000/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/201000.atlas",
+          "bytes": 1165,
+          "sha256": "b1d33ff16b85fcb9cadfef02b5481dc7eefa18869d94a8dda02badff8c378ae2",
+          "local": "assets/enemies/priconne/sources/201000/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/201000.png",
+          "bytes": 96452,
+          "sha256": "64c38736e1c5a693e6f98fa96562ff0dd7a13a768773e906fc730e62a16e40cd",
+          "local": "assets/enemies/priconne/sources/201000/texture.png",
+          "kind": "texture"
+        }
+      ]
+    },
+    {
+      "id": "300500",
+      "slug": "lizardman",
+      "name": "Lizardman",
+      "kind": "boss",
+      "indexName": "蜥蜴人",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Boss_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=300500",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/lizardman.png",
+      "sha256": "2afc1c965b23e44cebc91fa40b58bd75db90a9595091dc568e54ab8f238f50e2",
+      "bytes": 220864,
+      "width": 632,
+      "height": 519,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 1024,
+        "height": 1024
+      },
+      "renderScale": 0.8224355526667491,
+      "transparentPixels": 199354,
+      "visiblePixels": 128654,
+      "partialAlphaPixels": 16668,
+      "alphaBounds": {
+        "left": 17,
+        "top": 30,
+        "right": 614,
+        "bottom": 475
+      },
+      "boundsTouchCanvas": false,
+      "pose": "300500_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "300500_attack",
+        "300500_damage",
+        "300500_die",
+        "300500_gamestart",
+        "300500_idle",
+        "300500_run",
+        "300500_skill0",
+        "300500_skill1",
+        "300500_walk"
+      ],
+      "attachmentCounts": {
+        "region": 25,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/300500_CHARA_BASE.cysp",
+          "bytes": 4889,
+          "sha256": "09b26ea3b351550ac9566e858d74bafd621e3b675b06f64dd26a7350e2324e44",
+          "local": "assets/enemies/priconne/sources/300500/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/300500_BATTLE.cysp",
+          "bytes": 108468,
+          "sha256": "1f742a7d43ac3e94a7a58cfe57c27b0e566f2f462bae0ada2cf1a7959dea723c",
+          "local": "assets/enemies/priconne/sources/300500/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/300500.atlas",
+          "bytes": 6243,
+          "sha256": "472e665cef039e16422c8833a70b100a15f993995116ceab5e04de7f406ebe6b",
+          "local": "assets/enemies/priconne/sources/300500/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/300500.png",
+          "bytes": 465453,
+          "sha256": "a1925512659b599e70a3b01ba9377df0f0f2a852b3006a2b03de54e214cba5b5",
+          "local": "assets/enemies/priconne/sources/300500/texture.png",
+          "kind": "texture"
+        }
+      ]
+    },
+    {
+      "id": "301000",
+      "slug": "sea-drake",
+      "name": "Sea Drake",
+      "kind": "boss",
+      "indexName": "希德雷克",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Boss_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=301000",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/sea-drake.png",
+      "sha256": "ee44f7b6af8769944be3ab31c8cdb922a7cfbcffe3d805aa42a5366c21064ac5",
+      "bytes": 284645,
+      "width": 632,
+      "height": 568,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 1024,
+        "height": 1024
+      },
+      "renderScale": 0.9225421635446462,
+      "transparentPixels": 207047,
+      "visiblePixels": 151929,
+      "partialAlphaPixels": 30936,
+      "alphaBounds": {
+        "left": 18,
+        "top": 18,
+        "right": 598,
+        "bottom": 526
+      },
+      "boundsTouchCanvas": false,
+      "pose": "301000_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "301000_attack",
+        "301000_damage",
+        "301000_die",
+        "301000_gamestart",
+        "301000_idle",
+        "301000_run",
+        "301000_skill0",
+        "301000_skill1",
+        "301000_walk"
+      ],
+      "attachmentCounts": {
+        "region": 26,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/301000_CHARA_BASE.cysp",
+          "bytes": 3439,
+          "sha256": "95f9a6f4ffa7f9677c30d231e6bc0ccf53a80837a332f5a5f62e30641e1d57ef",
+          "local": "assets/enemies/priconne/sources/301000/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/301000_BATTLE.cysp",
+          "bytes": 84133,
+          "sha256": "54d179ad3e0b079805cf9065243f80583e289b168c3549de0fee38cdd4fd88ef",
+          "local": "assets/enemies/priconne/sources/301000/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/301000.atlas",
+          "bytes": 3025,
+          "sha256": "467a09682b9deaf163abc0b82435ad7023d7f1de751882b9534914f15223ea9b",
+          "local": "assets/enemies/priconne/sources/301000/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/301000.png",
+          "bytes": 428170,
+          "sha256": "773d99b6c317338567f84eb89d069ae73dd6d77d920149bf8db92782df3ac043",
+          "local": "assets/enemies/priconne/sources/301000/texture.png",
+          "kind": "texture"
+        }
+      ]
+    },
+    {
+      "id": "300700",
+      "slug": "orc-leader",
+      "name": "Orc Leader",
+      "kind": "boss",
+      "indexName": "獸人領導者",
+      "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+      "nameSource": "https://princess-connect.fandom.com/wiki/Boss_Enemies",
+      "source": "https://wthee.xyz/spine/index.html?enemy=300700",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "art": "assets/enemies/priconne/orc-leader.png",
+      "sha256": "e71ba5bcc0bd690ef4e03b110e4b717d9f364fab1a508878fcec923b8847c427",
+      "bytes": 293629,
+      "width": 632,
+      "height": 445,
+      "channels": 4,
+      "sourceTexture": {
+        "width": 1024,
+        "height": 1024
+      },
+      "renderScale": 1.1205020767358376,
+      "transparentPixels": 137688,
+      "visiblePixels": 143552,
+      "partialAlphaPixels": 36860,
+      "alphaBounds": {
+        "left": 39,
+        "top": 20,
+        "right": 610,
+        "bottom": 428
+      },
+      "boundsTouchCanvas": false,
+      "pose": "300700_idle",
+      "poseTime": 0.08,
+      "availableAnimations": [
+        "300700_attack",
+        "300700_damage",
+        "300700_die",
+        "300700_gamestart",
+        "300700_idle",
+        "300700_run",
+        "300700_skill0",
+        "300700_skill1",
+        "300700_walk"
+      ],
+      "attachmentCounts": {
+        "region": 25,
+        "mesh": 0,
+        "other": 1
+      },
+      "sources": [
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/300700_CHARA_BASE.cysp",
+          "bytes": 3291,
+          "sha256": "a61431ae3086f3dd453ce7dae3fda77ea2bdb9f94eb339c929ddeb1b01bfa804",
+          "local": "assets/enemies/priconne/sources/300700/base.cysp",
+          "kind": "base"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/300700_BATTLE.cysp",
+          "bytes": 100329,
+          "sha256": "ce0de1c4ba95ce15abd372fd1312ab5b75895bc295e20a2f46d85fe769460a01",
+          "local": "assets/enemies/priconne/sources/300700/battle.cysp",
+          "kind": "battle"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/300700.atlas",
+          "bytes": 3098,
+          "sha256": "b519e538f95bab50a5c6926750858713c207a6269f1d24adc61eb4d9ba4bc979",
+          "local": "assets/enemies/priconne/sources/300700/model.atlas",
+          "kind": "atlas"
+        },
+        {
+          "url": "https://wthee.xyz/redive/jp/resource/spine/png/300700.png",
+          "bytes": 351876,
+          "sha256": "13b43ddcbe90e44563fd8e409c27df985e37a86cf724c53514e8ff5356bb1583",
+          "local": "assets/enemies/priconne/sources/300700/texture.png",
+          "kind": "texture"
+        }
+      ]
+    }
+  ],
+  "enemies": {
+    "forest_spear": {
+      "id": "forest_spear",
+      "art": "assets/enemies/priconne/goblin-guard.png",
+      "originalName": "Goblin Guard",
+      "gameAssetId": "203300",
+      "indexName": "哥布林護衛",
+      "source": "https://wthee.xyz/spine/index.html?enemy=203300",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 590
+    },
+    "forest_beast": {
+      "id": "forest_beast",
+      "art": "assets/enemies/priconne/kobold.png",
+      "originalName": "Kobold",
+      "gameAssetId": "201100",
+      "indexName": "狗頭人",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201100",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 485
+    },
+    "forest_bug_a": {
+      "id": "forest_bug_a",
+      "art": "assets/enemies/priconne/gellatina.png",
+      "originalName": "Gellatina",
+      "gameAssetId": "203000",
+      "indexName": "軟泥怪",
+      "source": "https://wthee.xyz/spine/index.html?enemy=203000",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 522
+    },
+    "forest_bug_b": {
+      "id": "forest_bug_b",
+      "art": "assets/enemies/priconne/gellatina.png",
+      "originalName": "Gellatina",
+      "gameAssetId": "203000",
+      "indexName": "軟泥怪",
+      "source": "https://wthee.xyz/spine/index.html?enemy=203000",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 522
+    },
+    "forest_sprite": {
+      "id": "forest_sprite",
+      "art": "assets/enemies/priconne/wood-soul.png",
+      "originalName": "Wood Soul",
+      "gameAssetId": "200700",
+      "indexName": "木靈",
+      "source": "https://wthee.xyz/spine/index.html?enemy=200700",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 526,
+      "height": 632
+    },
+    "mirror_guard": {
+      "id": "mirror_guard",
+      "art": "assets/enemies/priconne/blue-golem.png",
+      "originalName": "Blue Golem",
+      "gameAssetId": "201201",
+      "indexName": "青藍魔像",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201201",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 596
+    },
+    "seal_knight": {
+      "id": "seal_knight",
+      "art": "assets/enemies/priconne/lizardman.png",
+      "originalName": "Lizardman",
+      "gameAssetId": "300500",
+      "indexName": "蜥蜴人",
+      "source": "https://wthee.xyz/spine/index.html?enemy=300500",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 519
+    },
+    "seal_device_a": {
+      "id": "seal_device_a",
+      "art": "assets/enemies/priconne/golem.png",
+      "originalName": "Golem",
+      "gameAssetId": "201200",
+      "indexName": "魔像",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201200",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 585
+    },
+    "seal_device_b": {
+      "id": "seal_device_b",
+      "art": "assets/enemies/priconne/golem.png",
+      "originalName": "Golem",
+      "gameAssetId": "201200",
+      "indexName": "魔像",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201200",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 585
+    },
+    "ruin_sentinel": {
+      "id": "ruin_sentinel",
+      "art": "assets/enemies/priconne/golem.png",
+      "originalName": "Golem",
+      "gameAssetId": "201200",
+      "indexName": "魔像",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201200",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 585
+    },
+    "ruin_hexer": {
+      "id": "ruin_hexer",
+      "art": "assets/enemies/priconne/fire-mage.png",
+      "originalName": "Fire Mage",
+      "gameAssetId": "202300",
+      "indexName": "火焰咒士",
+      "source": "https://wthee.xyz/spine/index.html?enemy=202300",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 425,
+      "height": 632
+    },
+    "ruin_warder": {
+      "id": "ruin_warder",
+      "art": "assets/enemies/priconne/blue-golem.png",
+      "originalName": "Blue Golem",
+      "gameAssetId": "201201",
+      "indexName": "青藍魔像",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201201",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 596
+    },
+    "ruin_chanter": {
+      "id": "ruin_chanter",
+      "art": "assets/enemies/priconne/flaming-skulls.png",
+      "originalName": "Flaming Skulls",
+      "gameAssetId": "201000",
+      "indexName": "怨火之顱",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201000",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 474,
+      "height": 632
+    },
+    "ruin_hunter": {
+      "id": "ruin_hunter",
+      "art": "assets/enemies/priconne/werewolf.png",
+      "originalName": "Werewolf",
+      "gameAssetId": "200400",
+      "indexName": "狼人",
+      "source": "https://wthee.xyz/spine/index.html?enemy=200400",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 553
+    },
+    "rune_knight": {
+      "id": "rune_knight",
+      "art": "assets/enemies/priconne/goblin-guard.png",
+      "originalName": "Goblin Guard",
+      "gameAssetId": "203300",
+      "indexName": "哥布林護衛",
+      "source": "https://wthee.xyz/spine/index.html?enemy=203300",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 590
+    },
+    "rune_mage": {
+      "id": "rune_mage",
+      "art": "assets/enemies/priconne/fire-mage.png",
+      "originalName": "Fire Mage",
+      "gameAssetId": "202300",
+      "indexName": "火焰咒士",
+      "source": "https://wthee.xyz/spine/index.html?enemy=202300",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 425,
+      "height": 632
+    },
+    "echo_master": {
+      "id": "echo_master",
+      "art": "assets/enemies/priconne/sea-drake.png",
+      "originalName": "Sea Drake",
+      "gameAssetId": "301000",
+      "indexName": "希德雷克",
+      "source": "https://wthee.xyz/spine/index.html?enemy=301000",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 568
+    },
+    "echo_guard": {
+      "id": "echo_guard",
+      "art": "assets/enemies/priconne/goblin-guard.png",
+      "originalName": "Goblin Guard",
+      "gameAssetId": "203300",
+      "indexName": "哥布林護衛",
+      "source": "https://wthee.xyz/spine/index.html?enemy=203300",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 590
+    },
+    "summit_guard": {
+      "id": "summit_guard",
+      "art": "assets/enemies/priconne/golem.png",
+      "originalName": "Golem",
+      "gameAssetId": "201200",
+      "indexName": "魔像",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201200",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 585
+    },
+    "summit_archer": {
+      "id": "summit_archer",
+      "art": "assets/enemies/priconne/kobold.png",
+      "originalName": "Kobold",
+      "gameAssetId": "201100",
+      "indexName": "狗頭人",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201100",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 485
+    },
+    "summit_shield": {
+      "id": "summit_shield",
+      "art": "assets/enemies/priconne/blue-golem.png",
+      "originalName": "Blue Golem",
+      "gameAssetId": "201201",
+      "indexName": "青藍魔像",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201201",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 596
+    },
+    "summit_wisp": {
+      "id": "summit_wisp",
+      "art": "assets/enemies/priconne/flaming-skulls.png",
+      "originalName": "Flaming Skulls",
+      "gameAssetId": "201000",
+      "indexName": "怨火之顱",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201000",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 474,
+      "height": 632
+    },
+    "summit_hexer": {
+      "id": "summit_hexer",
+      "art": "assets/enemies/priconne/fire-mage.png",
+      "originalName": "Fire Mage",
+      "gameAssetId": "202300",
+      "indexName": "火焰咒士",
+      "source": "https://wthee.xyz/spine/index.html?enemy=202300",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 425,
+      "height": 632
+    },
+    "tower_keeper": {
+      "id": "tower_keeper",
+      "art": "assets/enemies/priconne/blue-golem.png",
+      "originalName": "Blue Golem",
+      "gameAssetId": "201201",
+      "indexName": "青藍魔像",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201201",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 596
+    },
+    "tower_crown": {
+      "id": "tower_crown",
+      "art": "assets/enemies/priconne/orc-leader.png",
+      "originalName": "Orc Leader",
+      "gameAssetId": "300700",
+      "indexName": "獸人領導者",
+      "source": "https://wthee.xyz/spine/index.html?enemy=300700",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 445
+    },
+    "fubuki": {
+      "id": "fubuki",
+      "art": "assets/encounter-cast/fubuki-full.svg",
+      "originalName": "フブキ",
+      "indexName": "布武机",
+      "displayName": "布武机",
+      "sourceType": "official transparent full-body image_astrum",
+      "source": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/ddb8f09a56b5411aa7a1cc8bfcc14122/whole_fubuki.png",
+      "mediaKey": "fubuki",
+      "originalBossModel": false,
+      "portraitFallback": false,
+      "originalArt": "assets/encounter-cast/fubuki.png",
+      "visualBoundary": "Original character-page full-body artwork, not a render of the original-game enemy battle model.",
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5160333,
+        "partialAlphaPixels": 19312,
+        "visibleBounds": {
+          "x": 488,
+          "y": 369,
+          "width": 1301,
+          "height": 1674
+        },
+        "bytes": 1582001,
+        "sha256": "7b02d01753963062a3b7755fff1ceaa7213c3a99e476990ff782907d929ab4f0"
+      }
+    },
+    "yamato": {
+      "id": "yamato",
+      "art": "assets/encounter-cast/yamato-full.svg",
+      "originalName": "ヤマト",
+      "indexName": "倭",
+      "displayName": "倭",
+      "sourceType": "official transparent full-body image_astrum",
+      "source": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/775b9e5d27664259bb1fa77358d10535/whole_yamato.png",
+      "mediaKey": "yamato",
+      "originalBossModel": false,
+      "portraitFallback": false,
+      "originalArt": "assets/encounter-cast/yamato.png",
+      "visualBoundary": "Original character-page full-body artwork, not a render of the original-game enemy battle model.",
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 4889339,
+        "partialAlphaPixels": 28793,
+        "visibleBounds": {
+          "x": 346,
+          "y": 151,
+          "width": 1734,
+          "height": 2181
+        },
+        "bytes": 1911007,
+        "sha256": "05ee69d412040525110fb3950a25171d661ca70cb534b29784697a8e02552825"
+      }
+    },
+    "ranpha": {
+      "id": "ranpha",
+      "art": "assets/encounter-cast/ranpha-full.svg",
+      "originalName": "ランファ",
+      "indexName": "兰法",
+      "displayName": "兰法",
+      "sourceType": "original character sprite or original cut-in frame, same character identity",
+      "source": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/e8/e8a2ba43ba0a0274",
+      "mediaKey": "ranpha",
+      "originalBossModel": false,
+      "portraitFallback": false
+    },
+    "misora": {
+      "id": "misora",
+      "art": "assets/encounter-cast/misora-full.svg",
+      "originalName": "ミソラ",
+      "indexName": "美空",
+      "displayName": "美空",
+      "sourceType": "original character sprite or original cut-in frame, same character identity",
+      "source": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/6f/6fb81864c6166d8a",
+      "mediaKey": "misora",
+      "originalBossModel": false,
+      "portraitFallback": false
+    },
+    "kaiser": {
+      "id": "kaiser",
+      "art": "assets/encounter-cast/kaiser-full.svg",
+      "originalName": "覇瞳皇帝",
+      "indexName": "霸瞳皇帝",
+      "displayName": "霸瞳皇帝",
+      "sourceType": "original character sprite or original cut-in frame, same character identity",
+      "source": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/c4/c4c501e10535a495",
+      "mediaKey": "kaiser",
+      "originalBossModel": false,
+      "portraitFallback": false
+    },
+    "weapon": {
+      "id": "weapon",
+      "art": "assets/enemies/priconne/golem.png",
+      "originalName": "Golem",
+      "gameAssetId": "201200",
+      "indexName": "魔像",
+      "source": "https://wthee.xyz/spine/index.html?enemy=201200",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 585,
+      "scenarioProxyFor": "weapon",
+      "exactOriginalSummonModel": false,
+      "adaptationBoundary": "Existing original game monster image reused for this fan-game add role; not claimed to be the original Boss summon model."
+    },
+    "tooth": {
+      "id": "tooth",
+      "art": "assets/enemies/priconne/goblin-guard.png",
+      "originalName": "Goblin Guard",
+      "gameAssetId": "203300",
+      "indexName": "哥布林護衛",
+      "source": "https://wthee.xyz/spine/index.html?enemy=203300",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 590,
+      "scenarioProxyFor": "tooth",
+      "exactOriginalSummonModel": false,
+      "adaptationBoundary": "Existing original game monster image reused for this fan-game add role; not claimed to be the original Boss summon model."
+    },
+    "vanguard": {
+      "id": "vanguard",
+      "art": "assets/enemies/priconne/goblin-guard.png",
+      "originalName": "Goblin Guard",
+      "gameAssetId": "203300",
+      "indexName": "哥布林護衛",
+      "source": "https://wthee.xyz/spine/index.html?enemy=203300",
+      "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+      "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+      "width": 632,
+      "height": 590,
+      "scenarioProxyFor": "vanguard",
+      "exactOriginalSummonModel": false,
+      "adaptationBoundary": "Existing original game monster image reused for this fan-game add role; not claimed to be the original Boss summon model."
+    }
+  },
+  "coverage": {
+    "currentEnemyIds": 33,
+    "uniqueCommon": 9,
+    "uniqueBosses": 3,
+    "unmapped": [],
+    "addedLaunchCoreIdentities": 5,
+    "addedScenarioProxies": 3
+  }
+}

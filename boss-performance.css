@@ -1,0 +1,51 @@
+/* Original code-driven Boss cut-ins; no original-game UB video is implied. */
+.boss-performance{position:fixed;inset:0;z-index:2050;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.85fr);align-items:center;padding:60px max(6vw,24px);overflow:hidden;color:#fff0df;background:#0a0b19;pointer-events:auto}
+.boss-performance-backdrop{position:absolute;inset:0;z-index:-2;background:radial-gradient(ellipse at 33% 48%,color-mix(in srgb,var(--bossfx-color) 72%,#101425),#090b19 76%)}
+.boss-performance-backdrop:before{content:"";position:absolute;inset:9% -10%;background:linear-gradient(0deg,transparent,color-mix(in srgb,var(--bossfx-accent) 12%,transparent),transparent);border-block:1px solid color-mix(in srgb,var(--bossfx-accent) 45%,transparent);rotate:-8deg}
+.boss-performance-scene{position:relative;height:min(70vh,610px);min-height:230px;display:flex;align-items:center;justify-content:center;isolation:isolate}
+.boss-performance-portrait{height:100%;width:100%;object-fit:contain;object-position:center bottom;display:block;position:absolute;inset:0;filter:drop-shadow(0 8px 22px #0008);z-index:2}
+.boss-performance-main{z-index:3}
+.boss-mirror-left,.boss-mirror-right{filter:grayscale(.3) sepia(.25) hue-rotate(208deg) drop-shadow(0 0 12px #cfa4ff88);opacity:.3;z-index:1}
+.boss-performance-copy{position:relative;z-index:5;border-left:3px solid var(--bossfx-accent);padding:22px 0 22px 32px;text-shadow:0 3px 16px #050512}
+.boss-performance-warning{display:inline-block;font:700 14px/1.6 system-ui,sans-serif;letter-spacing:3px;color:var(--bossfx-accent);padding:7px 13px;margin:0 0 24px;background:color-mix(in srgb,var(--bossfx-color) 25%,transparent);border:1px solid color-mix(in srgb,var(--bossfx-accent) 55%,transparent)}
+.boss-performance-name{font:20px/1.5 system-ui,"Microsoft YaHei",sans-serif;letter-spacing:2px;margin:0 0 14px;color:#f3d8d2}
+.boss-performance-title{font:500 clamp(30px,4vw,57px)/1.4 "Yu Mincho","Songti SC","Microsoft YaHei",serif;letter-spacing:4px;margin:0 0 19px;color:#fff0d9}
+.boss-performance-type{font:16px/1.6 system-ui,"Microsoft YaHei",sans-serif;letter-spacing:2px;color:var(--bossfx-accent);margin:0}
+.boss-performance-skip{position:absolute;right:max(24px,env(safe-area-inset-right));top:max(20px,env(safe-area-inset-top));z-index:10;min-height:44px;min-width:104px;padding:9px 15px;border:1px solid #dac6ba77;background:#13172bea;color:#f7e4d5;border-radius:7px;font-size:15px;cursor:pointer}
+.boss-performance-skip:focus-visible{outline:2px solid #ffe0a1;outline-offset:4px}
+.boss-performance-crest{position:absolute;left:50%;top:50%;width:280px;height:280px;z-index:0;transform:translate(-50%,-50%);color:var(--bossfx-accent)}
+.boss-crest-swords{border:2px solid #e6ae6d99;rotate:45deg;background:radial-gradient(circle,#70283a66,transparent 70%);box-shadow:0 0 35px #d57c4c44,inset 0 0 35px #d57c4c22}
+.boss-crest-swords:before,.boss-crest-swords:after{content:"";position:absolute;left:50%;top:50%;height:350px;width:15px;transform:translate(-50%,-50%) rotate(45deg);background:linear-gradient(0deg,transparent,#d68f61 18%,#f4d396 50%,#d68f61 82%,transparent);clip-path:polygon(50% 0,100% 15%,80% 100%,20% 100%,0 15%)}
+.boss-crest-swords:after{rotate:90deg}
+.boss-crest-mirrors{border:2px solid #dbb3f499;border-radius:50%;box-shadow:0 0 35px #be8be155,inset 0 0 35px #be8be133;background:repeating-conic-gradient(from 0deg,#c09ce91a 0 2deg,transparent 2deg 30deg)}
+.boss-crest-mirrors:before,.boss-crest-mirrors:after{content:"";position:absolute;inset:12%;border:2px solid #e2b9ff66;transform:rotate(45deg)}
+.boss-crest-mirrors:after{inset:25%;border-radius:50%}
+.boss-crest-throne{width:330px;height:340px;clip-path:polygon(0 14%,18% 24%,22% 0,38% 20%,50% 0,62% 20%,78% 0,82% 24%,100% 14%,90% 90%,50% 100%,10% 90%);background:linear-gradient(0deg,#6e1e3666,#ae45584d 65%,#e3a89b77);border:2px solid #e8b6a266;box-shadow:inset 0 0 55px #3b0c2b}
+.boss-crest-throne:after{content:"";position:absolute;inset:10%;border:1px solid #f8c6ac66;border-radius:45% 45% 10% 10%}
+.boss-performance-ornament{position:absolute;inset:0;z-index:4;pointer-events:none}
+.boss-performance-stroke{position:absolute;left:50%;top:50%;display:block;transform:translate(-50%,-50%);will-change:transform,opacity}
+.boss-stroke-swords{width:min(520px,65vw);height:7px;top:calc(39% + var(--n)*4%);background:linear-gradient(90deg,transparent,#aa364b 15%,#ffdc97 48%,#bd4d5c 85%,transparent);box-shadow:0 0 15px #e7a45d77;border-radius:100%}
+.boss-stroke-mirrors{height:180px;width:180px;border:2px solid #debdff88;box-shadow:0 0 16px #a86fcd66;border-radius:4px}
+.boss-stroke-throne{width:min(620px,75vw);height:5px;top:calc(37% + var(--n)*3%);background:linear-gradient(90deg,transparent,#ad3b58 20%,#f8c5b4 50%,#ad3b58 80%,transparent);box-shadow:0 0 13px #d4718b77;border-radius:100%}
+.boss-performance.reduced-motion .boss-performance-crest{opacity:.35}
+.boss-performance-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:8;background:#090b19}
+.boss-performance.voice-tail{inset:76px 18px auto auto;display:flex;gap:14px;max-width:min(460px,calc(100vw - 36px));padding:12px 120px 12px 18px;border:1px solid var(--bossfx-accent);border-radius:12px;background:#11172ff2;box-shadow:0 8px 28px #0007}
+.boss-performance.voice-tail .boss-performance-scene,.boss-performance.voice-tail .boss-performance-backdrop,.boss-performance.voice-tail .boss-performance-warning,.boss-performance.voice-tail .boss-performance-title,.boss-performance.voice-tail .boss-performance-type{display:none}
+.boss-performance.voice-tail .boss-performance-copy{padding:0;border:0}
+.boss-performance.voice-tail .boss-performance-name{font-size:16px;margin:0}
+.boss-performance.voice-tail .boss-performance-name:after{content:' · 语音演出中';font-size:13px;color:var(--bossfx-accent)}
+.boss-performance.voice-tail .boss-performance-skip{inset:8px 9px auto auto;min-height:36px;min-width:90px;font-size:13px}
+.boss-performance.reduced-motion .boss-performance-stroke{display:none}
+@media(max-width:650px){
+  .boss-performance{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;padding:52px 24px 35px;gap:12px}
+  .boss-performance-scene{height:auto;min-height:0;align-self:stretch;width:100%;max-height:58vh}
+  .boss-performance-copy{padding:15px 0 0;border-left:0;border-top:2px solid var(--bossfx-accent);text-align:center}
+  .boss-performance-warning{font-size:13px;letter-spacing:2px;margin-bottom:8px;padding:4px 10px}
+  .boss-performance-name{font-size:17px;margin-bottom:6px}
+  .boss-performance-title{font-size:30px;letter-spacing:2px;margin-bottom:8px}
+  .boss-performance-type{font-size:15px;letter-spacing:1px}
+  .boss-performance-crest{width:220px;height:220px}.boss-crest-throne{height:250px;width:250px}
+  .boss-performance-skip{right:14px;top:14px;font-size:14px;min-height:44px}
+}
+@media(max-height:550px) and (min-width:651px){.boss-performance{padding-block:35px}.boss-performance-scene{height:82vh}.boss-performance-warning{margin-bottom:12px}.boss-performance-title{font-size:34px}.boss-performance-name{font-size:18px}}
+@media(prefers-reduced-motion:reduce){.boss-performance-stroke{display:none}.boss-performance-portrait,.boss-performance-copy{will-change:opacity}}

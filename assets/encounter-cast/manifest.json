@@ -1,0 +1,3696 @@
+{
+  "schemaVersion": 2,
+  "preparedDate": "2026-10-21",
+  "globalName": "TowerEncounterCast",
+  "scenario": "Fan-game tower illusions. These encounters and written lines are original to this project, not Princess Connect canon.",
+  "characters": {
+    "christina": {
+      "id": "christina",
+      "displayName": "克莉丝提娜",
+      "originalName": "クリスティーナ",
+      "role": "高塔幻影",
+      "title": "不败的邀约",
+      "art": "assets/encounter-cast/christina-full.svg",
+      "originalArt": "assets/encounter-cast/christina.png",
+      "color": "#4d4185",
+      "accent": "#d5ac5b",
+      "palette": {
+        "base": "#4d4185",
+        "accent": "#d5ac5b"
+      },
+      "entryLine": "既然走到了这里，就让我看看你们的决心。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "path": "assets/encounter-cast/audio/christina-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/91e9f436e106426e96fc026262a5abe5/voice_08_02_Christina.mp3",
+        "officialPage": "https://priconne-redive.jp/character/christina/",
+        "bytes": 226057,
+        "sha256": "e4da8508c41f6035c0ed3f5887e7ee95457fc3133022b3e6815ae1f13b197a25",
+        "durationSeconds": 6.840563,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/25d3af269a184798b6eb3c03a51f009b/whole_christina.png",
+        "page": "https://priconne-redive.jp/character/christina/",
+        "field": "image_astrum"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5277774,
+        "partialAlphaPixels": 14193,
+        "visibleBounds": {
+          "x": 708,
+          "y": 305,
+          "width": 869,
+          "height": 2044
+        },
+        "bytes": 1366288,
+        "sha256": "9d51a5bddb59abc11d4caf40428f8656c5c481ac0b95d20674967db9b45c1cf6"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      }
+    },
+    "neneka": {
+      "id": "neneka",
+      "displayName": "似似花",
+      "originalName": "ネネカ",
+      "role": "高塔幻影",
+      "title": "镜中的答案",
+      "art": "assets/encounter-cast/neneka-full.svg",
+      "originalArt": "assets/encounter-cast/neneka.png",
+      "color": "#f54d80",
+      "accent": "#f4a5c4",
+      "palette": {
+        "base": "#f54d80",
+        "accent": "#f4a5c4"
+      },
+      "entryLine": "看清真正的目标，再迈出下一步。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "path": "assets/encounter-cast/audio/neneka-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/dace720ca8ba41bb94b2d06938cd2c8f/voice_28_01_Neneka.mp3",
+        "officialPage": "https://priconne-redive.jp/character/neneka/",
+        "bytes": 191715,
+        "sha256": "96c40346a7a43f56ca3929227074ff93f98547a94b5850053879f757f3943f8a",
+        "durationSeconds": 11.964063,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/dc22ce4f764a4fd289dc7011015d4464/whole_neneka.png",
+        "page": "https://priconne-redive.jp/character/neneka/",
+        "field": "image_astrum"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 4982731,
+        "partialAlphaPixels": 55125,
+        "visibleBounds": {
+          "x": 530,
+          "y": 271,
+          "width": 1248,
+          "height": 1748
+        },
+        "bytes": 1639479,
+        "sha256": "4c93543f3af43b64f916f07343aa218fb86d742b74c6e04dd873a2f35f7ea8d2"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      }
+    },
+    "kaiser_insight": {
+      "id": "kaiser_insight",
+      "displayName": "霸瞳皇帝",
+      "originalName": "覇瞳皇帝（カイザーインサイト）",
+      "role": "高塔幻影",
+      "title": "王座的残影",
+      "art": "assets/encounter-cast/kaiser-insight-full.svg",
+      "originalArt": "assets/encounter-cast/kaiser-insight.png",
+      "color": "#6c536f",
+      "accent": "#e6cf9b",
+      "palette": {
+        "base": "#6c536f",
+        "accent": "#e6cf9b"
+      },
+      "entryLine": "登塔者，把你们的选择呈到王座之前。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "path": "assets/encounter-cast/audio/omniscientkaiser-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/feefa8fddca040018dc55767c8d1af3a/voice_18_01_OmniscientKaiser.mp3",
+        "officialPage": "https://priconne-redive.jp/character/omniscientkaiser/",
+        "bytes": 114278,
+        "sha256": "917e721e182e69272cc01ec39dd2991e3ea22cb2dec3d7f40c0d389f65f0a557",
+        "durationSeconds": 6.732125,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 1
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "local_existing_original_game_art_from_community_wiki",
+        "url": "https://static.wikia.nocookie.net/princess-connect/images/0/0d/Kaiser_Insight_%28game%29.png/revision/latest?cb=20180314164523",
+        "localFile": "priconne_standing_pngs/Kaiser Insight -- Kaiser Insight (game).png",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "identityReference": "https://priconne-redive.jp/character/omniscientkaiser/"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 430,
+        "height": 680,
+        "hasAlpha": true,
+        "transparentPixels": 136437,
+        "partialAlphaPixels": 5439,
+        "visibleBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 430,
+          "height": 680
+        },
+        "bytes": 320562,
+        "sha256": "ba6cc87d308ec036ab6873c92c5df518563b3dc89a3689d56b2e1dfc9eef4ccd"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      }
+    },
+    "karin": {
+      "id": "karin",
+      "displayName": "花凛",
+      "originalName": "カリン",
+      "role": "高塔补给员",
+      "title": "冒险补给站",
+      "art": "assets/encounter-cast/karin-full.svg",
+      "originalArt": "assets/encounter-cast/karin.png",
+      "color": "#6ba53a",
+      "accent": "#d2b67e",
+      "palette": {
+        "base": "#6ba53a",
+        "accent": "#d2b67e"
+      },
+      "entryLine": "欢迎来到补给站。准备好了，再继续冒险吧。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": false,
+      "voice": {
+        "path": "assets/encounter-cast/audio/karin-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/c6f1604c693643a2b9434bd2588de188/voice_16_02_Karin.mp3",
+        "officialPage": "https://priconne-redive.jp/character/karin/",
+        "bytes": 183472,
+        "sha256": "39e1b6bcba9753bab26dd61b31fa6475a52db0b861a922b62da0fa1df09dd1b0",
+        "durationSeconds": 5.509781,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "local_existing_original_game_art_from_community_wiki",
+        "url": "https://static.wikia.nocookie.net/princess-connect/images/3/35/Karin_%28game%29.png/revision/latest?cb=20180219093232",
+        "localFile": "priconne_standing_pngs/Karin -- Karin (game).png",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "identityReference": "https://priconne-redive.jp/character/karin/"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 269,
+        "height": 535,
+        "hasAlpha": true,
+        "transparentPixels": 69936,
+        "partialAlphaPixels": 3453,
+        "visibleBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 269,
+          "height": 535
+        },
+        "bytes": 138114,
+        "sha256": "f6a9440232905d35aef6789448a7fe5e150d1dcc0de16663d03b295a47e5b2e6"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      }
+    },
+    "fubuki": {
+      "id": "fubuki",
+      "displayName": "布武机",
+      "originalName": "フブキ",
+      "role": "高塔幻影",
+      "title": "试作武装的嬉笑",
+      "art": "assets/encounter-cast/fubuki-full.svg",
+      "originalArt": "assets/encounter-cast/fubuki.png",
+      "color": "#753d64",
+      "accent": "#f5b5d1",
+      "palette": {
+        "base": "#753d64",
+        "accent": "#f5b5d1"
+      },
+      "entryLine": "这次的试作品，会带来怎样的惊喜呢？",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_130201.acb",
+          "md5": "745fc62dfe67aa81eeee239692b11da4",
+          "poolHash": "a1101147f90ac178",
+          "bytes": 664000,
+          "manifestLine": 23667,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/a1/a1101147f90ac178",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130201.acb",
+          "actualBytes": 664000,
+          "sha256": "e64a7cd08a58da266fcdd9adf8a6b77451e5c03a7c749469827e2efbc28a8935",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/fubuki/entry.m4a",
+        "bytes": 32990,
+        "sha256": "225122feb4995537a1826d2aa2a58df9231e33de63e43ed55f2af16e9e7ce834",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_130201_wavestart",
+        "aliases": [
+          "vo_btl_130201_wavestart"
+        ],
+        "sampleId": "130201:subsong:23",
+        "durationSeconds": 1.920998,
+        "sourceDurationSeconds": 1.921156,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/fubuki/cutin.mp4",
+        "poster": "assets/media/bosses/fubuki/poster.jpg",
+        "voice": "assets/media/bosses/fubuki/ub.m4a",
+        "cutinVoice": "assets/media/bosses/fubuki/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.750998,
+        "cutinVoiceDurationSeconds": 3.031995,
+        "audioPaths": [
+          "assets/media/bosses/fubuki/cutin.m4a",
+          "assets/media/bosses/fubuki/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "130201:subsong:5",
+          "130201:subsong:20"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "fubuki",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_130201.usm",
+          "md5": "7f4ac9a340a63ff375269e1f3fabec92",
+          "poolHash": "2059415aa452c37d",
+          "bytes": 2372864,
+          "manifestLine": 947,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/20/2059415aa452c37d",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_130201.usm",
+          "actualBytes": 2372864,
+          "sha256": "778a5082ae46449c8e775b7cc220e0ea53892bbf94ea2a9c65e9902632db9a84",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": {
+          "kind": "official_game_character_page",
+          "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/ddb8f09a56b5411aa7a1cc8bfcc14122/whole_fubuki.png",
+          "page": "https://priconne-redive.jp/character/fubuki/",
+          "field": "image_astrum",
+          "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+          "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+        },
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/fubuki/130201-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true,
+        "transparentMarginOnlyViewBox": true,
+        "reviewedDate": "2026-10-21"
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5160333,
+        "partialAlphaPixels": 19312,
+        "visibleBounds": {
+          "x": 488,
+          "y": 369,
+          "width": 1301,
+          "height": 1674
+        },
+        "bytes": 1582001,
+        "sha256": "7b02d01753963062a3b7755fff1ceaa7213c3a99e476990ff782907d929ab4f0"
+      }
+    },
+    "yamato": {
+      "id": "yamato",
+      "displayName": "倭",
+      "originalName": "ヤマト",
+      "role": "高塔幻影",
+      "title": "碎刃与余兴",
+      "art": "assets/encounter-cast/yamato-full.svg",
+      "originalArt": "assets/encounter-cast/yamato.png",
+      "color": "#56345e",
+      "accent": "#d58cdb",
+      "palette": {
+        "base": "#56345e",
+        "accent": "#d58cdb"
+      },
+      "entryLine": "跟上我的刀光，再继续向上吧。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_130001.acb",
+          "md5": "6db1eed17be2e30075fd43fc89ab7dc5",
+          "poolHash": "fc79c4cdf210f092",
+          "bytes": 615040,
+          "manifestLine": 23665,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fc/fc79c4cdf210f092",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130001.acb",
+          "actualBytes": 615040,
+          "sha256": "45a6d65649846f608085b0c2e37c3d1427cf70e844cbd5f3c30279b5d1f9c2c3",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/yamato/entry.m4a",
+        "bytes": 20428,
+        "sha256": "cfd3e753e39f248edcd95464c7c4f2342dd293425f31b2230e2eb94d927ab1d4",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_130001_wavestart",
+        "aliases": [
+          "vo_btl_130001_wavestart"
+        ],
+        "sampleId": "130001:subsong:24",
+        "durationSeconds": 1.169002,
+        "sourceDurationSeconds": 1.168798,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/yamato/cutin.mp4",
+        "poster": "assets/media/bosses/yamato/poster.jpg",
+        "voice": "assets/media/bosses/yamato/ub.m4a",
+        "cutinVoice": "assets/media/bosses/yamato/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.585011,
+        "cutinVoiceDurationSeconds": 3.056009,
+        "audioPaths": [
+          "assets/media/bosses/yamato/cutin.m4a",
+          "assets/media/bosses/yamato/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "130001:subsong:5",
+          "130001:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "yamato",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_130001.usm",
+          "md5": "366febe662934d7ae626027691197066",
+          "poolHash": "dc8980cffc20ee01",
+          "bytes": 2494848,
+          "manifestLine": 945,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/dc/dc8980cffc20ee01",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_130001.usm",
+          "actualBytes": 2494848,
+          "sha256": "44f4792928c1f734a3c86b7b6c0a86747a2856411b61e8c2bf9fb3e9f218884c",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": {
+          "kind": "official_game_character_page",
+          "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/775b9e5d27664259bb1fa77358d10535/whole_yamato.png",
+          "page": "https://priconne-redive.jp/character/yamato/",
+          "field": "image_astrum",
+          "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+          "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+        },
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/yamato/130001-end.jpg",
+          "atSeconds": 2.216667
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true,
+        "transparentMarginOnlyViewBox": true,
+        "reviewedDate": "2026-10-21"
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 4889339,
+        "partialAlphaPixels": 28793,
+        "visibleBounds": {
+          "x": 346,
+          "y": 151,
+          "width": 1734,
+          "height": 2181
+        },
+        "bytes": 1911007,
+        "sha256": "05ee69d412040525110fb3950a25171d661ca70cb534b29784697a8e02552825"
+      }
+    },
+    "ranpha": {
+      "id": "ranpha",
+      "displayName": "兰法",
+      "originalName": "ランファ",
+      "role": "高塔幻影",
+      "title": "回廊里的咏唱",
+      "art": "assets/encounter-cast/ranpha-full.svg",
+      "originalArt": "assets/encounter-cast/ranpha.png",
+      "color": "#273d4b",
+      "accent": "#87d8ce",
+      "palette": {
+        "base": "#273d4b",
+        "accent": "#87d8ce"
+      },
+      "entryLine": "愿这段歌声，也能抵达你们心中。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_118101.acb",
+          "md5": "733a1357cebacea2637914ff7922df3b",
+          "poolHash": "5ab206d8900e29e4",
+          "bytes": 619744,
+          "manifestLine": 23572,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/5a/5ab206d8900e29e4",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118101.acb",
+          "actualBytes": 619744,
+          "sha256": "7a9c2cb2d39610333b9a9826bf4b6b4b7efaf0a22a37874c83d3b8ddf6029588",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/ranpha/entry.m4a",
+        "bytes": 31299,
+        "sha256": "d2783600b1391ad27a1c57a46f9f151ec4b3a7b5e73754db375dead6e3b0bf9d",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_118101_wavestart",
+        "aliases": [
+          "vo_btl_118101_wavestart"
+        ],
+        "sampleId": "118101:subsong:22",
+        "durationSeconds": 1.8,
+        "sourceDurationSeconds": 1.8,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/ranpha/cutin.mp4",
+        "poster": "assets/media/bosses/ranpha/poster.jpg",
+        "voice": "assets/media/bosses/ranpha/ub.m4a",
+        "cutinVoice": "assets/media/bosses/ranpha/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 3.883991,
+        "cutinVoiceDurationSeconds": 2.367007,
+        "audioPaths": [
+          "assets/media/bosses/ranpha/cutin.m4a",
+          "assets/media/bosses/ranpha/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "118101:subsong:5",
+          "118101:subsong:20"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "ranpha",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_118101.usm",
+          "md5": "ad36ea7c89e4e634d54c2117b140d214",
+          "poolHash": "e8a2ba43ba0a0274",
+          "bytes": 2263264,
+          "manifestLine": 854,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/e8/e8a2ba43ba0a0274",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_118101.usm",
+          "actualBytes": 2263264,
+          "sha256": "d3e0bc0d740e2b6840b803460119952de0190417ee573d8ffb58051440aafaef",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": "priconne_standing_pngs/Ranpha -- Ranpha (game).png",
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/ranpha/118101-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "fallbackExplanation": null
+    },
+    "misora": {
+      "id": "misora",
+      "displayName": "美空",
+      "originalName": "ミソラ",
+      "role": "高塔幻影",
+      "title": "笑容后的火线",
+      "art": "assets/encounter-cast/misora-full.svg",
+      "originalArt": "assets/encounter-cast/misora.png",
+      "color": "#495e51",
+      "accent": "#ade0bd",
+      "palette": {
+        "base": "#495e51",
+        "accent": "#ade0bd"
+      },
+      "entryLine": "既然来了，就陪我玩到最后吧。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_118201.acb",
+          "md5": "0045dc6a2702eca1148897fe96ed42d0",
+          "poolHash": "b158ad184657c58d",
+          "bytes": 674496,
+          "manifestLine": 23573,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/b1/b158ad184657c58d",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118201.acb",
+          "actualBytes": 674496,
+          "sha256": "c82f6909adf97c68a76c8da866f4791b823fbef91dedfdb7aed24e32295615ef",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/misora/entry.m4a",
+        "bytes": 35098,
+        "sha256": "53fcf9d338efd3825265dfbdb0dd91a1716f219b89dfb2584aeb5c48e845fae1",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_118201_wavestart",
+        "aliases": [
+          "vo_btl_118201_wavestart"
+        ],
+        "sampleId": "118201:subsong:25",
+        "durationSeconds": 2.046009,
+        "sourceDurationSeconds": 2.04678,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/misora/cutin.mp4",
+        "poster": "assets/media/bosses/misora/poster.jpg",
+        "voice": "assets/media/bosses/misora/ub.m4a",
+        "cutinVoice": "assets/media/bosses/misora/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.259002,
+        "cutinVoiceDurationSeconds": 2.471995,
+        "audioPaths": [
+          "assets/media/bosses/misora/cutin.m4a",
+          "assets/media/bosses/misora/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "118201:subsong:5",
+          "118201:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "misora",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_118201.usm",
+          "md5": "4d60517e7ebcf924adb8433bad2830ea",
+          "poolHash": "6fb81864c6166d8a",
+          "bytes": 1971552,
+          "manifestLine": 855,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/6f/6fb81864c6166d8a",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_118201.usm",
+          "actualBytes": 1971552,
+          "sha256": "07ab76092e6f5e808cfe12e81b9d962d60e5252ed4002042cb0801a97cbb8f7a",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": "priconne_standing_pngs/Misora -- Misora-astrum-sprite-normal.png",
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/misora/118201-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": false,
+        "includesFeet": false,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "fallbackExplanation": null
+    },
+    "kaiser": {
+      "id": "kaiser",
+      "displayName": "霸瞳皇帝",
+      "originalName": "覇瞳皇帝",
+      "role": "高塔幻影",
+      "title": "王座的残影",
+      "art": "assets/encounter-cast/kaiser-full.svg",
+      "originalArt": "assets/encounter-cast/kaiser-insight.png",
+      "color": "#6c536f",
+      "accent": "#e6cf9b",
+      "palette": {
+        "base": "#6c536f",
+        "accent": "#e6cf9b"
+      },
+      "entryLine": "登塔者，把你们的选择呈到王座之前。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_309801.acb",
+          "md5": "361fa3e01fab1eb17f28cfc45073e10b",
+          "poolHash": "faa0e907af3b33b7",
+          "bytes": 185344,
+          "manifestLine": 23778,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fa/faa0e907af3b33b7",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_309801.acb",
+          "actualBytes": 185344,
+          "sha256": "fd1a9fa1ab6b0c7e96ab565d2bd9f3fa055fd1719148a01c3e5da8b698e01b94",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/kaiser/entry.m4a",
+        "bytes": 46279,
+        "sha256": "4cff931629e6ee4aaa87312251102cc7841efdb104bf7dcf0b469319893d39da",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_309801_wavestart",
+        "aliases": [
+          "vo_btl_309801_wavestart"
+        ],
+        "sampleId": "309801:subsong:6",
+        "durationSeconds": 2.785011,
+        "sourceDurationSeconds": 2.784989,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "boss_variant_309801",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/kaiser/cutin.mp4",
+        "poster": "assets/media/bosses/kaiser/poster.jpg",
+        "voice": "assets/media/bosses/kaiser/cutin.m4a",
+        "cutinVoice": null,
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 3.163991,
+        "cutinVoiceDurationSeconds": 0,
+        "audioPaths": [
+          "assets/media/bosses/kaiser/cutin.m4a"
+        ],
+        "uniqueSampleIds": [
+          "309801:subsong:1"
+        ],
+        "deduplicatedCutinUbAlias": true,
+        "variant": "original-Boss-short-cut-in",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "kaiser",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_309800.usm",
+          "md5": "9ac6ddf968a8937741a616d16227c764",
+          "poolHash": "c4c501e10535a495",
+          "bytes": 2990272,
+          "manifestLine": 1044,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/c4/c4c501e10535a495",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_309800.usm",
+          "actualBytes": 2990272,
+          "sha256": "de5b21abf80b6a0e2ae5826b33315988e5e60898d57e430da5363b6e9db3f85f",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": "assets/encounter-cast/kaiser-insight.png",
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/kaiser/309800-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "fallbackExplanation": null
+    }
+  },
+  "bosses": {
+    "forest_boss": {
+      "id": "christina",
+      "displayName": "克莉丝提娜",
+      "originalName": "クリスティーナ",
+      "role": "高塔幻影",
+      "title": "不败的邀约",
+      "art": "assets/encounter-cast/christina-full.svg",
+      "originalArt": "assets/encounter-cast/christina.png",
+      "color": "#4d4185",
+      "accent": "#d5ac5b",
+      "palette": {
+        "base": "#4d4185",
+        "accent": "#d5ac5b"
+      },
+      "entryLine": "既然走到了这里，就让我看看你们的决心。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "path": "assets/encounter-cast/audio/christina-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/91e9f436e106426e96fc026262a5abe5/voice_08_02_Christina.mp3",
+        "officialPage": "https://priconne-redive.jp/character/christina/",
+        "bytes": 226057,
+        "sha256": "e4da8508c41f6035c0ed3f5887e7ee95457fc3133022b3e6815ae1f13b197a25",
+        "durationSeconds": 6.840563,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/25d3af269a184798b6eb3c03a51f009b/whole_christina.png",
+        "page": "https://priconne-redive.jp/character/christina/",
+        "field": "image_astrum"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5277774,
+        "partialAlphaPixels": 14193,
+        "visibleBounds": {
+          "x": 708,
+          "y": 305,
+          "width": 869,
+          "height": 2044
+        },
+        "bytes": 1366288,
+        "sha256": "9d51a5bddb59abc11d4caf40428f8656c5c481ac0b95d20674967db9b45c1cf6"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      }
+    },
+    "ruins_boss": {
+      "id": "neneka",
+      "displayName": "似似花",
+      "originalName": "ネネカ",
+      "role": "高塔幻影",
+      "title": "镜中的答案",
+      "art": "assets/encounter-cast/neneka-full.svg",
+      "originalArt": "assets/encounter-cast/neneka.png",
+      "color": "#f54d80",
+      "accent": "#f4a5c4",
+      "palette": {
+        "base": "#f54d80",
+        "accent": "#f4a5c4"
+      },
+      "entryLine": "看清真正的目标，再迈出下一步。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "path": "assets/encounter-cast/audio/neneka-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/dace720ca8ba41bb94b2d06938cd2c8f/voice_28_01_Neneka.mp3",
+        "officialPage": "https://priconne-redive.jp/character/neneka/",
+        "bytes": 191715,
+        "sha256": "96c40346a7a43f56ca3929227074ff93f98547a94b5850053879f757f3943f8a",
+        "durationSeconds": 11.964063,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/dc22ce4f764a4fd289dc7011015d4464/whole_neneka.png",
+        "page": "https://priconne-redive.jp/character/neneka/",
+        "field": "image_astrum"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 4982731,
+        "partialAlphaPixels": 55125,
+        "visibleBounds": {
+          "x": 530,
+          "y": 271,
+          "width": 1248,
+          "height": 1748
+        },
+        "bytes": 1639479,
+        "sha256": "4c93543f3af43b64f916f07343aa218fb86d742b74c6e04dd873a2f35f7ea8d2"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      }
+    },
+    "summit_boss": {
+      "id": "kaiser_insight",
+      "displayName": "霸瞳皇帝",
+      "originalName": "覇瞳皇帝（カイザーインサイト）",
+      "role": "高塔幻影",
+      "title": "王座的残影",
+      "art": "assets/encounter-cast/kaiser-insight-full.svg",
+      "originalArt": "assets/encounter-cast/kaiser-insight.png",
+      "color": "#6c536f",
+      "accent": "#e6cf9b",
+      "palette": {
+        "base": "#6c536f",
+        "accent": "#e6cf9b"
+      },
+      "entryLine": "登塔者，把你们的选择呈到王座之前。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "path": "assets/encounter-cast/audio/omniscientkaiser-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/feefa8fddca040018dc55767c8d1af3a/voice_18_01_OmniscientKaiser.mp3",
+        "officialPage": "https://priconne-redive.jp/character/omniscientkaiser/",
+        "bytes": 114278,
+        "sha256": "917e721e182e69272cc01ec39dd2991e3ea22cb2dec3d7f40c0d389f65f0a557",
+        "durationSeconds": 6.732125,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 1
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "local_existing_original_game_art_from_community_wiki",
+        "url": "https://static.wikia.nocookie.net/princess-connect/images/0/0d/Kaiser_Insight_%28game%29.png/revision/latest?cb=20180314164523",
+        "localFile": "priconne_standing_pngs/Kaiser Insight -- Kaiser Insight (game).png",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "identityReference": "https://priconne-redive.jp/character/omniscientkaiser/"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 430,
+        "height": 680,
+        "hasAlpha": true,
+        "transparentPixels": 136437,
+        "partialAlphaPixels": 5439,
+        "visibleBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 430,
+          "height": 680
+        },
+        "bytes": 320562,
+        "sha256": "ba6cc87d308ec036ab6873c92c5df518563b3dc89a3689d56b2e1dfc9eef4ccd"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      }
+    },
+    "paper_fubuki": {
+      "id": "fubuki",
+      "displayName": "布武机",
+      "originalName": "フブキ",
+      "role": "高塔幻影",
+      "title": "试作武装的嬉笑",
+      "art": "assets/encounter-cast/fubuki-full.svg",
+      "originalArt": "assets/encounter-cast/fubuki.png",
+      "color": "#753d64",
+      "accent": "#f5b5d1",
+      "palette": {
+        "base": "#753d64",
+        "accent": "#f5b5d1"
+      },
+      "entryLine": "这次的试作品，会带来怎样的惊喜呢？",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_130201.acb",
+          "md5": "745fc62dfe67aa81eeee239692b11da4",
+          "poolHash": "a1101147f90ac178",
+          "bytes": 664000,
+          "manifestLine": 23667,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/a1/a1101147f90ac178",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130201.acb",
+          "actualBytes": 664000,
+          "sha256": "e64a7cd08a58da266fcdd9adf8a6b77451e5c03a7c749469827e2efbc28a8935",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/fubuki/entry.m4a",
+        "bytes": 32990,
+        "sha256": "225122feb4995537a1826d2aa2a58df9231e33de63e43ed55f2af16e9e7ce834",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_130201_wavestart",
+        "aliases": [
+          "vo_btl_130201_wavestart"
+        ],
+        "sampleId": "130201:subsong:23",
+        "durationSeconds": 1.920998,
+        "sourceDurationSeconds": 1.921156,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/fubuki/cutin.mp4",
+        "poster": "assets/media/bosses/fubuki/poster.jpg",
+        "voice": "assets/media/bosses/fubuki/ub.m4a",
+        "cutinVoice": "assets/media/bosses/fubuki/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.750998,
+        "cutinVoiceDurationSeconds": 3.031995,
+        "audioPaths": [
+          "assets/media/bosses/fubuki/cutin.m4a",
+          "assets/media/bosses/fubuki/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "130201:subsong:5",
+          "130201:subsong:20"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "fubuki",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_130201.usm",
+          "md5": "7f4ac9a340a63ff375269e1f3fabec92",
+          "poolHash": "2059415aa452c37d",
+          "bytes": 2372864,
+          "manifestLine": 947,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/20/2059415aa452c37d",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_130201.usm",
+          "actualBytes": 2372864,
+          "sha256": "778a5082ae46449c8e775b7cc220e0ea53892bbf94ea2a9c65e9902632db9a84",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": {
+          "kind": "official_game_character_page",
+          "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/ddb8f09a56b5411aa7a1cc8bfcc14122/whole_fubuki.png",
+          "page": "https://priconne-redive.jp/character/fubuki/",
+          "field": "image_astrum",
+          "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+          "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+        },
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/fubuki/130201-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true,
+        "transparentMarginOnlyViewBox": true,
+        "reviewedDate": "2026-10-21"
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5160333,
+        "partialAlphaPixels": 19312,
+        "visibleBounds": {
+          "x": 488,
+          "y": 369,
+          "width": 1301,
+          "height": 1674
+        },
+        "bytes": 1582001,
+        "sha256": "7b02d01753963062a3b7755fff1ceaa7213c3a99e476990ff782907d929ab4f0"
+      }
+    },
+    "paper_yamato": {
+      "id": "yamato",
+      "displayName": "倭",
+      "originalName": "ヤマト",
+      "role": "高塔幻影",
+      "title": "碎刃与余兴",
+      "art": "assets/encounter-cast/yamato-full.svg",
+      "originalArt": "assets/encounter-cast/yamato.png",
+      "color": "#56345e",
+      "accent": "#d58cdb",
+      "palette": {
+        "base": "#56345e",
+        "accent": "#d58cdb"
+      },
+      "entryLine": "跟上我的刀光，再继续向上吧。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_130001.acb",
+          "md5": "6db1eed17be2e30075fd43fc89ab7dc5",
+          "poolHash": "fc79c4cdf210f092",
+          "bytes": 615040,
+          "manifestLine": 23665,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fc/fc79c4cdf210f092",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130001.acb",
+          "actualBytes": 615040,
+          "sha256": "45a6d65649846f608085b0c2e37c3d1427cf70e844cbd5f3c30279b5d1f9c2c3",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/yamato/entry.m4a",
+        "bytes": 20428,
+        "sha256": "cfd3e753e39f248edcd95464c7c4f2342dd293425f31b2230e2eb94d927ab1d4",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_130001_wavestart",
+        "aliases": [
+          "vo_btl_130001_wavestart"
+        ],
+        "sampleId": "130001:subsong:24",
+        "durationSeconds": 1.169002,
+        "sourceDurationSeconds": 1.168798,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/yamato/cutin.mp4",
+        "poster": "assets/media/bosses/yamato/poster.jpg",
+        "voice": "assets/media/bosses/yamato/ub.m4a",
+        "cutinVoice": "assets/media/bosses/yamato/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.585011,
+        "cutinVoiceDurationSeconds": 3.056009,
+        "audioPaths": [
+          "assets/media/bosses/yamato/cutin.m4a",
+          "assets/media/bosses/yamato/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "130001:subsong:5",
+          "130001:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "yamato",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_130001.usm",
+          "md5": "366febe662934d7ae626027691197066",
+          "poolHash": "dc8980cffc20ee01",
+          "bytes": 2494848,
+          "manifestLine": 945,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/dc/dc8980cffc20ee01",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_130001.usm",
+          "actualBytes": 2494848,
+          "sha256": "44f4792928c1f734a3c86b7b6c0a86747a2856411b61e8c2bf9fb3e9f218884c",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": {
+          "kind": "official_game_character_page",
+          "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/775b9e5d27664259bb1fa77358d10535/whole_yamato.png",
+          "page": "https://priconne-redive.jp/character/yamato/",
+          "field": "image_astrum",
+          "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+          "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+        },
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/yamato/130001-end.jpg",
+          "atSeconds": 2.216667
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true,
+        "transparentMarginOnlyViewBox": true,
+        "reviewedDate": "2026-10-21"
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 4889339,
+        "partialAlphaPixels": 28793,
+        "visibleBounds": {
+          "x": 346,
+          "y": 151,
+          "width": 1734,
+          "height": 2181
+        },
+        "bytes": 1911007,
+        "sha256": "05ee69d412040525110fb3950a25171d661ca70cb534b29784697a8e02552825"
+      }
+    },
+    "paper_ranpha": {
+      "id": "ranpha",
+      "displayName": "兰法",
+      "originalName": "ランファ",
+      "role": "高塔幻影",
+      "title": "回廊里的咏唱",
+      "art": "assets/encounter-cast/ranpha-full.svg",
+      "originalArt": "assets/encounter-cast/ranpha.png",
+      "color": "#273d4b",
+      "accent": "#87d8ce",
+      "palette": {
+        "base": "#273d4b",
+        "accent": "#87d8ce"
+      },
+      "entryLine": "愿这段歌声，也能抵达你们心中。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_118101.acb",
+          "md5": "733a1357cebacea2637914ff7922df3b",
+          "poolHash": "5ab206d8900e29e4",
+          "bytes": 619744,
+          "manifestLine": 23572,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/5a/5ab206d8900e29e4",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118101.acb",
+          "actualBytes": 619744,
+          "sha256": "7a9c2cb2d39610333b9a9826bf4b6b4b7efaf0a22a37874c83d3b8ddf6029588",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/ranpha/entry.m4a",
+        "bytes": 31299,
+        "sha256": "d2783600b1391ad27a1c57a46f9f151ec4b3a7b5e73754db375dead6e3b0bf9d",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_118101_wavestart",
+        "aliases": [
+          "vo_btl_118101_wavestart"
+        ],
+        "sampleId": "118101:subsong:22",
+        "durationSeconds": 1.8,
+        "sourceDurationSeconds": 1.8,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/ranpha/cutin.mp4",
+        "poster": "assets/media/bosses/ranpha/poster.jpg",
+        "voice": "assets/media/bosses/ranpha/ub.m4a",
+        "cutinVoice": "assets/media/bosses/ranpha/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 3.883991,
+        "cutinVoiceDurationSeconds": 2.367007,
+        "audioPaths": [
+          "assets/media/bosses/ranpha/cutin.m4a",
+          "assets/media/bosses/ranpha/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "118101:subsong:5",
+          "118101:subsong:20"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "ranpha",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_118101.usm",
+          "md5": "ad36ea7c89e4e634d54c2117b140d214",
+          "poolHash": "e8a2ba43ba0a0274",
+          "bytes": 2263264,
+          "manifestLine": 854,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/e8/e8a2ba43ba0a0274",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_118101.usm",
+          "actualBytes": 2263264,
+          "sha256": "d3e0bc0d740e2b6840b803460119952de0190417ee573d8ffb58051440aafaef",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": "priconne_standing_pngs/Ranpha -- Ranpha (game).png",
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/ranpha/118101-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "fallbackExplanation": null
+    },
+    "paper_misora": {
+      "id": "misora",
+      "displayName": "美空",
+      "originalName": "ミソラ",
+      "role": "高塔幻影",
+      "title": "笑容后的火线",
+      "art": "assets/encounter-cast/misora-full.svg",
+      "originalArt": "assets/encounter-cast/misora.png",
+      "color": "#495e51",
+      "accent": "#ade0bd",
+      "palette": {
+        "base": "#495e51",
+        "accent": "#ade0bd"
+      },
+      "entryLine": "既然来了，就陪我玩到最后吧。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_118201.acb",
+          "md5": "0045dc6a2702eca1148897fe96ed42d0",
+          "poolHash": "b158ad184657c58d",
+          "bytes": 674496,
+          "manifestLine": 23573,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/b1/b158ad184657c58d",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118201.acb",
+          "actualBytes": 674496,
+          "sha256": "c82f6909adf97c68a76c8da866f4791b823fbef91dedfdb7aed24e32295615ef",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/misora/entry.m4a",
+        "bytes": 35098,
+        "sha256": "53fcf9d338efd3825265dfbdb0dd91a1716f219b89dfb2584aeb5c48e845fae1",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_118201_wavestart",
+        "aliases": [
+          "vo_btl_118201_wavestart"
+        ],
+        "sampleId": "118201:subsong:25",
+        "durationSeconds": 2.046009,
+        "sourceDurationSeconds": 2.04678,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/misora/cutin.mp4",
+        "poster": "assets/media/bosses/misora/poster.jpg",
+        "voice": "assets/media/bosses/misora/ub.m4a",
+        "cutinVoice": "assets/media/bosses/misora/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.259002,
+        "cutinVoiceDurationSeconds": 2.471995,
+        "audioPaths": [
+          "assets/media/bosses/misora/cutin.m4a",
+          "assets/media/bosses/misora/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "118201:subsong:5",
+          "118201:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "misora",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_118201.usm",
+          "md5": "4d60517e7ebcf924adb8433bad2830ea",
+          "poolHash": "6fb81864c6166d8a",
+          "bytes": 1971552,
+          "manifestLine": 855,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/6f/6fb81864c6166d8a",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_118201.usm",
+          "actualBytes": 1971552,
+          "sha256": "07ab76092e6f5e808cfe12e81b9d962d60e5252ed4002042cb0801a97cbb8f7a",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": "priconne_standing_pngs/Misora -- Misora-astrum-sprite-normal.png",
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/misora/118201-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": false,
+        "includesFeet": false,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "fallbackExplanation": null
+    },
+    "paper_kaiser": {
+      "id": "kaiser",
+      "displayName": "霸瞳皇帝",
+      "originalName": "覇瞳皇帝",
+      "role": "高塔幻影",
+      "title": "王座的残影",
+      "art": "assets/encounter-cast/kaiser-full.svg",
+      "originalArt": "assets/encounter-cast/kaiser-insight.png",
+      "color": "#6c536f",
+      "accent": "#e6cf9b",
+      "palette": {
+        "base": "#6c536f",
+        "accent": "#e6cf9b"
+      },
+      "entryLine": "登塔者，把你们的选择呈到王座之前。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_309801.acb",
+          "md5": "361fa3e01fab1eb17f28cfc45073e10b",
+          "poolHash": "faa0e907af3b33b7",
+          "bytes": 185344,
+          "manifestLine": 23778,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fa/faa0e907af3b33b7",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_309801.acb",
+          "actualBytes": 185344,
+          "sha256": "fd1a9fa1ab6b0c7e96ab565d2bd9f3fa055fd1719148a01c3e5da8b698e01b94",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/kaiser/entry.m4a",
+        "bytes": 46279,
+        "sha256": "4cff931629e6ee4aaa87312251102cc7841efdb104bf7dcf0b469319893d39da",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_309801_wavestart",
+        "aliases": [
+          "vo_btl_309801_wavestart"
+        ],
+        "sampleId": "309801:subsong:6",
+        "durationSeconds": 2.785011,
+        "sourceDurationSeconds": 2.784989,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "boss_variant_309801",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/kaiser/cutin.mp4",
+        "poster": "assets/media/bosses/kaiser/poster.jpg",
+        "voice": "assets/media/bosses/kaiser/cutin.m4a",
+        "cutinVoice": null,
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 3.163991,
+        "cutinVoiceDurationSeconds": 0,
+        "audioPaths": [
+          "assets/media/bosses/kaiser/cutin.m4a"
+        ],
+        "uniqueSampleIds": [
+          "309801:subsong:1"
+        ],
+        "deduplicatedCutinUbAlias": true,
+        "variant": "original-Boss-short-cut-in",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "kaiser",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_309800.usm",
+          "md5": "9ac6ddf968a8937741a616d16227c764",
+          "poolHash": "c4c501e10535a495",
+          "bytes": 2990272,
+          "manifestLine": 1044,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/c4/c4c501e10535a495",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_309800.usm",
+          "actualBytes": 2990272,
+          "sha256": "de5b21abf80b6a0e2ae5826b33315988e5e60898d57e430da5363b6e9db3f85f",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": "assets/encounter-cast/kaiser-insight.png",
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/kaiser/309800-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "fallbackExplanation": null
+    }
+  },
+  "enemies": {
+    "seal_knight": {
+      "id": "christina",
+      "displayName": "克莉丝提娜",
+      "originalName": "クリスティーナ",
+      "role": "高塔幻影",
+      "title": "不败的邀约",
+      "art": "assets/encounter-cast/christina-full.svg",
+      "originalArt": "assets/encounter-cast/christina.png",
+      "color": "#4d4185",
+      "accent": "#d5ac5b",
+      "palette": {
+        "base": "#4d4185",
+        "accent": "#d5ac5b"
+      },
+      "entryLine": "既然走到了这里，就让我看看你们的决心。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "path": "assets/encounter-cast/audio/christina-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/91e9f436e106426e96fc026262a5abe5/voice_08_02_Christina.mp3",
+        "officialPage": "https://priconne-redive.jp/character/christina/",
+        "bytes": 226057,
+        "sha256": "e4da8508c41f6035c0ed3f5887e7ee95457fc3133022b3e6815ae1f13b197a25",
+        "durationSeconds": 6.840563,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/25d3af269a184798b6eb3c03a51f009b/whole_christina.png",
+        "page": "https://priconne-redive.jp/character/christina/",
+        "field": "image_astrum"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5277774,
+        "partialAlphaPixels": 14193,
+        "visibleBounds": {
+          "x": 708,
+          "y": 305,
+          "width": 869,
+          "height": 2044
+        },
+        "bytes": 1366288,
+        "sha256": "9d51a5bddb59abc11d4caf40428f8656c5c481ac0b95d20674967db9b45c1cf6"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      }
+    },
+    "echo_master": {
+      "id": "neneka",
+      "displayName": "似似花",
+      "originalName": "ネネカ",
+      "role": "高塔幻影",
+      "title": "镜中的答案",
+      "art": "assets/encounter-cast/neneka-full.svg",
+      "originalArt": "assets/encounter-cast/neneka.png",
+      "color": "#f54d80",
+      "accent": "#f4a5c4",
+      "palette": {
+        "base": "#f54d80",
+        "accent": "#f4a5c4"
+      },
+      "entryLine": "看清真正的目标，再迈出下一步。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "path": "assets/encounter-cast/audio/neneka-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/dace720ca8ba41bb94b2d06938cd2c8f/voice_28_01_Neneka.mp3",
+        "officialPage": "https://priconne-redive.jp/character/neneka/",
+        "bytes": 191715,
+        "sha256": "96c40346a7a43f56ca3929227074ff93f98547a94b5850053879f757f3943f8a",
+        "durationSeconds": 11.964063,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/dc22ce4f764a4fd289dc7011015d4464/whole_neneka.png",
+        "page": "https://priconne-redive.jp/character/neneka/",
+        "field": "image_astrum"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 4982731,
+        "partialAlphaPixels": 55125,
+        "visibleBounds": {
+          "x": 530,
+          "y": 271,
+          "width": 1248,
+          "height": 1748
+        },
+        "bytes": 1639479,
+        "sha256": "4c93543f3af43b64f916f07343aa218fb86d742b74c6e04dd873a2f35f7ea8d2"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      }
+    },
+    "tower_crown": {
+      "id": "kaiser_insight",
+      "displayName": "霸瞳皇帝",
+      "originalName": "覇瞳皇帝（カイザーインサイト）",
+      "role": "高塔幻影",
+      "title": "王座的残影",
+      "art": "assets/encounter-cast/kaiser-insight-full.svg",
+      "originalArt": "assets/encounter-cast/kaiser-insight.png",
+      "color": "#6c536f",
+      "accent": "#e6cf9b",
+      "palette": {
+        "base": "#6c536f",
+        "accent": "#e6cf9b"
+      },
+      "entryLine": "登塔者，把你们的选择呈到王座之前。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "path": "assets/encounter-cast/audio/omniscientkaiser-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/feefa8fddca040018dc55767c8d1af3a/voice_18_01_OmniscientKaiser.mp3",
+        "officialPage": "https://priconne-redive.jp/character/omniscientkaiser/",
+        "bytes": 114278,
+        "sha256": "917e721e182e69272cc01ec39dd2991e3ea22cb2dec3d7f40c0d389f65f0a557",
+        "durationSeconds": 6.732125,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 1
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "local_existing_original_game_art_from_community_wiki",
+        "url": "https://static.wikia.nocookie.net/princess-connect/images/0/0d/Kaiser_Insight_%28game%29.png/revision/latest?cb=20180314164523",
+        "localFile": "priconne_standing_pngs/Kaiser Insight -- Kaiser Insight (game).png",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "identityReference": "https://priconne-redive.jp/character/omniscientkaiser/"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 430,
+        "height": 680,
+        "hasAlpha": true,
+        "transparentPixels": 136437,
+        "partialAlphaPixels": 5439,
+        "visibleBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 430,
+          "height": 680
+        },
+        "bytes": 320562,
+        "sha256": "ba6cc87d308ec036ab6873c92c5df518563b3dc89a3689d56b2e1dfc9eef4ccd"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      }
+    },
+    "fubuki": {
+      "id": "fubuki",
+      "displayName": "布武机",
+      "originalName": "フブキ",
+      "role": "高塔幻影",
+      "title": "试作武装的嬉笑",
+      "art": "assets/encounter-cast/fubuki-full.svg",
+      "originalArt": "assets/encounter-cast/fubuki.png",
+      "color": "#753d64",
+      "accent": "#f5b5d1",
+      "palette": {
+        "base": "#753d64",
+        "accent": "#f5b5d1"
+      },
+      "entryLine": "这次的试作品，会带来怎样的惊喜呢？",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_130201.acb",
+          "md5": "745fc62dfe67aa81eeee239692b11da4",
+          "poolHash": "a1101147f90ac178",
+          "bytes": 664000,
+          "manifestLine": 23667,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/a1/a1101147f90ac178",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130201.acb",
+          "actualBytes": 664000,
+          "sha256": "e64a7cd08a58da266fcdd9adf8a6b77451e5c03a7c749469827e2efbc28a8935",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/fubuki/entry.m4a",
+        "bytes": 32990,
+        "sha256": "225122feb4995537a1826d2aa2a58df9231e33de63e43ed55f2af16e9e7ce834",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_130201_wavestart",
+        "aliases": [
+          "vo_btl_130201_wavestart"
+        ],
+        "sampleId": "130201:subsong:23",
+        "durationSeconds": 1.920998,
+        "sourceDurationSeconds": 1.921156,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/fubuki/cutin.mp4",
+        "poster": "assets/media/bosses/fubuki/poster.jpg",
+        "voice": "assets/media/bosses/fubuki/ub.m4a",
+        "cutinVoice": "assets/media/bosses/fubuki/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.750998,
+        "cutinVoiceDurationSeconds": 3.031995,
+        "audioPaths": [
+          "assets/media/bosses/fubuki/cutin.m4a",
+          "assets/media/bosses/fubuki/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "130201:subsong:5",
+          "130201:subsong:20"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "fubuki",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_130201.usm",
+          "md5": "7f4ac9a340a63ff375269e1f3fabec92",
+          "poolHash": "2059415aa452c37d",
+          "bytes": 2372864,
+          "manifestLine": 947,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/20/2059415aa452c37d",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_130201.usm",
+          "actualBytes": 2372864,
+          "sha256": "778a5082ae46449c8e775b7cc220e0ea53892bbf94ea2a9c65e9902632db9a84",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": {
+          "kind": "official_game_character_page",
+          "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/ddb8f09a56b5411aa7a1cc8bfcc14122/whole_fubuki.png",
+          "page": "https://priconne-redive.jp/character/fubuki/",
+          "field": "image_astrum",
+          "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+          "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+        },
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/fubuki/130201-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true,
+        "transparentMarginOnlyViewBox": true,
+        "reviewedDate": "2026-10-21"
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5160333,
+        "partialAlphaPixels": 19312,
+        "visibleBounds": {
+          "x": 488,
+          "y": 369,
+          "width": 1301,
+          "height": 1674
+        },
+        "bytes": 1582001,
+        "sha256": "7b02d01753963062a3b7755fff1ceaa7213c3a99e476990ff782907d929ab4f0"
+      }
+    },
+    "yamato": {
+      "id": "yamato",
+      "displayName": "倭",
+      "originalName": "ヤマト",
+      "role": "高塔幻影",
+      "title": "碎刃与余兴",
+      "art": "assets/encounter-cast/yamato-full.svg",
+      "originalArt": "assets/encounter-cast/yamato.png",
+      "color": "#56345e",
+      "accent": "#d58cdb",
+      "palette": {
+        "base": "#56345e",
+        "accent": "#d58cdb"
+      },
+      "entryLine": "跟上我的刀光，再继续向上吧。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_130001.acb",
+          "md5": "6db1eed17be2e30075fd43fc89ab7dc5",
+          "poolHash": "fc79c4cdf210f092",
+          "bytes": 615040,
+          "manifestLine": 23665,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fc/fc79c4cdf210f092",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_130001.acb",
+          "actualBytes": 615040,
+          "sha256": "45a6d65649846f608085b0c2e37c3d1427cf70e844cbd5f3c30279b5d1f9c2c3",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/yamato/entry.m4a",
+        "bytes": 20428,
+        "sha256": "cfd3e753e39f248edcd95464c7c4f2342dd293425f31b2230e2eb94d927ab1d4",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_130001_wavestart",
+        "aliases": [
+          "vo_btl_130001_wavestart"
+        ],
+        "sampleId": "130001:subsong:24",
+        "durationSeconds": 1.169002,
+        "sourceDurationSeconds": 1.168798,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/yamato/cutin.mp4",
+        "poster": "assets/media/bosses/yamato/poster.jpg",
+        "voice": "assets/media/bosses/yamato/ub.m4a",
+        "cutinVoice": "assets/media/bosses/yamato/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.585011,
+        "cutinVoiceDurationSeconds": 3.056009,
+        "audioPaths": [
+          "assets/media/bosses/yamato/cutin.m4a",
+          "assets/media/bosses/yamato/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "130001:subsong:5",
+          "130001:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "yamato",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_130001.usm",
+          "md5": "366febe662934d7ae626027691197066",
+          "poolHash": "dc8980cffc20ee01",
+          "bytes": 2494848,
+          "manifestLine": 945,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/dc/dc8980cffc20ee01",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_130001.usm",
+          "actualBytes": 2494848,
+          "sha256": "44f4792928c1f734a3c86b7b6c0a86747a2856411b61e8c2bf9fb3e9f218884c",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": {
+          "kind": "official_game_character_page",
+          "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/775b9e5d27664259bb1fa77358d10535/whole_yamato.png",
+          "page": "https://priconne-redive.jp/character/yamato/",
+          "field": "image_astrum",
+          "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+          "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+        },
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/yamato/130001-end.jpg",
+          "atSeconds": 2.216667
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true,
+        "transparentMarginOnlyViewBox": true,
+        "reviewedDate": "2026-10-21"
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 4889339,
+        "partialAlphaPixels": 28793,
+        "visibleBounds": {
+          "x": 346,
+          "y": 151,
+          "width": 1734,
+          "height": 2181
+        },
+        "bytes": 1911007,
+        "sha256": "05ee69d412040525110fb3950a25171d661ca70cb534b29784697a8e02552825"
+      }
+    },
+    "ranpha": {
+      "id": "ranpha",
+      "displayName": "兰法",
+      "originalName": "ランファ",
+      "role": "高塔幻影",
+      "title": "回廊里的咏唱",
+      "art": "assets/encounter-cast/ranpha-full.svg",
+      "originalArt": "assets/encounter-cast/ranpha.png",
+      "color": "#273d4b",
+      "accent": "#87d8ce",
+      "palette": {
+        "base": "#273d4b",
+        "accent": "#87d8ce"
+      },
+      "entryLine": "愿这段歌声，也能抵达你们心中。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_118101.acb",
+          "md5": "733a1357cebacea2637914ff7922df3b",
+          "poolHash": "5ab206d8900e29e4",
+          "bytes": 619744,
+          "manifestLine": 23572,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/5a/5ab206d8900e29e4",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118101.acb",
+          "actualBytes": 619744,
+          "sha256": "7a9c2cb2d39610333b9a9826bf4b6b4b7efaf0a22a37874c83d3b8ddf6029588",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/ranpha/entry.m4a",
+        "bytes": 31299,
+        "sha256": "d2783600b1391ad27a1c57a46f9f151ec4b3a7b5e73754db375dead6e3b0bf9d",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_118101_wavestart",
+        "aliases": [
+          "vo_btl_118101_wavestart"
+        ],
+        "sampleId": "118101:subsong:22",
+        "durationSeconds": 1.8,
+        "sourceDurationSeconds": 1.8,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/ranpha/cutin.mp4",
+        "poster": "assets/media/bosses/ranpha/poster.jpg",
+        "voice": "assets/media/bosses/ranpha/ub.m4a",
+        "cutinVoice": "assets/media/bosses/ranpha/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 3.883991,
+        "cutinVoiceDurationSeconds": 2.367007,
+        "audioPaths": [
+          "assets/media/bosses/ranpha/cutin.m4a",
+          "assets/media/bosses/ranpha/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "118101:subsong:5",
+          "118101:subsong:20"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "ranpha",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_118101.usm",
+          "md5": "ad36ea7c89e4e634d54c2117b140d214",
+          "poolHash": "e8a2ba43ba0a0274",
+          "bytes": 2263264,
+          "manifestLine": 854,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/e8/e8a2ba43ba0a0274",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_118101.usm",
+          "actualBytes": 2263264,
+          "sha256": "d3e0bc0d740e2b6840b803460119952de0190417ee573d8ffb58051440aafaef",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": "priconne_standing_pngs/Ranpha -- Ranpha (game).png",
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/ranpha/118101-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "fallbackExplanation": null
+    },
+    "misora": {
+      "id": "misora",
+      "displayName": "美空",
+      "originalName": "ミソラ",
+      "role": "高塔幻影",
+      "title": "笑容后的火线",
+      "art": "assets/encounter-cast/misora-full.svg",
+      "originalArt": "assets/encounter-cast/misora.png",
+      "color": "#495e51",
+      "accent": "#ade0bd",
+      "palette": {
+        "base": "#495e51",
+        "accent": "#ade0bd"
+      },
+      "entryLine": "既然来了，就陪我玩到最后吧。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_118201.acb",
+          "md5": "0045dc6a2702eca1148897fe96ed42d0",
+          "poolHash": "b158ad184657c58d",
+          "bytes": 674496,
+          "manifestLine": 23573,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/b1/b158ad184657c58d",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_118201.acb",
+          "actualBytes": 674496,
+          "sha256": "c82f6909adf97c68a76c8da866f4791b823fbef91dedfdb7aed24e32295615ef",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/misora/entry.m4a",
+        "bytes": 35098,
+        "sha256": "53fcf9d338efd3825265dfbdb0dd91a1716f219b89dfb2584aeb5c48e845fae1",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_118201_wavestart",
+        "aliases": [
+          "vo_btl_118201_wavestart"
+        ],
+        "sampleId": "118201:subsong:25",
+        "durationSeconds": 2.046009,
+        "sourceDurationSeconds": 2.04678,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "playable",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/misora/cutin.mp4",
+        "poster": "assets/media/bosses/misora/poster.jpg",
+        "voice": "assets/media/bosses/misora/ub.m4a",
+        "cutinVoice": "assets/media/bosses/misora/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.259002,
+        "cutinVoiceDurationSeconds": 2.471995,
+        "audioPaths": [
+          "assets/media/bosses/misora/cutin.m4a",
+          "assets/media/bosses/misora/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "118201:subsong:5",
+          "118201:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "misora",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_118201.usm",
+          "md5": "4d60517e7ebcf924adb8433bad2830ea",
+          "poolHash": "6fb81864c6166d8a",
+          "bytes": 1971552,
+          "manifestLine": 855,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/6f/6fb81864c6166d8a",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_118201.usm",
+          "actualBytes": 1971552,
+          "sha256": "07ab76092e6f5e808cfe12e81b9d962d60e5252ed4002042cb0801a97cbb8f7a",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": "priconne_standing_pngs/Misora -- Misora-astrum-sprite-normal.png",
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/misora/118201-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": false,
+        "includesFeet": false,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "fallbackExplanation": null
+    },
+    "kaiser": {
+      "id": "kaiser",
+      "displayName": "霸瞳皇帝",
+      "originalName": "覇瞳皇帝",
+      "role": "高塔幻影",
+      "title": "王座的残影",
+      "art": "assets/encounter-cast/kaiser-full.svg",
+      "originalArt": "assets/encounter-cast/kaiser-insight.png",
+      "color": "#6c536f",
+      "accent": "#e6cf9b",
+      "palette": {
+        "base": "#6c536f",
+        "accent": "#e6cf9b"
+      },
+      "entryLine": "登塔者，把你们的选择呈到王座之前。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "source": {
+          "logicalName": "v/vo_btl_309801.acb",
+          "md5": "361fa3e01fab1eb17f28cfc45073e10b",
+          "poolHash": "faa0e907af3b33b7",
+          "bytes": 185344,
+          "manifestLine": 23778,
+          "localManifest": "work/media-research-2026-10-20/soundmanifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/fa/faa0e907af3b33b7",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/vo_btl_309801.acb",
+          "actualBytes": 185344,
+          "sha256": "fd1a9fa1ab6b0c7e96ab565d2bd9f3fa055fd1719148a01c3e5da8b698e01b94",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "path": "assets/media/bosses/kaiser/entry.m4a",
+        "bytes": 46279,
+        "sha256": "4cff931629e6ee4aaa87312251102cc7841efdb104bf7dcf0b469319893d39da",
+        "copiedWithoutReencoding": true,
+        "cue": "vo_btl_309801_wavestart",
+        "aliases": [
+          "vo_btl_309801_wavestart"
+        ],
+        "sampleId": "309801:subsong:6",
+        "durationSeconds": 2.785011,
+        "sourceDurationSeconds": 2.784989,
+        "fullDecodePassed": true,
+        "semanticListening": false,
+        "avSync": false,
+        "sourceBankVariant": "boss_variant_309801",
+        "kind": "battle_wavestart_cue",
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "This character and declared bank version; role inferred from wavestart cue name. Not a recording of the fan-written entryLine."
+      },
+      "ub": {
+        "video": "assets/media/bosses/kaiser/cutin.mp4",
+        "poster": "assets/media/bosses/kaiser/poster.jpg",
+        "voice": "assets/media/bosses/kaiser/cutin.m4a",
+        "cutinVoice": null,
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 3.163991,
+        "cutinVoiceDurationSeconds": 0,
+        "audioPaths": [
+          "assets/media/bosses/kaiser/cutin.m4a"
+        ],
+        "uniqueSampleIds": [
+          "309801:subsong:1"
+        ],
+        "deduplicatedCutinUbAlias": true,
+        "variant": "original-Boss-short-cut-in",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original short cut-in plus cue-name-associated independent voice candidates, not a reconstructed complete original-game UB. Let the video end into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "kaiser",
+      "source": {
+        "video": {
+          "logicalName": "m/cutin_309800.usm",
+          "md5": "9ac6ddf968a8937741a616d16227c764",
+          "poolHash": "c4c501e10535a495",
+          "bytes": 2990272,
+          "manifestLine": 1044,
+          "localManifest": "work/media-research-2026-10-20/movie2manifest.txt",
+          "manifestVersion": "10071200",
+          "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+          "sourceUrl": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/c4/c4c501e10535a495",
+          "localPath": "outputs/media-audit-human-boss/round2/raw/cutin_309800.usm",
+          "actualBytes": 2990272,
+          "sha256": "de5b21abf80b6a0e2ae5826b33315988e5e60898d57e430da5363b6e9db3f85f",
+          "sizeMd5Match": true,
+          "downloadedThisRound": true,
+          "reusedRound1": false,
+          "httpStatus": 200
+        },
+        "standing": "assets/encounter-cast/kaiser-insight.png",
+        "posterFrame": {
+          "source": "outputs/media-audit-human-boss/round2/video/kaiser/309800-middle.jpg",
+          "atSeconds": 1.1833335
+        }
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "sourceIsVideoFrame": false,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "originalPixelsUnmodified": true
+      },
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "fallbackExplanation": null
+    }
+  },
+  "merchant": {
+    "id": "karin",
+    "displayName": "花凛",
+    "originalName": "カリン",
+    "role": "高塔补给员",
+    "title": "冒险补给站",
+    "art": "assets/encounter-cast/karin-full.svg",
+    "originalArt": "assets/encounter-cast/karin.png",
+    "color": "#6ba53a",
+    "accent": "#d2b67e",
+    "palette": {
+      "base": "#6ba53a",
+      "accent": "#d2b67e"
+    },
+    "entryLine": "欢迎来到补给站。准备好了，再继续冒险吧。",
+    "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+    "fanScenario": false,
+    "voice": {
+      "path": "assets/encounter-cast/audio/karin-official-sample.mp3",
+      "kind": "official_character_sample",
+      "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/c6f1604c693643a2b9434bd2588de188/voice_16_02_Karin.mp3",
+      "officialPage": "https://priconne-redive.jp/character/karin/",
+      "bytes": 183472,
+      "sha256": "39e1b6bcba9753bab26dd61b31fa6475a52db0b861a922b62da0fa1df09dd1b0",
+      "durationSeconds": 5.509781,
+      "streams": [
+        {
+          "codec_name": "mp3",
+          "sample_rate": "44100",
+          "channels": 2
+        }
+      ],
+      "codecDecodeVerified": true,
+      "fullDecodeVerified": true,
+      "characterAssociationVerified": true,
+      "humanListening": false,
+      "transcript": null,
+      "subtitle": null,
+      "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+    },
+    "source": {
+      "kind": "local_existing_original_game_art_from_community_wiki",
+      "url": "https://static.wikia.nocookie.net/princess-connect/images/3/35/Karin_%28game%29.png/revision/latest?cb=20180219093232",
+      "localFile": "priconne_standing_pngs/Karin -- Karin (game).png",
+      "sourceManifest": "priconne_standing_pngs/manifest.json",
+      "identityReference": "https://priconne-redive.jp/character/karin/"
+    },
+    "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+    "pixels": {
+      "width": 269,
+      "height": 535,
+      "hasAlpha": true,
+      "transparentPixels": 69936,
+      "partialAlphaPixels": 3453,
+      "visibleBounds": {
+        "x": 0,
+        "y": 0,
+        "width": 269,
+        "height": 535
+      },
+      "bytes": 138114,
+      "sha256": "f6a9440232905d35aef6789448a7fe5e150d1dcc0de16663d03b295a47e5b2e6"
+    },
+    "visualReview": {
+      "fullBody": true,
+      "includesFeet": true,
+      "bodyReconstruction": false,
+      "aiGenerated": false,
+      "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+      "reviewedDate": "2026-10-21"
+    }
+  },
+  "avatars": {
+    "pecorine": {
+      "icon": "assets/encounter-cast/avatars/pecorine.svg",
+      "art": "assets/encounter-cast/avatars/pecorine.svg",
+      "unitId": "105801",
+      "displayName": "佩可莉姆",
+      "kind": "face_crop_of_official_character_panel",
+      "originalName": "ペコリーヌ",
+      "source": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/65bbcaa630894235b276e03244f6e6ad/panel_pecorine.png",
+      "officialPage": "https://priconne-redive.jp/character/pecorine/",
+      "sourceArt": "assets/encounter-cast/sources/panel-pecorine.png",
+      "viewBox": {
+        "x": 245,
+        "y": 170,
+        "width": 650,
+        "height": 650
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false,
+      "sourcePixels": {
+        "width": 1000,
+        "height": 1468,
+        "hasAlpha": true,
+        "transparentPixels": 476255,
+        "partialAlphaPixels": 5819,
+        "visibleBounds": {
+          "x": 0,
+          "y": 0,
+          "width": 1000,
+          "height": 1468
+        },
+        "bytes": 1275220,
+        "sha256": "76405fb9e5fa5dea3fb0e1a5aa58977e85b211ae472baab9c6e0a84ae979b23b"
+      }
+    },
+    "rei": {
+      "icon": "assets/encounter-cast/avatars/rei.svg",
+      "art": "assets/encounter-cast/avatars/rei.svg",
+      "unitId": "100301",
+      "displayName": "怜",
+      "kind": "face_crop_of_official_character_panel",
+      "originalName": "レイ",
+      "source": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/7c38e083df57431b83a38b8002e27c07/panel_rei.png",
+      "officialPage": "https://priconne-redive.jp/character/rei/",
+      "sourceArt": "assets/encounter-cast/sources/panel-rei.png",
+      "viewBox": {
+        "x": 230,
+        "y": 140,
+        "width": 680,
+        "height": 680
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false,
+      "sourcePixels": {
+        "width": 1000,
+        "height": 1468,
+        "hasAlpha": true,
+        "transparentPixels": 452361,
+        "partialAlphaPixels": 8062,
+        "visibleBounds": {
+          "x": 0,
+          "y": 51,
+          "width": 1000,
+          "height": 1417
+        },
+        "bytes": 1344154,
+        "sha256": "2b2b8591fac64648e6ff5cbaa68b1ad025d141eb83195693701ad5326c5a093c"
+      }
+    },
+    "kokkoro": {
+      "icon": "assets/encounter-cast/avatars/kokkoro.svg",
+      "art": "assets/encounter-cast/avatars/kokkoro.svg",
+      "unitId": "105901",
+      "displayName": "可可萝",
+      "kind": "face_crop_of_official_character_panel",
+      "originalName": "コッコロ",
+      "source": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/49b5efa809b04765a62ae5addd2dea9b/panel_kokkoro.png",
+      "officialPage": "https://priconne-redive.jp/character/kokkoro/",
+      "sourceArt": "assets/encounter-cast/sources/panel-kokkoro.png",
+      "viewBox": {
+        "x": 160,
+        "y": 115,
+        "width": 710,
+        "height": 710
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false,
+      "sourcePixels": {
+        "width": 1000,
+        "height": 1468,
+        "hasAlpha": true,
+        "transparentPixels": 680323,
+        "partialAlphaPixels": 90659,
+        "visibleBounds": {
+          "x": 0,
+          "y": 92,
+          "width": 1000,
+          "height": 1376
+        },
+        "bytes": 974250,
+        "sha256": "9beb689ae3c86bf6aba69fdf42504b6845a1a31c59f1a73b57c9374f3ccb36de"
+      }
+    },
+    "kyaru": {
+      "icon": "assets/encounter-cast/avatars/kyaru.svg",
+      "art": "assets/encounter-cast/avatars/kyaru.svg",
+      "unitId": "106001",
+      "displayName": "凯露",
+      "kind": "face_crop_of_official_character_panel",
+      "originalName": "キャル",
+      "source": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/ebe9e663859f4efc80f07032c2b46477/panel_karyl.png",
+      "officialPage": "https://priconne-redive.jp/character/karyl/",
+      "sourceArt": "assets/encounter-cast/sources/panel-karyl.png",
+      "viewBox": {
+        "x": 175,
+        "y": 90,
+        "width": 710,
+        "height": 710
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false,
+      "sourcePixels": {
+        "width": 1000,
+        "height": 1468,
+        "hasAlpha": true,
+        "transparentPixels": 519070,
+        "partialAlphaPixels": 9268,
+        "visibleBounds": {
+          "x": 0,
+          "y": 72,
+          "width": 1000,
+          "height": 1396
+        },
+        "bytes": 1041285,
+        "sha256": "bec2427ea3fe028bf6b95de5bbf1b573846ab38c87e8ac2a3fa5569eac138c06"
+      }
+    },
+    "hatsune": {
+      "icon": "assets/encounter-cast/avatars/hatsune.svg",
+      "art": "assets/encounter-cast/avatars/hatsune.svg",
+      "unitId": "101201",
+      "displayName": "初音",
+      "kind": "face_crop_of_official_character_panel",
+      "originalName": "ハツネ",
+      "source": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/4227700445754a33a56d9e1e2602370d/panel_hatsune.png",
+      "officialPage": "https://priconne-redive.jp/character/hatsune/",
+      "sourceArt": "assets/encounter-cast/sources/panel-hatsune.png",
+      "viewBox": {
+        "x": 240,
+        "y": 150,
+        "width": 680,
+        "height": 680
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false,
+      "sourcePixels": {
+        "width": 1000,
+        "height": 1468,
+        "hasAlpha": true,
+        "transparentPixels": 289020,
+        "partialAlphaPixels": 9381,
+        "visibleBounds": {
+          "x": 0,
+          "y": 60,
+          "width": 1000,
+          "height": 1408
+        },
+        "bytes": 1387165,
+        "sha256": "3b599a14cd2df52090ab19ba7a950bcc84e40426c7716adfe4eb6bc74f2b82e3"
+      }
+    },
+    "yui": {
+      "icon": "assets/encounter-cast/avatars/yui.svg",
+      "art": "assets/encounter-cast/avatars/yui.svg",
+      "unitId": "100201",
+      "displayName": "优衣",
+      "kind": "face_crop_of_official_character_panel",
+      "originalName": "ユイ",
+      "source": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/2081c80d934b4d55bca4b0f3982409e1/panel_yui.png",
+      "officialPage": "https://priconne-redive.jp/character/yui/",
+      "sourceArt": "assets/encounter-cast/sources/panel-yui.png",
+      "viewBox": {
+        "x": 200,
+        "y": 155,
+        "width": 690,
+        "height": 690
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false,
+      "sourcePixels": {
+        "width": 1000,
+        "height": 1468,
+        "hasAlpha": true,
+        "transparentPixels": 634802,
+        "partialAlphaPixels": 9515,
+        "visibleBounds": {
+          "x": 0,
+          "y": 144,
+          "width": 1000,
+          "height": 1324
+        },
+        "bytes": 1077260,
+        "sha256": "6e228db905da827f55d3a8c88a5c7ac4d75a5747ae4979f21de0e9ea624a2c79"
+      }
+    },
+    "miyako": {
+      "icon": "assets/encounter-cast/avatars/miyako.svg",
+      "art": "assets/encounter-cast/avatars/miyako.svg",
+      "displayName": "宫子",
+      "kind": "face_viewbox_of_original_local_sprite",
+      "sourceArt": "assets/portraits/miyako.png",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/d/d2/Miyako_%28game%29.png/revision/latest?cb=20180219102259",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Miyako -- Miyako (game).png",
+        "fileTitle": "File:Miyako (game).png"
+      },
+      "viewBox": {
+        "x": 150,
+        "y": 80,
+        "width": 140,
+        "height": 140
+      },
+      "sourcePixels": {
+        "width": 429,
+        "height": 570,
+        "bytes": 219706,
+        "sha256": "6237775d1e29838a22cb14fba409dedf774f354d7450394b4acafefc16c2cf8d",
+        "transparentPixels": 90726,
+        "visibleBounds": {
+          "x": 6,
+          "y": 7,
+          "width": 417,
+          "height": 557
+        }
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "jun": {
+      "icon": "assets/encounter-cast/avatars/jun.svg",
+      "art": "assets/encounter-cast/avatars/jun.svg",
+      "displayName": "纯",
+      "kind": "face_viewbox_of_original_local_sprite",
+      "sourceArt": "assets/portraits/jun.png",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/3/38/Jun_%28game%29.png/revision/latest?cb=20180219102301",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Jun -- Jun (game).png",
+        "fileTitle": "File:Jun (game).png"
+      },
+      "viewBox": {
+        "x": 215,
+        "y": 15,
+        "width": 150,
+        "height": 150
+      },
+      "sourcePixels": {
+        "width": 469,
+        "height": 738,
+        "bytes": 275389,
+        "sha256": "8408bf819de9dc9d0c496476a04488ea52fa9999c54a9854ea7473bfb07e998f",
+        "transparentPixels": 139508,
+        "visibleBounds": {
+          "x": 5,
+          "y": 7,
+          "width": 460,
+          "height": 728
+        }
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "nozomi": {
+      "icon": "assets/encounter-cast/avatars/nozomi.svg",
+      "art": "assets/encounter-cast/avatars/nozomi.svg",
+      "displayName": "望",
+      "kind": "face_viewbox_of_official_image_astrum",
+      "sourceArt": "assets/portraits/nozomi.png",
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/0a51791fa70e4e0eaf1b1b3e1ab782ea/whole_nozomi.png",
+        "page": "https://priconne-redive.jp/character/nozomi/",
+        "field": "image_astrum",
+        "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+        "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+      },
+      "viewBox": {
+        "x": 970,
+        "y": 420,
+        "width": 440,
+        "height": 440
+      },
+      "sourcePixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5401802,
+        "partialAlphaPixels": 17548,
+        "visibleBounds": {
+          "x": 665,
+          "y": 399,
+          "width": 951,
+          "height": 1606
+        },
+        "bytes": 1256958,
+        "sha256": "64e783315aa4e5816d13663453c59831b5ec6d678afeb8fea2aa1f0588193e49"
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "shizuru": {
+      "icon": "assets/encounter-cast/avatars/shizuru.svg",
+      "art": "assets/encounter-cast/avatars/shizuru.svg",
+      "displayName": "静流",
+      "kind": "face_viewbox_of_original_local_sprite",
+      "sourceArt": "assets/portraits/shizuru.png",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/b/ba/Shizuru_%28game%29.png/revision/latest?cb=20180219103455",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Shizuru -- Shizuru (game).png",
+        "fileTitle": "File:Shizuru (game).png"
+      },
+      "viewBox": {
+        "x": 170,
+        "y": 20,
+        "width": 145,
+        "height": 145
+      },
+      "sourcePixels": {
+        "width": 445,
+        "height": 662,
+        "bytes": 256354,
+        "sha256": "cfcf3e93f98549969c0e6fdb3d18a0772982c2acea89460134c396a4dcb2b7ac",
+        "transparentPixels": 116590,
+        "visibleBounds": {
+          "x": 3,
+          "y": 2,
+          "width": 437,
+          "height": 657
+        }
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "makoto": {
+      "icon": "assets/encounter-cast/avatars/makoto.svg",
+      "art": "assets/encounter-cast/avatars/makoto.svg",
+      "displayName": "真琴",
+      "kind": "face_viewbox_of_original_local_sprite",
+      "sourceArt": "assets/portraits/makoto.png",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/c/ca/Makoto_%28game%29.png/revision/latest?cb=20180219095642",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Makoto -- Makoto (game).png",
+        "fileTitle": "File:Makoto (game).png"
+      },
+      "viewBox": {
+        "x": 140,
+        "y": 40,
+        "width": 145,
+        "height": 145
+      },
+      "sourcePixels": {
+        "width": 455,
+        "height": 700,
+        "bytes": 209400,
+        "sha256": "d30758df20ef446305b7d8398a8c389b2645fe16245d7f8f7d28a8b17ddfa095",
+        "transparentPixels": 155770,
+        "visibleBounds": {
+          "x": 4,
+          "y": 5,
+          "width": 444,
+          "height": 692
+        }
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "kaori": {
+      "icon": "assets/encounter-cast/avatars/kaori.svg",
+      "art": "assets/encounter-cast/avatars/kaori.svg",
+      "displayName": "香织",
+      "kind": "face_viewbox_of_original_local_sprite",
+      "sourceArt": "assets/portraits/kaori.png",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/c/c4/Kaori_%28game%29.png/revision/latest?cb=20180219095159",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Kaori -- Kaori (game).png",
+        "fileTitle": "File:Kaori (game).png"
+      },
+      "viewBox": {
+        "x": 140,
+        "y": 40,
+        "width": 150,
+        "height": 150
+      },
+      "sourcePixels": {
+        "width": 405,
+        "height": 634,
+        "bytes": 228752,
+        "sha256": "6fc409d0d2269163f4afbf1ac7fe80989839f48640074511cf1c1c2aeccd9182",
+        "transparentPixels": 101256,
+        "visibleBounds": {
+          "x": 3,
+          "y": 4,
+          "width": 395,
+          "height": 627
+        }
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "suzuna": {
+      "icon": "assets/encounter-cast/avatars/suzuna.svg",
+      "art": "assets/encounter-cast/avatars/suzuna.svg",
+      "displayName": "铃奈",
+      "kind": "face_viewbox_of_original_local_sprite",
+      "sourceArt": "assets/portraits/suzuna.png",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/7/79/Suzuna_%28game%29.png/revision/latest?cb=20180219093417",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Suzuna -- Suzuna (game).png",
+        "fileTitle": "File:Suzuna (game).png"
+      },
+      "viewBox": {
+        "x": 100,
+        "y": 42,
+        "width": 160,
+        "height": 160
+      },
+      "sourcePixels": {
+        "width": 392,
+        "height": 631,
+        "bytes": 238472,
+        "sha256": "0582248caf0dc3e0a9a5fbb1f6cdc00a3471946bd826b96536573424fea6fab9",
+        "transparentPixels": 84671,
+        "visibleBounds": {
+          "x": 4,
+          "y": 6,
+          "width": 381,
+          "height": 621
+        }
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "arisa": {
+      "icon": "assets/encounter-cast/avatars/arisa.svg",
+      "art": "assets/encounter-cast/avatars/arisa.svg",
+      "displayName": "亚里莎",
+      "kind": "face_viewbox_of_official_image_astrum",
+      "sourceArt": "assets/portraits/arisa.png",
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/2fba24f73e574c109e911ae3ab46c9fe/whole_arisa.png",
+        "page": "https://priconne-redive.jp/character/arisa/",
+        "field": "image_astrum",
+        "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+        "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+      },
+      "viewBox": {
+        "x": 930,
+        "y": 380,
+        "width": 470,
+        "height": 470
+      },
+      "sourcePixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 4909040,
+        "partialAlphaPixels": 23174,
+        "visibleBounds": {
+          "x": 261,
+          "y": 388,
+          "width": 1975,
+          "height": 1925
+        },
+        "bytes": 1793419,
+        "sha256": "20080c172a2ee486567e9bad8a778b4fa725862024abcdbf1f1d4852a7b3cc77"
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "anna": {
+      "icon": "assets/encounter-cast/avatars/anna.svg",
+      "art": "assets/encounter-cast/avatars/anna.svg",
+      "displayName": "安娜",
+      "kind": "face_viewbox_of_original_local_sprite",
+      "sourceArt": "assets/portraits/anna.png",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/7/75/Anna_%28game%29.png/revision/latest?cb=20180219094034",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Anna -- Anna (game).png",
+        "fileTitle": "File:Anna (game).png"
+      },
+      "viewBox": {
+        "x": 115,
+        "y": 24,
+        "width": 140,
+        "height": 140
+      },
+      "sourcePixels": {
+        "width": 409,
+        "height": 665,
+        "bytes": 222472,
+        "sha256": "1ec99d0574273e6ae2cd5945814797ecda2a1e4b2cadf1967e3165bcb636ea10",
+        "transparentPixels": 108661,
+        "visibleBounds": {
+          "x": 2,
+          "y": 7,
+          "width": 402,
+          "height": 654
+        }
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "yori": {
+      "icon": "assets/encounter-cast/avatars/yori.svg",
+      "art": "assets/encounter-cast/avatars/yori.svg",
+      "displayName": "依里",
+      "kind": "face_viewbox_of_original_local_sprite",
+      "sourceArt": "assets/portraits/yori.png",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/0/0b/Yori_%28game%29.png/revision/latest?cb=20180219102536",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Yori -- Yori (game).png",
+        "fileTitle": "File:Yori (game).png"
+      },
+      "viewBox": {
+        "x": 95,
+        "y": 45,
+        "width": 130,
+        "height": 130
+      },
+      "sourcePixels": {
+        "width": 364,
+        "height": 566,
+        "bytes": 167447,
+        "sha256": "bde705420cae8bb3c8043d2045beda9a94b48b93267ebedf42a6325a9548592f",
+        "transparentPixels": 89229,
+        "visibleBounds": {
+          "x": 6,
+          "y": 8,
+          "width": 349,
+          "height": 555
+        }
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "saren": {
+      "icon": "assets/encounter-cast/avatars/saren.svg",
+      "art": "assets/encounter-cast/avatars/saren.svg",
+      "displayName": "咲恋",
+      "kind": "face_viewbox_of_original_local_sprite",
+      "sourceArt": "assets/portraits/saren.png",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/0/0b/Saren_%28game%29.png/revision/latest?cb=20180219100930",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Saren -- Saren (game).png",
+        "fileTitle": "File:Saren (game).png"
+      },
+      "viewBox": {
+        "x": 130,
+        "y": 25,
+        "width": 155,
+        "height": 155
+      },
+      "sourcePixels": {
+        "width": 425,
+        "height": 690,
+        "bytes": 214516,
+        "sha256": "ea87f3e78fbf58058826ff8ec99f4f12e206bb3cb1d8da074d7aa3a966b70796",
+        "transparentPixels": 131553,
+        "visibleBounds": {
+          "x": 2,
+          "y": 8,
+          "width": 418,
+          "height": 678
+        }
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "monika": {
+      "icon": "assets/encounter-cast/avatars/monika.svg",
+      "art": "assets/encounter-cast/avatars/monika.svg",
+      "displayName": "莫妮卡",
+      "kind": "face_viewbox_of_original_local_sprite",
+      "sourceArt": "assets/portraits/monika.png",
+      "source": {
+        "kind": "local original-game sprite collected from community wiki",
+        "source": "https://static.wikia.nocookie.net/princess-connect/images/7/74/Monika_%28game%29.png/revision/latest?cb=20180219093415",
+        "sourceManifest": "priconne_standing_pngs/manifest.json",
+        "sourceFile": "priconne_standing_pngs/Monika -- Monika (game).png",
+        "fileTitle": "File:Monika (game).png"
+      },
+      "viewBox": {
+        "x": 130,
+        "y": 30,
+        "width": 170,
+        "height": 170
+      },
+      "sourcePixels": {
+        "width": 431,
+        "height": 613,
+        "bytes": 198404,
+        "sha256": "b76f699a50f14925e64fe0dc878539afd49e9ee613156803d829cf0dda2aa23f",
+        "transparentPixels": 99942,
+        "visibleBounds": {
+          "x": 3,
+          "y": 3,
+          "width": 424,
+          "height": 607
+        }
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "fubuki": {
+      "icon": "assets/encounter-cast/avatars/fubuki.svg",
+      "art": "assets/encounter-cast/avatars/fubuki.svg",
+      "displayName": "布武机",
+      "kind": "face_viewbox_of_official_image_astrum",
+      "sourceArt": "assets/encounter-cast/fubuki.png",
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/ddb8f09a56b5411aa7a1cc8bfcc14122/whole_fubuki.png",
+        "page": "https://priconne-redive.jp/character/fubuki/",
+        "field": "image_astrum",
+        "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+        "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+      },
+      "viewBox": {
+        "x": 900,
+        "y": 370,
+        "width": 520,
+        "height": 520
+      },
+      "sourcePixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5160333,
+        "partialAlphaPixels": 19312,
+        "visibleBounds": {
+          "x": 488,
+          "y": 369,
+          "width": 1301,
+          "height": 1674
+        },
+        "bytes": 1582001,
+        "sha256": "7b02d01753963062a3b7755fff1ceaa7213c3a99e476990ff782907d929ab4f0"
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    },
+    "yamato": {
+      "icon": "assets/encounter-cast/avatars/yamato.svg",
+      "art": "assets/encounter-cast/avatars/yamato.svg",
+      "displayName": "倭",
+      "kind": "face_viewbox_of_official_image_astrum",
+      "sourceArt": "assets/encounter-cast/yamato.png",
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/775b9e5d27664259bb1fa77358d10535/whole_yamato.png",
+        "page": "https://priconne-redive.jp/character/yamato/",
+        "field": "image_astrum",
+        "record": "assets/encounter-cast/sources/v3.1-character-records.json",
+        "downloadReceipt": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+      },
+      "viewBox": {
+        "x": 960,
+        "y": 420,
+        "width": 470,
+        "height": 470
+      },
+      "sourcePixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 4889339,
+        "partialAlphaPixels": 28793,
+        "visibleBounds": {
+          "x": 346,
+          "y": 151,
+          "width": 1734,
+          "height": 2181
+        },
+        "bytes": 1911007,
+        "sha256": "05ee69d412040525110fb3950a25171d661ca70cb534b29784697a8e02552825"
+      },
+      "pixelsUnmodified": true,
+      "selfContained": true,
+      "aiGenerated": false
+    }
+  },
+  "voiceBoundary": "The four MP3s are authentic official website character samples. Their speaker association and full-file decode are verified; Japanese transcription and continuous human listening have not been reviewed. Never label the fan-written entrance lines as their transcript.",
+  "integration": "Load manifest.js; read TowerEncounterCast.bosses[encounter.id], .enemies[enemy.id], .merchant or .avatars[heroId].icon. Art paths are repository-root-relative.",
+  "sourceNotes": {
+    "officialCharacterIndex": "https://priconne-redive.jp/character/",
+    "publicOfficialRecords": "assets/encounter-cast/sources/official-character-records.json",
+    "localCollection": "priconne_standing_pngs/manifest.json",
+    "receipts": "assets/encounter-cast/sources/download-receipts.json",
+    "rights": "© Cygames, Inc. Official publication is provenance, not permission. No AI artwork, generated voices or reconstructed body parts are included.",
+    "v31OfficialCharacterRecords": "assets/encounter-cast/sources/v3.1-character-records.json",
+    "v31Receipts": "assets/encounter-cast/sources/v3.1-download-receipts.json"
+  },
+  "productionV3": {
+    "launchBossKeys": [
+      "paper_fubuki",
+      "paper_yamato",
+      "paper_ranpha",
+      "paper_misora",
+      "paper_kaiser"
+    ],
+    "launchEnemyIds": [
+      "fubuki",
+      "yamato",
+      "ranpha",
+      "misora",
+      "kaiser"
+    ],
+    "newHeroStandingIds": [
+      "miyako",
+      "jun",
+      "nozomi",
+      "shizuru",
+      "makoto",
+      "kaori",
+      "suzuna",
+      "arisa",
+      "anna",
+      "yori",
+      "saren",
+      "monika"
+    ],
+    "legacyBossMappings": "Old3 preserved only for legacy encounter IDs; new5 all use their own identity and declared bank.",
+    "verificationBoundary": "Decoded source candidates and checked original-art views; no complete original-game UB/AV-sync or semantic-listening assertion."
+  }
+}

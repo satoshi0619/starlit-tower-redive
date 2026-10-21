@@ -1,0 +1,27 @@
+{
+  "character": "Kokkoro",
+  "variant": "Normal / Astrum",
+  "page": "https://priconne-redive.jp/character/kokkoro",
+  "source": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/639cadde43fe47bfaa571ed996e66a59/whole_kokkoro.png",
+  "sourceSha256": "9aaa40dc1555d7d574f2e722dfa3240aecdcb2af400616a44c6f3fdaf13150b6",
+  "sourceSize": [
+    2288,
+    2696
+  ],
+  "alphaBounds": [
+    796,
+    100,
+    1617,
+    1973
+  ],
+  "art": "priconne_standing_pngs/Kokkoro -- Kokkoro (game).svg",
+  "viewBox": [
+    788,
+    92,
+    837,
+    1889
+  ],
+  "preparation": "Original PNG embedded without pixel changes; SVG viewport excludes transparent padding with 8px margin on every side.",
+  "correction": "Replaces a knee-cropped story sprite; local legacy Kokkoro standing entry pointed to pajamas.",
+  "rights": "Original artwork © Cygames / Princess Connect! Re:Dive"
+}
