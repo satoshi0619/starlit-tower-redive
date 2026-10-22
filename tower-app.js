@@ -24,6 +24,8 @@
   const uidOf = h => h.uid || h.id;
   const enemyNames={ 'Goblin Guard':'哥布林护卫','Kobold':'狗头人','Gellatina':'软泥怪','Wood Soul':'木灵','Golem':'魔像','Blue Golem':'蓝魔像','Fire Mage':'火焰法师','Werewolf':'狼人','Flaming Skulls':'火焰骷髅','Lizardman':'蜥蜴人','Sea Drake':'希德雷克','Orc Leader':'兽人首领' };
   function applyEnemyArt(unit){const cast=window.TowerEncounterCast?.enemies?.[unit.id];if(cast){unit.art=cast.art;unit.name=cast.displayName;unit.originalName=cast.originalName||cast.displayName;unit.isBoss=true;unit.castColor=cast.accent||cast.color;return unit;}const m=window.TowerEnemyMedia?.enemies?.[unit.id];if(m){unit.art=m.art;unit.combatRoleName??=unit.name;unit.name=unit.device?'封印魔像':enemyNames[m.originalName]||m.indexName||m.originalName;unit.originalName=m.originalName;}return unit;}
+  // Keep changed standing art fresh for returning online players.
+  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.5.0';});
   Object.values(C.encounters).forEach(enc=>enc.enemies.forEach(applyEnemyArt));
   const battle = () => run?.battle;
   const inEcho = () => run?.echo?.status==='active';
