@@ -18,15 +18,50 @@
   }
   function log(b, message) { b.log.push(message); }
   function relic(b, id) { return b.relics.includes(id); }
+  function syncBreak(e, round) {
+    if (!Array.isArray(e.breakLayers) || (!e.breakLayers.length && e.breakAmount > 0)) {
+      e.breakLayers = e.breakAmount > 0 ? [{ amount: e.breakAmount, expires: e.breakExpires || round }] : [];
+    }
+    e.breakLayers = e.breakLayers.filter(function (layer) { return layer.amount > 0 && layer.expires >= round; });
+    e.breakAmount = e.breakLayers.reduce(function (sum, layer) { return sum + layer.amount; }, 0);
+    e.breakExpires = e.breakLayers.reduce(function (last, layer) { return Math.max(last, layer.expires); }, 0);
+  }
   function normalizeBattle(b) {
     b.flags = b.flags || {}; b.battleFlags = b.battleFlags || {};
     b.downedPile = b.downedPile || []; b.exhaustPile = b.exhaustPile || [];
     if (b.previousPaidOwner === undefined) b.previousPaidOwner = null;
     if (b.nextConcertRound === undefined) b.nextConcertRound = 0;
     if (b.nextAttackPenalty === undefined) b.nextAttackPenalty = null;
+    if (b.energyReserve === undefined) b.energyReserve = 0;
+    if (b.turnEnergy === undefined) b.turnEnergy = Math.max(3, b.energy || 0);
     b.party.forEach(function (h) { h.flags = h.flags || {}; h.debuffs = h.debuffs || []; });
+    b.enemies.forEach(function (e) { syncBreak(e, b.round); });
     if (b.pending && b.pending.type === 'guide' && b.pending.cards) b.pending.cardUids = b.pending.cards.map(function (c) { return c.uid; });
+    normalizeSoloBoss(b);
     return b;
+  }
+  function normalizeSoloBoss(b) {
+    var encounter = C.encounters[b.encounterId], revision = encounter && encounter.soloRevision;
+    if (b.status !== 'active' || !encounter || encounter.type !== 'boss' || !(revision > 0) || b.bossSoloRevision >= revision || encounter.enemies.length !== 1) return;
+    var def = encounter.enemies[0], core = b.enemies.find(function (e) { return e.uid === b.bossCoreUid; });
+    // A broken/custom save must never promote a surviving escort into the Boss,
+    // invent a fresh core or revive one. Its existing settlement still owns it.
+    if (!core || core.id !== def.id || !Array.isArray(def.cycle) || !def.cycle.length) return;
+    var oldIntent = core.intent || {}, lockedUid = oldIntent.lockedTargetUid === undefined ? oldIntent.targetUid : oldIntent.lockedTargetUid;
+    core.cycle = clone(def.cycle);
+    delete core.device; delete core.deviceAoe; delete core.maxSummons;
+    b.enemies = [core];
+    var intent = roundIntent(b, core), locked = hero(b, lockedUid);
+    // Preserve a genuine living lock, even if the solo cycle now names another
+    // target rule. Only an unavailable lock uses the deterministic fallback.
+    if (!alive(locked)) locked = intent.targetUid ? hero(b, intent.targetUid) : null;
+    if (!alive(locked)) locked = lockTarget(b, intent.target || 'front');
+    intent.lockedTargetUid = locked ? locked.uid : null;
+    core.intent = intent;
+    // This is a forecast refresh, not prepare(): no guard/barrier grants, flags
+    // reset, draw, TP, opening relics, new turn, event or random roll is replayed.
+    refreshIntents(b);
+    b.bossSoloRevision = revision;
   }
   function relicEvent(b, id, target, amount, extra) { event(b, 'relic', id, target, amount, Object.assign({ relicId: id }, extra || {})); }
   function rand(b) {
@@ -107,7 +142,7 @@
     if (relic(b, 'guard_badge') && !b.flags.guardBadge) { n += 2; b.flags.guardBadge = true; }
     h.block += n; event(b, 'block', source, h.uid, n);
     if (ordinary && source === 'nozomi' && alive(giver) && ctx.cost > 0 && ctx.tags.includes('support') && h.uid !== source && !giver.flags.nozomi) {
-      giver.flags.nozomi = true; giver.buff = Math.max(giver.buff || 0, ctx.nozomiBuff || 2);
+      giver.flags.nozomi = true; giver.buff = (giver.buff || 0) + (ctx.nozomiBuff || 2);
       event(b, 'passive', source, source, ctx.nozomiBuff || 2, { passive: 'nozomi', recipient: h.uid });
     }
   }
@@ -242,8 +277,11 @@
       if (stripped) event(b, 'stripBlock', e && e.uid, h.uid, stripped);
     }
     if (kind === 'enemy' && h.debuffs) {
-      var vulnerability = h.debuffs.find(function (x) { return x.type === 'vulnerable' && x.expires >= b.round; });
-      if (vulnerability) { n += vulnerability.amount; h.debuffs.splice(h.debuffs.indexOf(vulnerability), 1); }
+      var vulnerability = h.debuffs.filter(function (x) { return x.type === 'vulnerable' && x.expires >= b.round; });
+      if (vulnerability.length) {
+        n += vulnerability.reduce(function (sum, layer) { return sum + layer.amount; }, 0);
+        h.debuffs = h.debuffs.filter(function (x) { return vulnerability.indexOf(x) < 0; });
+      }
     }
     var absorbed = Math.min(h.block, Math.max(0, n)); h.block -= absorbed;
     var dealt = Math.min(h.hp, Math.max(0, n - absorbed));
@@ -322,12 +360,17 @@
           }
           else if (fx.type === 'heal') heal(b, h, fx.amount, owner);
           else if (fx.type === 'tp') tp(b, h, fx.amount);
-          else { var removed = h.debuffs.splice(0, fx.amount || 1); event(b, 'cleanse', owner, h.uid, removed.length); }
+          else {
+            var types = [];
+            h.debuffs.forEach(function (layer) { if (types.length < (fx.amount || 1) && types.indexOf(layer.type) < 0) types.push(layer.type); });
+            h.debuffs = h.debuffs.filter(function (layer) { return types.indexOf(layer.type) < 0; });
+            event(b, 'cleanse', owner, h.uid, types.length);
+          }
         });
       } else if (fx.type === 'cover') {
         var friend = hero(b, target); if (friend && friend.uid !== owner) friend.coverFrom = owner;
       } else if (fx.type === 'buff') {
-        effectFriends(b, fx, owner, target).forEach(function (recipient) { recipient.buff = Math.max(recipient.buff || 0, fx.amount); });
+        effectFriends(b, fx, owner, target).forEach(function (recipient) { recipient.buff = (recipient.buff || 0) + fx.amount; });
       } else if (fx.type === 'guide') {
         var count = fx.count || 3;
         if (relic(b, 'tactical_notes') && !b.battleFlags.tacticalNotes) { count++; b.battleFlags.tacticalNotes = true; }
@@ -346,7 +389,7 @@
       } else if (fx.type === 'consumeBreak') {
         effectEnemies(b, fx, target).forEach(function (foe) {
           if (!foe.breakAmount) return;
-          var consumed = foe.breakAmount; foe.breakAmount = 0; foe.breakExpires = 0;
+          var consumed = foe.breakAmount; foe.breakAmount = 0; foe.breakExpires = 0; foe.breakLayers = [];
           event(b, 'consumeBreak', owner, foe.uid, consumed);
           var consumer = hero(b, owner);
           if (owner === 'makoto' && !consumer.flags.makoto) { consumer.flags.makoto = true; block(b, consumer, 3, owner); }
@@ -367,8 +410,8 @@
         es = effectEnemies(b, fx, target);
         var pulseLayers = es.map(function (e) { return e.stars; }), consumedStars = false;
         es.forEach(function (e, enemyIndex) {
-          if (fx.type === 'break') { e.breakAmount = Math.max(e.breakAmount || 0, fx.amount); e.breakExpires = Math.max(e.breakExpires || 0, b.round + (fx.turns || 1) - 1); }
-          if (fx.type === 'weak') { e.weak = Math.max(e.weak || 0, fx.amount); refreshIntents(b); }
+          if (fx.type === 'break') { syncBreak(e, b.round); e.breakLayers.push({ amount: fx.amount, expires: b.round + (fx.turns || 1) - 1 }); syncBreak(e, b.round); }
+          if (fx.type === 'weak') { e.weak = (e.weak || 0) + fx.amount; refreshIntents(b); }
           if (fx.type === 'curse') {
             var turns = fx.turns || 2;
             if (relic(b, 'hex_crystal') && !b.battleFlags.hexCrystal) { turns++; b.battleFlags.hexCrystal = true; }
@@ -548,15 +591,13 @@
   }
   function makeEnemy(def, index) {
     return Object.assign({}, clone(def), { uid: def.uid || def.id + '-' + index, maxHp: def.hp, hp: def.hp, baseArmor: def.armor || 0, armor: def.armor || 0,
-      barrier: def.barrier || 0, block: 0, armorBonus: 0, attackBuff: 0, breakAmount: 0, breakExpires: 0, weak: 0,
+      barrier: def.barrier || 0, block: 0, armorBonus: 0, attackBuff: 0, breakAmount: 0, breakExpires: 0, breakLayers: [], weak: 0,
       stars: 0, curseExpires: 0, curseUsedRound: 0, flags: {}, summons: 0 });
   }
   function applyDebuff(b, h, type, amount, turns) {
     if (!alive(h)) return;
-    var current = h.debuffs.find(function (x) { return x.type === type; });
     var expires = b.round + turns;
-    if (current) { current.amount = Math.max(current.amount, amount); current.expires = Math.max(current.expires, expires); }
-    else h.debuffs.push({ type: type, amount: amount, expires: expires });
+    h.debuffs.push({ type: type, amount: amount, expires: expires });
     event(b, 'debuff', null, h.uid, amount, { status: type, expires: expires });
   }
   function lockTarget(b, type) {
@@ -578,18 +619,22 @@
     }
     return next;
   }
-  function prepare(b) {
-    b.enemies.filter(alive).forEach(function (e) {
+  function roundIntent(b, e) {
       var cycle = e.cycle || [{ name: '待机', type: 'guard', amount: 0 }], intent = clone(cycle[(b.round - 1) % cycle.length]);
       var fatigue = b.fatigue, pressure = fatigue ? Math.max(0, Math.floor((b.round - (fatigue.startRound || 7)) / (fatigue.every || 3)) + 1) * (fatigue.amount || 0) : Math.max(0, Math.floor((b.round - 1) / 3) - 1) * (b.encounterType === 'boss' ? 2 : 1);
       var growth = Math.min((e.growth || 0) * (b.round - 1), e.growthCap === undefined ? Infinity : e.growthCap);
-      intent.increase = ['attack', 'aoe'].includes(intent.type) ? pressure + growth + e.attackBuff : 0;
+      intent.increase = ['attack', 'aoe'].includes(intent.type) ? pressure + growth + (e.attackBuff || 0) : 0;
       intent.amount = (intent.amount || 0) + intent.increase; intent.baseAmount = intent.amount;
+      intent.reflect = intent.reflect || intent.counter || 0;
+      return intent;
+  }
+  function prepare(b) {
+    b.enemies.filter(alive).forEach(function (e) {
+      var intent = roundIntent(b, e);
       var locked = intent.targetUid ? hero(b, intent.targetUid) : lockTarget(b, intent.target || 'front');
       if (!alive(locked)) locked = lockTarget(b, intent.target || 'front');
       intent.lockedTargetUid = locked ? locked.uid : null;
       e.intent = intent; e.flags = {}; e.armorBonus = intent.armor || 0; e.armor = e.baseArmor + e.armorBonus;
-      e.intent.reflect = intent.reflect || intent.counter || 0;
       if (intent.barrier) e.barrier += intent.barrier;
       if (intent.type === 'guard' && intent.amount) e.block += intent.amount;
     });
@@ -599,7 +644,10 @@
     var slow = 0, clog = 0;
     suspendDowned(b);
     b.party.filter(alive).forEach(function (h) { h.debuffs.forEach(function (x) { if (x.expires >= b.round) { if (x.type === 'slow') slow += x.amount; if (x.type === 'clog') clog += x.amount; } }); });
-    b.energy = 3 - Math.min(1, slow); b.flags = {}; b.previousPaidOwner = null;
+    var reserved = Math.min(1, Math.max(0, b.energyReserve || 0));
+    b.energy = Math.min(4, 3 - Math.min(1, slow) + reserved); b.turnEnergy = b.energy; b.energyReserve = 0;
+    b.flags = {}; b.previousPaidOwner = null;
+    if (reserved) { event(b, 'energy', null, null, reserved, { sourceKind: 'reserve' }); log(b, '预备的1行动已到位。'); }
     if (b.nextAttackPenalty && b.nextAttackPenalty.round <= b.round) { b.flags.attackPenalty = b.nextAttackPenalty.amount; b.nextAttackPenalty = null; }
     b.party.forEach(function (h) { h.flags = {}; h.buff = 0; h.coverFrom = null; tp(b, h, 1); });
     if (first) {
@@ -613,6 +661,19 @@
     }
     draw(b, 5 - Math.min(2, clog)); prepare(b); event(b, 'round', null, null, b.round); log(b, '第' + b.round + '轮，' + b.energy + '行动点。');
   }
+  function reserveEnergy(b) {
+    // Preflight is deliberately read-only, including for a legacy save whose
+    // normalization would otherwise add fields to a rejected operation.
+    if (!b || b.status !== 'active' || !b.party || !b.party.some(alive)) return result(false, '当前不能预备行动。');
+    if (b.pending) return result(false, '请先完成当前选牌。');
+    if (b.flags && b.flags.reserveUsed || b.energyReserve >= 1) return result(false, '本轮已经预备过行动。');
+    if (!(b.energy >= 1)) return result(false, '预备需要本轮1行动。');
+    normalizeBattle(b);
+    b.energy--; b.energyReserve = 1; b.flags.reserveUsed = true;
+    event(b, 'reserveEnergy', null, null, 1, { deliveredRound: b.round + 1 });
+    log(b, '花费1行动预备：下一轮额外获得1行动，最多4行动。');
+    return result(true, '已预备1行动，将在下一轮返还。');
+  }
   function endTurn(b) {
     var stop = gate(b); if (stop) return stop;
     b.enemies.filter(alive).forEach(function (e) {
@@ -621,8 +682,9 @@
     });
     b.party.slice().forEach(function (h) {
       if (!alive(h) || b.status !== 'active') return;
-      var poison = h.debuffs.find(function (x) { return x.type === 'poison' && x.dueRound <= b.round; });
-      if (poison) { h.debuffs.splice(h.debuffs.indexOf(poison), 1); hurt(b, null, h, poison.amount, false, 'poison'); }
+      var poisons = h.debuffs.filter(function (x) { return x.type === 'poison' && x.dueRound <= b.round; });
+      h.debuffs = h.debuffs.filter(function (x) { return poisons.indexOf(x) < 0; });
+      poisons.forEach(function (poison) { if (alive(h) && b.status === 'active') hurt(b, null, h, poison.amount, false, 'poison'); });
     });
     var acting = b.enemies.slice();
     for (var i = 0; i < acting.length && b.status === 'active'; i++) {
@@ -634,9 +696,7 @@
           var n = Math.max(0, intent.unweakenedAmount - (e.weak || 0)); e.weak = 0;
           var actualTarget = hurt(b, e, resolveIntentTarget(b, e), n, true, 'enemy', { stripBlock: k === 0 ? intent.stripBlock || 0 : 0 });
           if (intent.poison && alive(actualTarget) && b.status === 'active') {
-            var poison = actualTarget.debuffs.find(function (x) { return x.type === 'poison'; });
-            if (!poison) { poison = { type: 'poison', amount: intent.poison, dueRound: b.round + 1, expires: b.round + 1 }; actualTarget.debuffs.push(poison); }
-            else { poison.amount = Math.max(poison.amount, intent.poison); poison.dueRound = b.round + 1; poison.expires = b.round + 1; }
+            var poison = { type: 'poison', amount: intent.poison, dueRound: b.round + 1, expires: b.round + 1 }; actualTarget.debuffs.push(poison);
             event(b, 'debuff', e.uid, actualTarget.uid, poison.amount, { status: 'poison', dueRound: poison.dueRound, expires: poison.expires });
           }
         }
@@ -657,7 +717,7 @@
     b.party.forEach(function (h) { h.block = h.id === 'jun' && alive(h) ? Math.min(3, h.block) : 0; h.buff = 0; h.coverFrom = null; h.debuffs = h.debuffs.filter(function (x) { return x.expires > b.round; }); });
     b.enemies.forEach(function (e) {
       e.block = 0; e.weak = 0;
-      if (e.breakExpires <= b.round) { e.breakAmount = 0; e.breakExpires = 0; }
+      if (e.breakLayers) { e.breakLayers = e.breakLayers.filter(function (layer) { return layer.expires > b.round; }); e.breakAmount = 0; e.breakExpires = 0; syncBreak(e, b.round + 1); }
       if (e.curseExpires <= b.round) { e.curseExpires = 0; e.curseUsedRound = 0; }
     });
     b.discardPile.push.apply(b.discardPile, b.hand.splice(0)); b.round++; beginTurn(b, false);
@@ -677,8 +737,13 @@
       return { id: id, uid: id, name: h.name, maxHp: h.hp, hp: hp, tp: 0, block: 0, buff: 0, coverFrom: null, debuffs: [], downed: false, flags: {} };
     }), enemies: encounter.enemies.map(makeEnemy), hand: [], drawPile: deck, discardPile: [], exhaustPile: [], downedPile: [], energy: 3, round: 1,
     status: 'active', pending: null, log: [], events: [], relics: (options.relics || []).slice(), seed: seedValue(options.seed),
-    redrawUsed: false, flags: {}, battleFlags: {}, previousPaidOwner: null, nextConcertRound: 0, nextAttackPenalty: null };
-    if (encounter.type === 'boss') b.bossCoreUid = b.enemies[0].uid;
+    redrawUsed: false, flags: {}, battleFlags: {}, previousPaidOwner: null, nextConcertRound: 0, nextAttackPenalty: null, energyReserve: 0, turnEnergy: 3 };
+    if (encounter.victoryCoreId) {
+      var core = b.enemies.find(function (unit) { return unit.id === encounter.victoryCoreId; });
+      if (!core) throw new Error('战斗胜利目标不存在。');
+      b.bossCoreUid = core.uid;
+    } else if (encounter.type === 'boss') b.bossCoreUid = b.enemies[0].uid;
+    if (encounter.type === 'boss' && encounter.soloRevision > 0 && encounter.enemies.length === 1) b.bossSoloRevision = encounter.soloRevision;
     if (options.shuffle !== false) shuffle(b, b.drawPile);
     if (!checkEnd(b)) beginTurn(b, true);
     return b;
@@ -708,7 +773,7 @@
     var before = clone(b), after = clone(b), outcome = choose(after, cardUid);
     return { ok: outcome.ok, message: outcome.message, before: before, after: after, damage: [], blockDiff: [] };
   }
-  return { createBattle: createBattle, play: play, chooseGuide: chooseGuide, burst: burst, endTurn: endTurn, redraw: redraw,
+  return { createBattle: createBattle, play: play, chooseGuide: chooseGuide, burst: burst, endTurn: endTurn, redraw: redraw, reserveEnergy: reserveEnergy,
     chooseRedraw: chooseRedraw, chooseRecoverTop: chooseRecoverTop, chooseRecovery: chooseRecoverTop,
     previewRedraw: function (b, uid) { return previewKnownChoice(b, uid, chooseRedraw); },
     previewRecoverTop: function (b, uid) { return previewKnownChoice(b, uid, chooseRecoverTop); }, normalizeBattle: normalizeBattle,

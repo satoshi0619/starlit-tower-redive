@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>公主连结原作BGM核对</title>
+<style>body{margin:24px;background:#111929;color:#edf4ff;font:16px/1.6 system-ui}main{max-width:1000px;margin:auto}article{padding:18px;margin:14px 0;background:#1c2940;border:1px solid #425474;border-radius:12px}h1,h2{margin:0 0 8px}p,small{color:#b5c7e1}audio{display:block;width:100%;margin:12px 0}a{color:#acd1ff}</style>
+<main><h1>公主连结原作BGM核对</h1><p>以下九首均从游戏官方公开资源清单中的ACB＋AWB获取。曲名依据原作音乐盒数据；胜利短乐只使用精确内部cue名。场景分配是本同人游戏的编排。旧BGM文件完整保留。</p><section id="tracks"></section><p><a href="manifest.json">逐曲来源与验证清单</a></p></main>
+<script src="manifest.js"></script><script>
+const target=document.getElementById('tracks');
+for(const [id,track] of Object.entries(window.TowerBgm.recordings)){
+ const modes=Object.entries(window.TowerBgm.tracks).filter(([,item])=>item.bank===id).map(([mode])=>mode).join(' / ');
+ const article=document.createElement('article');
+ article.innerHTML=`<h2>${track.title}</h2><small>${track.cue} · ${track.durationSeconds.toFixed(2)}秒 · ${modes}</small><audio controls preload="metadata" src="../../../${track.path}"></audio><small>原作分类：${track.originalCategory}；此试听页分别播放，未自动循环。</small>`;
+ target.append(article);
+}
+</script></html>

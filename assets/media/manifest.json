@@ -4423,13 +4423,208 @@
         "semanticListening": false,
         "avSync": false
       }
+    },
+    "christina": {
+      "id": "christina",
+      "displayName": "克莉丝提娜",
+      "movieId": "107101",
+      "bankId": "107101",
+      "ub": {
+        "video": "assets/media/bosses/christina/cutin.mp4",
+        "poster": "assets/media/bosses/christina/poster.jpg",
+        "voice": "assets/media/bosses/christina/ub.m4a",
+        "cutinVoice": "assets/media/bosses/christina/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.137007,
+        "cutinVoiceDurationSeconds": 2.350998,
+        "audioPaths": [
+          "assets/media/bosses/christina/cutin.m4a",
+          "assets/media/bosses/christina/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "107101:subsong:5",
+          "107101:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original Christina 107101 short cut-in plus exact independent cutin_001 and ub_100 ACB cues. Not a complete original in-battle UB or a source-accurate binding to the fan-game AoE. Video ends into battlefield FX while speech finishes naturally."
+      },
+      "entry": {
+        "path": "assets/encounter-cast/audio/christina-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/91e9f436e106426e96fc026262a5abe5/voice_08_02_Christina.mp3",
+        "officialPage": "https://priconne-redive.jp/character/christina/",
+        "bytes": 226057,
+        "sha256": "e4da8508c41f6035c0ed3f5887e7ee95457fc3133022b3e6815ae1f13b197a25",
+        "durationSeconds": 6.840563,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "files": {
+        "cutinVoice": {
+          "path": "assets/media/bosses/christina/cutin.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 39877,
+          "sha256": "b8e798a6e62476ab5c5db656211104610fb6958d0855097d85e13aaf124dc4fd",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.350998,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "103",
+              "duration": "2.350998"
+            }
+          ],
+          "cue": "vo_btl_107101_cutin_001",
+          "subsong": 5,
+          "sourceDurationSeconds": 2.351,
+          "aliases": [
+            "vo_btl_107101_cutin_001"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_107101.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/2a/2a6f8657673a96b6",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "d76bb472a677e679a0830579b15e99f2",
+            "bytes": 510432,
+            "sha256": "a7e0339b228ab9d639e460e01e8e3d783c7781ed097915f2a44203db85731a7d",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "voice": {
+          "path": "assets/media/bosses/christina/ub.m4a",
+          "mimeType": "audio/mp4",
+          "bytes": 35993,
+          "sha256": "92cda4164425b5440cfe63f393edec8f6139c64717e37979571c157e3cd8dac6",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.137007,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio",
+              "sample_rate": "44100",
+              "channels": 2,
+              "avg_frame_rate": "0/0",
+              "nb_frames": "94",
+              "duration": "2.137007"
+            }
+          ],
+          "cue": "vo_btl_107101_ub_100",
+          "subsong": 21,
+          "sourceDurationSeconds": 2.138,
+          "aliases": [
+            "vo_btl_107101_ub_100"
+          ],
+          "source": {
+            "logicalName": "v/vo_btl_107101.acb",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Sound/2a/2a6f8657673a96b6",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Sound/manifest/soundmanifest",
+            "manifestVersion": "10071200",
+            "md5": "d76bb472a677e679a0830579b15e99f2",
+            "bytes": 510432,
+            "sha256": "a7e0339b228ab9d639e460e01e8e3d783c7781ed097915f2a44203db85731a7d",
+            "officialManifestMatch": true
+          },
+          "cueVerified": true,
+          "semanticListeningVerified": false
+        },
+        "video": {
+          "path": "assets/media/bosses/christina/cutin.mp4",
+          "mimeType": "video/mp4",
+          "bytes": 2459121,
+          "sha256": "1b0df3ecdb8c3c364236fa98a990c86e61529b6b013962503104538fe97a4a30",
+          "fullDecodePassed": true,
+          "decoder": "FFmpeg 7.1",
+          "errorLog": null,
+          "durationSeconds": 2.366667,
+          "probeVerified": true,
+          "streams": [
+            {
+              "codec_name": "h264",
+              "codec_type": "video",
+              "width": 960,
+              "height": 720,
+              "avg_frame_rate": "175/6",
+              "nb_frames": "70",
+              "duration": "2.366667"
+            }
+          ],
+          "source": {
+            "logicalName": "m/cutin_107101.usm",
+            "url": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/4f/4f14f12cdb30bc59",
+            "manifestUrl": "https://prd-priconne-redive.akamaized.net/dl/Resources/10071200/Jpn/Movie/PC/High/manifest/movie2manifest",
+            "manifestVersion": "10071200",
+            "md5": "db5a04be78645e4a85fcfc38211405a8",
+            "bytes": 3816128,
+            "sha256": "f4592dfe6f8bf784f85b438cb773593abe2574a364c05479958ee5fd0cbd1e91",
+            "officialManifestMatch": true
+          },
+          "audioIncluded": false,
+          "originalCutin": true
+        }
+      },
+      "identityEvidence": {
+        "localDatabaseReceipt": "outputs/media-audit-human-boss/candidate-manifest-index.json",
+        "databaseName": "クリスティーナ",
+        "officialAppearanceReference": "assets/encounter-cast/christina-full.svg",
+        "visualCharacterMatch": true,
+        "reviewedFrames": [
+          "work/media-v34/christina/frame-0.5.jpg",
+          "work/media-v34/christina/frame-1.5.jpg"
+        ]
+      },
+      "verificationBoundary": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      },
+      "localIntegrationReceipt": "work/media-v34/christina-record.json"
     }
   },
-  "localIntegrationDate": "2026-10-21",
+  "localIntegrationDate": "2026-10-22",
   "coverage": {
     "completeHeroShortCutinRecords": 18,
     "standingOnlyAdditionalHeroes": 0,
-    "bossShortCutinRecords": 5,
+    "bossShortCutinRecords": 6,
     "bossCompleteOriginalUBs": 0,
     "semanticListening": false,
     "avSync": false,

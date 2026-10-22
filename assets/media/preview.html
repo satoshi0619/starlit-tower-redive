@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>六人原版 UB 素材核对</title>
+<style>body{margin:0;padding:24px;background:#101522;color:#edf2ff;font:16px/1.6 system-ui}main{max-width:1200px;margin:auto}h1{margin:0}p{color:#b9c5df}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}article{background:#1a2336;border:1px solid #33405b;border-radius:14px;padding:16px}h2{margin:0 0 10px}video{width:100%;aspect-ratio:4/3;background:black;border-radius:8px}audio{width:100%}label{display:block;margin-top:12px}small{color:#a8b8d4}a{color:#a2ccff}</style>
+<main><h1>六人原版 UB 素材核对</h1><p>每人包含无声原版短 cut-in、独立 cut-in 语音与 UB 语音。以下播放器分别播放，尚未人为审定音画同步和日语台词。文件可在本地直接打开。</p><section class="grid" id="media-grid"></section><p>原始资源：Cygames 游戏公开资源清单；逐文件来源、校验值与验证状态见 <a href="manifest.json">素材清单</a>。</p></main>
+<script src="manifest.js"></script>
+<script>
+const grid=document.getElementById('media-grid');
+for(const [id,hero] of Object.entries(window.TowerMedia.characters)){
+ const ub=hero.ub;
+ const local=path=>'../../'+path;
+ const article=document.createElement('article');
+ article.innerHTML=`<h2>${hero.displayName} <small>${id}</small></h2><video controls playsinline preload="metadata" poster="${local(ub.poster)}" src="${local(ub.video)}"></video><label>Cut-in 语音（${ub.cutinVoiceDurationSeconds.toFixed(2)} 秒）<audio controls preload="metadata" src="${local(ub.cutinVoice)}"></audio></label><label>UB 语音（${ub.voiceDurationSeconds.toFixed(2)} 秒）<audio controls preload="metadata" src="${local(ub.voice)}"></audio></label><small>短片 ${ub.videoDurationSeconds.toFixed(2)} 秒，原片不带音轨。</small>`;
+ grid.append(article);
+}
+</script>
+</html>

@@ -41,7 +41,12 @@
       durationMs: 1400, presentationKind: entry.ub && entry.ub.video ? 'source-short-cutin' : 'original-code-cutin', ub: entry.ub || null
     };
   }
-  function resolved(reason) { var p = Promise.resolve({ reason: reason }); p.cancel = p.skip = function () {}; return p; }
+  function resolved(reason) {
+    var p = Promise.resolve({ reason: reason });
+    p.visualDone = p; p.cancel = p.skip = p.setVolume = p.setMuted = function () {};
+    p.getState = function () { return { completed: true, reason: reason, visualDone: true, visualReason: reason, voiceTail: false, media: null, errors: [] }; };
+    return p;
+  }
   function play(options) {
     options = options || {}; var cue = options.cue;
     if (!cue || !profiles[cue.bossId]) return resolved('unavailable');
@@ -51,7 +56,10 @@
     if (owners.has(doc)) owners.get(doc)();
     played.add(cue);
     var reduce = options.reducedMotion === undefined ? !!(global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches) : !!options.reducedMotion;
-    var complete = false, tracks = [], mediaPlayer = null, resolve, result = new Promise(function (yes) { resolve = yes; });
+    var complete = false, completionReason = null, visualReleased = false, visualReason = null, focusReleased = false;
+    var tracks = [], mediaPlayer = null, errors = [], resolve, resolveVisual;
+    var result = new Promise(function (yes) { resolve = yes; });
+    result.visualDone = new Promise(function (yes) { resolveVisual = yes; });
     var previousFocus = doc.activeElement;
     var overlay = doc.createElement('section'); overlay.className = 'boss-performance boss-performance-' + cue.bossId + (reduce ? ' reduced-motion' : '');
     overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true');
@@ -84,20 +92,53 @@
     overlay.setAttribute('aria-labelledby', title.id);
     add('p', 'boss-performance-type', copy, cue.intentType === 'aoe' ? '群体攻击' : '连续攻击 · ' + cue.intendedHits + '段');
     var button = add('button', 'boss-performance-skip', overlay, '跳过演出'); button.type = 'button'; button.setAttribute('aria-label', '跳过Boss招式演出');
+    function releaseFocus() {
+      if (focusReleased) return; focusReleased = true;
+      // Only restore the focus we took. A voice tail ending must not pull focus
+      // away from a card, target or a later dialog the player has already chosen.
+      var active = doc.activeElement;
+      if (active && active !== button && !(typeof overlay.contains === 'function' && overlay.contains(active))) return;
+      if (previousFocus && previousFocus.isConnected && typeof previousFocus.focus === 'function') { try { previousFocus.focus({ preventScroll: true }); } catch (_) {} }
+    }
+    function releaseVisual(reason) {
+      if (visualReleased || complete) return;
+      visualReleased = true; visualReason = reason || 'ended';
+      overlay.classList.add('voice-tail');
+      overlay.removeAttribute('aria-modal'); overlay.setAttribute('role', 'status');
+      if (doc.removeEventListener) doc.removeEventListener('keydown', key, true);
+      button.textContent = '略过余音'; button.setAttribute('aria-label', '略过Boss招式余音');
+      releaseFocus();
+      var state = { reason: visualReason, cue: cue };
+      // Resolve even if a UI callback fails; the caller must never remain locked
+      // just because its decorative hit feedback failed to mount.
+      try { if (typeof options.onVisualComplete === 'function') options.onVisualComplete(state); }
+      catch (error) { errors.push(error && error.message || String(error)); }
+      resolveVisual(state);
+    }
     function finish(reason) {
-      if (complete) return; complete = true;
+      if (complete) return;
+      // Leaving the scene is cancellation, not an instruction to apply a hit.
+      // Explicit skip still advances combat and therefore releases its visual.
+      if (reason !== 'cancelled') releaseVisual(reason);
+      if (complete) return; complete = true; completionReason = reason;
+      if (!visualReleased) { visualReason = reason; resolveVisual({ reason: reason, cue: cue }); }
       if (mediaPlayer && reason !== 'ended' && reason !== 'error') mediaPlayer.cancel();
       tracks.forEach(function (a) { try { a.cancel(); } catch (_) {} });
       button.removeEventListener('click', skip); if (doc.removeEventListener) doc.removeEventListener('keydown', key, true);
       overlay.remove(); if (owners.get(doc) === cancel) owners.delete(doc);
-      if (previousFocus && previousFocus.isConnected && typeof previousFocus.focus === 'function') { try { previousFocus.focus({ preventScroll: true }); } catch (_) {} }
+      releaseFocus();
       resolve({ reason: reason, cue: cue });
     }
     function cancel() { finish('cancelled'); }
     function skip(event) { if (event) { event.preventDefault(); event.stopPropagation(); } finish('skipped'); }
     function key(event) { if (event.key === 'Escape') skip(event); }
     button.addEventListener('click', skip); if (doc.addEventListener) doc.addEventListener('keydown', key, true);
-    result.cancel = cancel; result.skip = function () { skip(); }; owners.set(doc, cancel);
+    result.cancel = cancel; result.skip = function () { skip(); };
+    result.setVolume = function (value) { if (!complete && mediaPlayer) mediaPlayer.setVolume(value); };
+    result.setMuted = function (value) { if (!complete && mediaPlayer) mediaPlayer.setMuted(value); };
+    result.getState = function () { return { completed: complete, reason: completionReason, visualDone: visualReleased,
+      visualReason: visualReason, voiceTail: visualReleased && !complete, media: mediaPlayer ? mediaPlayer.getState() : null, errors: errors.slice() }; };
+    owners.set(doc, cancel);
     doc.body.appendChild(overlay);
     if (typeof button.focus === 'function') button.focus({ preventScroll: true });
     if (cue.ub && global.TowerPresentation) {
@@ -106,18 +147,19 @@
       video.playsInline = true; video.controls = false; video.preload = 'auto'; video.hidden = !fullVideo;
       if (fullVideo) { portrait.hidden = true; crest.hidden = true; ornament.hidden = true; }
       var paths = options.audio === false ? [] : options.fullVideo === false ? [cue.ub.voice].filter(Boolean) : (cue.ub.audioPaths || [cue.ub.cutinVoice, cue.ub.voice].filter(Boolean));
-      var visualReleased = false;
-      function releaseVisual() {
-        if (visualReleased || complete) return; visualReleased = true;
+      function releaseVideo(state) {
+        if (visualReleased || complete) return;
         video.hidden = true; overlay.classList.add('voice-tail');
-        if (typeof options.onVisualComplete === 'function') options.onVisualComplete();
+        releaseVisual(state && state.failed ? 'error' : 'ended');
       }
       mediaPlayer = global.TowerPresentation.play({ video: video, videoSrc: cue.ub.video, fullVideo: fullVideo,
         audioPaths: paths, volume: options.volume === undefined ? .6 : options.volume,
-        onVideoComplete: releaseVisual,
+        onVideoComplete: releaseVideo,
         onState: function (s) { overlay.dataset.videoDone = String(s.videoDone); overlay.dataset.audioDone = String(s.audioDone); overlay.dataset.phase = s.phase; },
-        onComplete: function (why) { releaseVisual(); finish(why); }
+        onComplete: function (why) { finish(why); }
       });
+      // A muted/invalid source can finish synchronously during construction.
+      if (complete) mediaPlayer.cancel();
       return result;
     }
     function animate(el, frames, duration, delay, easing) {

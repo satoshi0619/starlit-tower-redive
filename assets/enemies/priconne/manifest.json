@@ -1372,11 +1372,28 @@
       "originalName": "ミソラ",
       "indexName": "美空",
       "displayName": "美空",
-      "sourceType": "original character sprite or original cut-in frame, same character identity",
-      "source": "https://prd-priconne-redive.akamaized.net/dl/pool/Movie/6f/6fb81864c6166d8a",
+      "sourceType": "official transparent full-body image_astrum",
+      "source": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/d5f11be7e5ef4877a920517dc0372660/whole_misora.png",
       "mediaKey": "misora",
       "originalBossModel": false,
-      "portraitFallback": false
+      "portraitFallback": false,
+      "originalArt": "assets/encounter-cast/misora.png",
+      "visualBoundary": "Original character-page full-body artwork, not a render of the original-game enemy battle model.",
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5263051,
+        "partialAlphaPixels": 19613,
+        "visibleBounds": {
+          "x": 739,
+          "y": 373,
+          "width": 1303,
+          "height": 1883
+        },
+        "bytes": 1446020,
+        "sha256": "188a41f57b4ea14e405fa22bf60bcc0041817b4d04ccc38c31cca9dd9cc94019"
+      }
     },
     "kaiser": {
       "id": "kaiser",

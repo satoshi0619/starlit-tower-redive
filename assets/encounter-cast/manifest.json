@@ -73,6 +73,46 @@
         "aiGenerated": false,
         "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
         "reviewedDate": "2026-10-21"
+      },
+      "ub": {
+        "video": "assets/media/bosses/christina/cutin.mp4",
+        "poster": "assets/media/bosses/christina/poster.jpg",
+        "voice": "assets/media/bosses/christina/ub.m4a",
+        "cutinVoice": "assets/media/bosses/christina/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.137007,
+        "cutinVoiceDurationSeconds": 2.350998,
+        "audioPaths": [
+          "assets/media/bosses/christina/cutin.m4a",
+          "assets/media/bosses/christina/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "107101:subsong:5",
+          "107101:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original Christina 107101 short cut-in plus exact independent cutin_001 and ub_100 ACB cues. Not a complete original in-battle UB or a source-accurate binding to the fan-game AoE. Video ends into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "christina",
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
       }
     },
     "neneka": {
@@ -843,19 +883,28 @@
           "reusedRound1": false,
           "httpStatus": 200
         },
-        "standing": "priconne_standing_pngs/Misora -- Misora-astrum-sprite-normal.png",
+        "standing": {
+          "kind": "official_game_character_page",
+          "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/d5f11be7e5ef4877a920517dc0372660/whole_misora.png",
+          "page": "https://priconne-redive.jp/character/misora/",
+          "field": "image_astrum",
+          "record": "assets/encounter-cast/sources/v3.5-misora-character-record.json",
+          "downloadReceipt": "assets/encounter-cast/sources/v3.5-misora-download-receipt.json"
+        },
         "posterFrame": {
           "source": "outputs/media-audit-human-boss/round2/video/misora/118201-middle.jpg",
           "atSeconds": 1.1833335
         }
       },
       "visualReview": {
-        "fullBody": false,
-        "includesFeet": false,
+        "fullBody": true,
+        "includesFeet": true,
         "sourceIsVideoFrame": false,
         "bodyReconstruction": false,
         "aiGenerated": false,
-        "originalPixelsUnmodified": true
+        "originalPixelsUnmodified": true,
+        "transparentMarginOnlyViewBox": true,
+        "reviewedDate": "2026-10-23"
       },
       "coverage": {
         "standing": true,
@@ -866,7 +915,21 @@
         "semanticListening": false,
         "avSync": false
       },
-      "fallbackExplanation": null
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5263051,
+        "partialAlphaPixels": 19613,
+        "visibleBounds": {
+          "x": 739,
+          "y": 373,
+          "width": 1303,
+          "height": 1883
+        },
+        "bytes": 1446020,
+        "sha256": "188a41f57b4ea14e405fa22bf60bcc0041817b4d04ccc38c31cca9dd9cc94019"
+      }
     },
     "kaiser": {
       "id": "kaiser",
@@ -1070,6 +1133,46 @@
         "aiGenerated": false,
         "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
         "reviewedDate": "2026-10-21"
+      },
+      "ub": {
+        "video": "assets/media/bosses/christina/cutin.mp4",
+        "poster": "assets/media/bosses/christina/poster.jpg",
+        "voice": "assets/media/bosses/christina/ub.m4a",
+        "cutinVoice": "assets/media/bosses/christina/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.137007,
+        "cutinVoiceDurationSeconds": 2.350998,
+        "audioPaths": [
+          "assets/media/bosses/christina/cutin.m4a",
+          "assets/media/bosses/christina/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "107101:subsong:5",
+          "107101:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original Christina 107101 short cut-in plus exact independent cutin_001 and ub_100 ACB cues. Not a complete original in-battle UB or a source-accurate binding to the fan-game AoE. Video ends into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "christina",
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
       }
     },
     "ruins_boss": {
@@ -1768,19 +1871,28 @@
           "reusedRound1": false,
           "httpStatus": 200
         },
-        "standing": "priconne_standing_pngs/Misora -- Misora-astrum-sprite-normal.png",
+        "standing": {
+          "kind": "official_game_character_page",
+          "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/d5f11be7e5ef4877a920517dc0372660/whole_misora.png",
+          "page": "https://priconne-redive.jp/character/misora/",
+          "field": "image_astrum",
+          "record": "assets/encounter-cast/sources/v3.5-misora-character-record.json",
+          "downloadReceipt": "assets/encounter-cast/sources/v3.5-misora-download-receipt.json"
+        },
         "posterFrame": {
           "source": "outputs/media-audit-human-boss/round2/video/misora/118201-middle.jpg",
           "atSeconds": 1.1833335
         }
       },
       "visualReview": {
-        "fullBody": false,
-        "includesFeet": false,
+        "fullBody": true,
+        "includesFeet": true,
         "sourceIsVideoFrame": false,
         "bodyReconstruction": false,
         "aiGenerated": false,
-        "originalPixelsUnmodified": true
+        "originalPixelsUnmodified": true,
+        "transparentMarginOnlyViewBox": true,
+        "reviewedDate": "2026-10-23"
       },
       "coverage": {
         "standing": true,
@@ -1791,7 +1903,21 @@
         "semanticListening": false,
         "avSync": false
       },
-      "fallbackExplanation": null
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5263051,
+        "partialAlphaPixels": 19613,
+        "visibleBounds": {
+          "x": 739,
+          "y": 373,
+          "width": 1303,
+          "height": 1883
+        },
+        "bytes": 1446020,
+        "sha256": "188a41f57b4ea14e405fa22bf60bcc0041817b4d04ccc38c31cca9dd9cc94019"
+      }
     },
     "paper_kaiser": {
       "id": "kaiser",
@@ -1923,6 +2049,117 @@
         "avSync": false
       },
       "fallbackExplanation": null
+    },
+    "paper_christina": {
+      "id": "christina",
+      "displayName": "克莉丝提娜",
+      "originalName": "クリスティーナ",
+      "role": "高塔幻影",
+      "title": "不败的邀约",
+      "art": "assets/encounter-cast/christina-full.svg",
+      "originalArt": "assets/encounter-cast/christina.png",
+      "color": "#4d4185",
+      "accent": "#d5ac5b",
+      "palette": {
+        "base": "#4d4185",
+        "accent": "#d5ac5b"
+      },
+      "entryLine": "既然走到了这里，就让我看看你们的决心。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "path": "assets/encounter-cast/audio/christina-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/91e9f436e106426e96fc026262a5abe5/voice_08_02_Christina.mp3",
+        "officialPage": "https://priconne-redive.jp/character/christina/",
+        "bytes": 226057,
+        "sha256": "e4da8508c41f6035c0ed3f5887e7ee95457fc3133022b3e6815ae1f13b197a25",
+        "durationSeconds": 6.840563,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/25d3af269a184798b6eb3c03a51f009b/whole_christina.png",
+        "page": "https://priconne-redive.jp/character/christina/",
+        "field": "image_astrum"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5277774,
+        "partialAlphaPixels": 14193,
+        "visibleBounds": {
+          "x": 708,
+          "y": 305,
+          "width": 869,
+          "height": 2044
+        },
+        "bytes": 1366288,
+        "sha256": "9d51a5bddb59abc11d4caf40428f8656c5c481ac0b95d20674967db9b45c1cf6"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      },
+      "ub": {
+        "video": "assets/media/bosses/christina/cutin.mp4",
+        "poster": "assets/media/bosses/christina/poster.jpg",
+        "voice": "assets/media/bosses/christina/ub.m4a",
+        "cutinVoice": "assets/media/bosses/christina/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.137007,
+        "cutinVoiceDurationSeconds": 2.350998,
+        "audioPaths": [
+          "assets/media/bosses/christina/cutin.m4a",
+          "assets/media/bosses/christina/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "107101:subsong:5",
+          "107101:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original Christina 107101 short cut-in plus exact independent cutin_001 and ub_100 ACB cues. Not a complete original in-battle UB or a source-accurate binding to the fan-game AoE. Video ends into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "christina",
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      }
     }
   },
   "enemies": {
@@ -1995,6 +2232,46 @@
         "aiGenerated": false,
         "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
         "reviewedDate": "2026-10-21"
+      },
+      "ub": {
+        "video": "assets/media/bosses/christina/cutin.mp4",
+        "poster": "assets/media/bosses/christina/poster.jpg",
+        "voice": "assets/media/bosses/christina/ub.m4a",
+        "cutinVoice": "assets/media/bosses/christina/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.137007,
+        "cutinVoiceDurationSeconds": 2.350998,
+        "audioPaths": [
+          "assets/media/bosses/christina/cutin.m4a",
+          "assets/media/bosses/christina/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "107101:subsong:5",
+          "107101:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original Christina 107101 short cut-in plus exact independent cutin_001 and ub_100 ACB cues. Not a complete original in-battle UB or a source-accurate binding to the fan-game AoE. Video ends into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "christina",
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
       }
     },
     "echo_master": {
@@ -2693,19 +2970,28 @@
           "reusedRound1": false,
           "httpStatus": 200
         },
-        "standing": "priconne_standing_pngs/Misora -- Misora-astrum-sprite-normal.png",
+        "standing": {
+          "kind": "official_game_character_page",
+          "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/d5f11be7e5ef4877a920517dc0372660/whole_misora.png",
+          "page": "https://priconne-redive.jp/character/misora/",
+          "field": "image_astrum",
+          "record": "assets/encounter-cast/sources/v3.5-misora-character-record.json",
+          "downloadReceipt": "assets/encounter-cast/sources/v3.5-misora-download-receipt.json"
+        },
         "posterFrame": {
           "source": "outputs/media-audit-human-boss/round2/video/misora/118201-middle.jpg",
           "atSeconds": 1.1833335
         }
       },
       "visualReview": {
-        "fullBody": false,
-        "includesFeet": false,
+        "fullBody": true,
+        "includesFeet": true,
         "sourceIsVideoFrame": false,
         "bodyReconstruction": false,
         "aiGenerated": false,
-        "originalPixelsUnmodified": true
+        "originalPixelsUnmodified": true,
+        "transparentMarginOnlyViewBox": true,
+        "reviewedDate": "2026-10-23"
       },
       "coverage": {
         "standing": true,
@@ -2716,7 +3002,21 @@
         "semanticListening": false,
         "avSync": false
       },
-      "fallbackExplanation": null
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5263051,
+        "partialAlphaPixels": 19613,
+        "visibleBounds": {
+          "x": 739,
+          "y": 373,
+          "width": 1303,
+          "height": 1883
+        },
+        "bytes": 1446020,
+        "sha256": "188a41f57b4ea14e405fa22bf60bcc0041817b4d04ccc38c31cca9dd9cc94019"
+      }
     },
     "kaiser": {
       "id": "kaiser",
@@ -2848,6 +3148,117 @@
         "avSync": false
       },
       "fallbackExplanation": null
+    },
+    "christina": {
+      "id": "christina",
+      "displayName": "克莉丝提娜",
+      "originalName": "クリスティーナ",
+      "role": "高塔幻影",
+      "title": "不败的邀约",
+      "art": "assets/encounter-cast/christina-full.svg",
+      "originalArt": "assets/encounter-cast/christina.png",
+      "color": "#4d4185",
+      "accent": "#d5ac5b",
+      "palette": {
+        "base": "#4d4185",
+        "accent": "#d5ac5b"
+      },
+      "entryLine": "既然走到了这里，就让我看看你们的决心。",
+      "entryLineSource": "本作自写对白，非原作剧情或官方语音字幕",
+      "fanScenario": true,
+      "voice": {
+        "path": "assets/encounter-cast/audio/christina-official-sample.mp3",
+        "kind": "official_character_sample",
+        "source": "https://files.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/91e9f436e106426e96fc026262a5abe5/voice_08_02_Christina.mp3",
+        "officialPage": "https://priconne-redive.jp/character/christina/",
+        "bytes": 226057,
+        "sha256": "e4da8508c41f6035c0ed3f5887e7ee95457fc3133022b3e6815ae1f13b197a25",
+        "durationSeconds": 6.840563,
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "sample_rate": "44100",
+            "channels": 2
+          }
+        ],
+        "codecDecodeVerified": true,
+        "fullDecodeVerified": true,
+        "characterAssociationVerified": true,
+        "humanListening": false,
+        "transcript": null,
+        "subtitle": null,
+        "boundary": "Official character-page sample, not a battle/UB cue and not a recording of this fan-game dialogue."
+      },
+      "source": {
+        "kind": "official_game_character_page",
+        "url": "https://images.microcms-assets.io/assets/163f2eea044e46da85889deac5deea5a/25d3af269a184798b6eb3c03a51f009b/whole_christina.png",
+        "page": "https://priconne-redive.jp/character/christina/",
+        "field": "image_astrum"
+      },
+      "rights": "© Cygames, Inc. Original game artwork/audio. Availability does not grant a reuse license.",
+      "pixels": {
+        "width": 2288,
+        "height": 2696,
+        "hasAlpha": true,
+        "transparentPixels": 5277774,
+        "partialAlphaPixels": 14193,
+        "visibleBounds": {
+          "x": 708,
+          "y": 305,
+          "width": 869,
+          "height": 2044
+        },
+        "bytes": 1366288,
+        "sha256": "9d51a5bddb59abc11d4caf40428f8656c5c481ac0b95d20674967db9b45c1cf6"
+      },
+      "visualReview": {
+        "fullBody": true,
+        "includesFeet": true,
+        "bodyReconstruction": false,
+        "aiGenerated": false,
+        "wrapper": "Self-contained SVG embeds the original unmodified PNG. Only fully transparent outside margins are excluded by viewBox.",
+        "reviewedDate": "2026-10-21"
+      },
+      "ub": {
+        "video": "assets/media/bosses/christina/cutin.mp4",
+        "poster": "assets/media/bosses/christina/poster.jpg",
+        "voice": "assets/media/bosses/christina/ub.m4a",
+        "cutinVoice": "assets/media/bosses/christina/cutin.m4a",
+        "videoHasAudio": false,
+        "videoDurationSeconds": 2.366667,
+        "voiceDurationSeconds": 2.137007,
+        "cutinVoiceDurationSeconds": 2.350998,
+        "audioPaths": [
+          "assets/media/bosses/christina/cutin.m4a",
+          "assets/media/bosses/christina/ub.m4a"
+        ],
+        "uniqueSampleIds": [
+          "107101:subsong:5",
+          "107101:subsong:21"
+        ],
+        "deduplicatedCutinUbAlias": false,
+        "variant": "same-character-playable-move-adapted-to-phantom-Boss",
+        "verified": {
+          "codecDecode": true,
+          "ffprobe": true,
+          "browserPlayback": false,
+          "semanticListening": false,
+          "avSync": false,
+          "visualCharacterMatch": true,
+          "originalBossPhaseBinding": false
+        },
+        "boundary": "Original Christina 107101 short cut-in plus exact independent cutin_001 and ub_100 ACB cues. Not a complete original in-battle UB or a source-accurate binding to the fan-game AoE. Video ends into battlefield FX while speech finishes naturally."
+      },
+      "mediaKey": "christina",
+      "coverage": {
+        "standing": true,
+        "shortCutin": true,
+        "independentVoice": true,
+        "completeOriginalUB": false,
+        "browserPlayback": false,
+        "semanticListening": false,
+        "avSync": false
+      }
     }
   },
   "merchant": {
@@ -3664,14 +4075,14 @@
   "productionV3": {
     "launchBossKeys": [
       "paper_fubuki",
-      "paper_yamato",
+      "paper_christina",
       "paper_ranpha",
       "paper_misora",
       "paper_kaiser"
     ],
     "launchEnemyIds": [
       "fubuki",
-      "yamato",
+      "christina",
       "ranpha",
       "misora",
       "kaiser"
@@ -3690,7 +4101,7 @@
       "saren",
       "monika"
     ],
-    "legacyBossMappings": "Old3 preserved only for legacy encounter IDs; new5 all use their own identity and declared bank.",
-    "verificationBoundary": "Decoded source candidates and checked original-art views; no complete original-game UB/AV-sync or semantic-listening assertion."
+    "legacyBossMappings": "Legacy encounter definitions and Yamato media remain for saved battles. New Act 1 selects Fubuki or Christina; Christina uses her own 107101 short cut-in and exact ACB cues with original standing art and official entrance sample.",
+    "verificationBoundary": "All five launch Bosses have same-character short cut-ins and cue-name-associated independent audio. Christina 107101 was decoded and frame-matched in local v3.4; no complete original-game UB/AV-sync or semantic-listening assertion."
   }
 }

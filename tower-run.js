@@ -33,6 +33,18 @@
     return result;
   }
   function actDef(run) { return C.acts.find(function (act) { return act.id === run.act; }); }
+  function mapSteps(run) {
+    var steps = [
+      { key: 'battle', label: '遭遇敌人', icon: '⚔' },
+      { key: 'event', label: '沿途奇遇', icon: '✧' },
+      { key: 'challenge', label: '选择挑战', icon: '◇' },
+      { key: 'service', label: '旅途整备', icon: '♧' },
+      { key: 'boss', label: '封印之战', icon: '♜' }
+    ];
+    if (run && run.layoutVersion === 1 && run.act === 2) steps.splice(2, 0, { key: 'commander', label: '突破据点', icon: '⚑' });
+    return steps;
+  }
+  function currentStep(run) { return mapSteps(run)[run.stage] || null; }
   function normalize(run) {
     if (!run || !Array.isArray(run.heroIds)) throw new Error('远征存档无效。');
     run.bossByAct = run.bossByAct || {};
@@ -45,6 +57,7 @@
     run.version = 3;
     run.eventsSeen = run.eventsSeen || [];
     run.campDebt = run.campDebt || {};
+    run.swapsByAct = run.swapsByAct || {};
     return run;
   }
   function chooseActBoss(run) {
@@ -84,7 +97,7 @@
   function relicAvailability(run, id) {
     var special = ['shield_etching', 'blood_receipt', 'concert_ribbon', 'crooked_compass', 'spent_fuse', 'last_ember_locket'];
     if (special.indexOf(id) < 0) return { enabled: !!C.relics[id], reason: '' };
-    if (run.act === 3 && run.stage === 4 && run.battle && run.battle.status !== 'active') return { enabled: false, reason: '终幕战斗已经结束，没有后续战斗。' };
+    if (run.layoutVersion !== 1 && run.act === 3 && run.stage === 4 && run.battle && run.battle.status !== 'active') return { enabled: false, reason: '终幕战斗已经结束，没有后续战斗。' };
     var cards = run.deck.map(resolvedCard), enabled = true, reason = '';
     if (id === 'shield_etching') {
       enabled = cards.some(function (c) { return (c.effects || []).some(function (e) { return e.type === 'heavy' && (e.cap || e.maxSpend || 0) >= 4; }); });
@@ -121,10 +134,10 @@
       throw new Error('请选择三名不同的有效角色。');
     }
     var seed = options.seed === undefined ? Date.now() : options.seed;
-    var run = { version: 3, seed: seed, heroIds: ids.slice(), hp: {}, deck: [], relics: [], gold: 55,
+    var run = { version: 3, layoutVersion: 1, seed: seed, heroIds: ids.slice(), hp: {}, deck: [], relics: [], gold: 55,
       act: 1, stage: 0, screen: 'map', room: null, battle: null, reward: null,
       stats: { battles: 0, elites: 0, bosses: 0, rounds: 0 }, history: [],
-      rngState: hash(seed), nextCardUid: 1, mapChoices: {}, rewardQueue: [], bossByAct: {}, eventsSeen: [], campDebt: {} };
+      rngState: hash(seed), nextCardUid: 1, mapChoices: {}, rewardQueue: [], bossByAct: {}, eventsSeen: [], campDebt: {}, swapsByAct: {} };
     ids.forEach(function (id) {
       run.hp[id] = C.heroes[id].hp;
       Object.keys(C.cards).filter(function (key) { return C.cards[key].owner === id && C.cards[key].starter; }).forEach(function (key) {
@@ -140,24 +153,32 @@
     normalize(run); chooseActBoss(run);
     var key = run.act + ':' + run.stage;
     if (run.mapChoices[key]) return clone(run.mapChoices[key]);
-    var act = actDef(run), list = [];
+    var act = actDef(run), list = [], step = currentStep(run);
     if (!act) return list;
     function battleChoice(id) {
       var enc = C.encounters[id];
       return { id: 'battle:' + id, name: enc.name, text: enc.description, icon: enc.type === 'boss' ? '♛' : enc.type === 'elite' ? '⚔' : '⚑', type: enc.type, encounterId: id };
     }
-    if (run.stage === 0) list = act.battles.map(battleChoice);
-    else if (run.stage === 1) {
+    if (!step) return [];
+    if (step.key === 'battle') {
+      var firstBattles = act.battles;
+      if (run.layoutVersion === 1 && run.act === 2) firstBattles = ['starlit_dual', act.battles[1]];
+      if (run.layoutVersion === 1 && run.act === 3) firstBattles = ['starlit_core', act.battles[1]];
+      list = firstBattles.map(battleChoice);
+    } else if (step.key === 'event') {
       var event = sample(run, eligibleEvents(run), 1)[0];
       if (!event) return [];
       list = [{ id: 'event:' + event.id, name: event.name, text: event.text, icon: '✦', type: 'event', eventId: event.id }];
-    } else if (run.stage === 2) {
+    } else if (step.key === 'commander') {
+      list = [battleChoice('starlit_commander')];
+      list[0].text += ' 本战10金币，不另选卡；下个挑战的金币减少10，卡牌与精英遗物照常。';
+    } else if (step.key === 'challenge') {
       list = [battleChoice(sample(run, act.battles, 1)[0]), battleChoice(sample(run, act.elites, 1)[0])];
-    } else if (run.stage === 3) {
+    } else if (step.key === 'service') {
       list = [{ id: 'camp', name: '旅途营地', text: '免费为全队回复35%最大生命，或升级一张未升级卡。', icon: '♨', type: 'camp' },
         { id: 'shop', name: '行商的帐篷', text: '用金币购买补给、卡牌与遗物，也可付费升级或删牌。', icon: '◈', type: 'shop' }];
       if (run.campDebt[run.act] && run.campDebt[run.act].status === 'owed') list = [list[1], { id: 'skip-service', name: '继续前进', text: '泉眼已预支本幕免费营地；保留金币，直接迎战本幕Boss。', icon: '→', type: 'pass' }];
-    } else if (run.stage === 4) list = [battleChoice(run.bossByAct[run.act])];
+    } else if (step.key === 'boss') list = [battleChoice(run.bossByAct[run.act])];
     run.mapChoices[key] = clone(list);
     return clone(list);
   }
@@ -196,7 +217,7 @@
   function completeNode(run) {
     run.stage += 1;
     run.room = null; run.battle = null; run.reward = null; run.rewardQueue = [];
-    if (run.stage >= 5) {
+    if (run.stage >= mapSteps(run).length) {
       if (run.act >= 3) {
         run.screen = 'result'; run.result = 'won';
         record(run, 'complete', { result: 'won' });
@@ -231,6 +252,7 @@
     advanceReward(run);
   }
   function finishBattle(run) {
+    if (run.echo && run.echo.status === 'active') return finishEcho(run);
     var battle = run.battle;
     if (!battle || run.screen !== 'battle' || battle.runSettled) return no('这场战斗已经结算，或当前没有待结算战斗。');
     if (battle.status !== 'won' && battle.status !== 'lost') return no('战斗尚未结束。');
@@ -255,7 +277,10 @@
     }
     if (type === 'elite') run.stats.elites += 1;
     if (type === 'boss') run.stats.bosses += 1;
+    var shortEncounter = run.layoutVersion === 1 && currentStep(run).key === 'commander';
     var gold = type === 'boss' ? 50 : type === 'elite' ? 35 : 20;
+    if (shortEncounter) gold = 10;
+    else if (run.layoutVersion === 1 && run.act === 2 && currentStep(run).key === 'challenge') gold -= 10;
     run.gold += gold;
     // Surviving members retain the existing +2 (and combat's separate holy_cup).
     // Downed members recover exactly 25%, not 25% followed by that survivor heal.
@@ -270,9 +295,11 @@
     });
     battle.revivals = clone(revived);
     var rewards = [];
-    if (type === 'elite' || type === 'boss') rewards.push(rewardSpec(run, 'relic', 'battle'));
-    if (type === 'boss') rewards.push(rewardSpec(run, 'upgrade', 'battle'));
-    rewards.push(rewardSpec(run, 'card', 'battle'));
+    if (!shortEncounter) {
+      if (type === 'elite' || type === 'boss') rewards.push(rewardSpec(run, 'relic', 'battle'));
+      if (type === 'boss') rewards.push(rewardSpec(run, 'upgrade', 'battle'));
+      rewards.push(rewardSpec(run, 'card', 'battle'));
+    }
     openRewards(run, rewards);
     return ok('战斗胜利，获得' + gold + '金币，' + (revived.length ? '存活队友各回复2生命；倒地队友以25%最大生命重返队伍。' : '全队各回复2生命。'), { revived: clone(revived) });
   }
@@ -302,6 +329,77 @@
     record(run, 'reward', { rewardType: reward.type, id: id, branch: id && reward.type === 'upgrade' ? selection.branch : null });
     advanceReward(run);
     return ok(id ? reward.type === 'upgrade' ? '升级为' + name + '。' : '获得' + (C.cards[id] || C.relics[id]).name + '。' : reward.type === 'card' ? '跳过卡牌奖励，获得8金币。' : reward.type === 'upgrade' ? '跳过升级。' : '跳过遗物奖励。');
+  }
+  function swapOptions(run, index) {
+    var reason = '', cards = [], reward = run && run.reward;
+    if (!run || run.screen !== 'reward' || !reward || reward.type !== 'card') reason = '当前没有卡牌奖励可换招。';
+    else if (run.layoutVersion !== 1 || (run.act !== 1 && run.act !== 2)) reason = '换招只在新版远征的第一、二幕开放。';
+    else if ((run.swapsByAct || {})[run.act]) reason = '本幕已经换招；每幕最多一次。';
+    else if (!Number.isInteger(index) || index < 0 || index >= reward.options.length || !C.cards[reward.options[index]]) reason = '请选择当前展示的一张奖励牌。';
+    else {
+      var owner = C.cards[reward.options[index]].owner;
+      if (run.heroIds.indexOf(owner) < 0) reason = '这张奖励牌不属于当前队伍。';
+      else cards = run.deck.filter(function (card) {
+        var def = C.cards[card.defId];
+        return def && def.owner === owner && def.starter && !card.branch && run.deck.filter(function (other) { return other.defId === card.defId; }).length >= 2;
+      }).map(clone);
+      if (!reason && !cards.length) reason = '该角色没有可替换的未升级起手副本；每种起手至少保留一张。';
+      if (!reason && run.gold < 40) reason = '换招需要40金币。';
+    }
+    return { enabled: !reason, reason: reason, cost: 40, cards: cards };
+  }
+  function swapReward(run, index, cardUid) {
+    var offer = swapOptions(run, index);
+    if (!offer.enabled) return no(offer.reason);
+    var old = offer.cards.find(function (card) { return card.uid === cardUid; });
+    if (!old) return no('请选择该角色可替换的未升级起手副本。');
+    var next = clone(run), id = next.reward.options[index], act = next.act;
+    next.gold -= 40;
+    next.deck.splice(next.deck.findIndex(function (card) { return card.uid === cardUid; }), 1);
+    var gained = addCard(next, id);
+    next.swapsByAct = next.swapsByAct || {}; next.swapsByAct[act] = true;
+    record(next, 'swapReward', { fromUid: old.uid, fromDefId: old.defId, toUid: gained.uid, toDefId: id, cost: 40 });
+    advanceReward(next);
+    Object.assign(run, next);
+    return ok('支付40金币，将' + C.cards[old.defId].name + '换为' + C.cards[id].name + '，牌组张数不变。');
+  }
+  function echoChoices(run) {
+    if (!run || run.layoutVersion !== 1 || run.result !== 'won' || run.screen !== 'result' || run.echo) return [];
+    var encountered = (run.history || []).filter(function (entry) { return entry.type === 'battle'; }).map(function (entry) { return entry.encounterId; });
+    return C.acts.filter(function (act) { return act.id < 3; }).reduce(function (pool, act) { return pool.concat(act.bosses || [act.boss]); }, []).filter(function (id) { return encountered.indexOf(id) < 0; }).map(function (sourceId) {
+      var source = C.encounters[sourceId], enc = C.encounters['echo_' + source.bossId];
+      return { id: enc.id, name: enc.name, text: enc.description, sourceEncounterId: enc.sourceEncounterId, bossId: source.bossId };
+    });
+  }
+  function startEcho(run, encounterId) {
+    var choice = echoChoices(run).find(function (item) { return item.id === encounterId; });
+    if (!choice) return no('该回响当前不可选；每局最多挑战一次。');
+    var combat = combatOverride || getCombat(), fullHp = {};
+    run.heroIds.forEach(function (id) { fullHp[id] = C.heroes[id].hp; });
+    var b;
+    try { b = combat.createBattle({ heroIds: run.heroIds.slice(), deck: clone(run.deck), relics: run.relics.slice(), hp: fullHp, encounterId: encounterId, seed: String(run.seed) + ':echo:' + encounterId }); }
+    catch (error) { return no('无法开始回响：' + error.message); }
+    run.echo = { status: 'active', encounterId: encounterId, sourceEncounterId: choice.sourceEncounterId, name: choice.name, rounds: 0, outcome: null };
+    run.room = { id: 'echo:' + encounterId, encounterId: encounterId, type: 'boss', name: choice.name, introSeen: false, echo: true };
+    run.battle = b; run.screen = 'battle';
+    return ok('进入单场回响。主线已通关，试炼胜负不改变远征结果。');
+  }
+  function finishEcho(run) {
+    var b = run.battle;
+    if (!b || run.screen !== 'battle' || !run.echo || run.echo.status !== 'active') return no('当前没有待结算的回响。');
+    if (b.status !== 'won' && b.status !== 'lost') return no('回响尚未结束。');
+    if (b.status === 'lost' && !b.party.every(function (hero) { return hero.hp <= 0; })) return no('仍有队员可以作战，不能结算为全队战败。');
+    b.runSettled = true;
+    run.echo.status = b.status; run.echo.outcome = b.status; run.echo.rounds = b.round || 0;
+    run.echo.finalHp = {}; b.party.forEach(function (hero) { run.echo.finalHp[hero.id] = hero.hp; });
+    run.battle = null; run.room = null; run.screen = 'result';
+    return ok(b.status === 'won' ? '回响挑战完成。主线通关与远征收获保持原样。' : '回响结束。主线已经登顶，通关与远征收获保持原样。');
+  }
+  function exitEcho(run) {
+    if (!run || run.screen !== 'battle' || !run.echo || run.echo.status !== 'active') return no('当前不在回响中。');
+    run.echo.status = 'abandoned'; run.echo.outcome = 'abandoned'; run.echo.rounds = run.battle ? run.battle.round : 0;
+    run.battle = null; run.room = null; run.screen = 'result';
+    return ok('已离开回响，主线通关与收获保持原样。');
   }
   function selectionCheck(run, action, selection) {
     selection = selection || {};
@@ -450,5 +548,7 @@
   }
   return { create: create, choices: choices, enter: enter, finishBattle: finishBattle, takeReward: takeReward,
     eventChoice: eventChoice, camp: camp, buy: buy, leaveShop: leaveShop, setCombat: setCombat, prices: clone(PRICES),
-    normalize: normalize, publicBoss: publicBoss, relicAvailability: relicAvailability, eventAvailability: eventAvailability, eligibleEvents: eligibleEvents };
+    normalize: normalize, publicBoss: publicBoss, relicAvailability: relicAvailability, eventAvailability: eventAvailability, eligibleEvents: eligibleEvents,
+    mapSteps: mapSteps, currentStep: currentStep, swapOptions: swapOptions, swapReward: swapReward,
+    echoChoices: echoChoices, startEcho: startEcho, exitEcho: exitEcho };
 });

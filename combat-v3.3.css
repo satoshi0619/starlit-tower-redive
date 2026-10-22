@@ -1,0 +1,67 @@
+/* Short card copy, explicit preparation cost and a dedicated final Boss stage. */
+.battle-page .hand .card .card-short-copy{display:block;-webkit-line-clamp:unset;white-space:normal;overflow:visible;line-height:1.5;align-self:start}
+.battle-page .hand .card{overflow:hidden}
+.branch-full-copy{font-size:14px;line-height:1.7;color:#bac8df;text-align:left;margin:12px 0}
+.upgrade-branches>div{flex:1;min-width:0}
+.upgrade-branches>div>.card{width:100%;max-width:none}
+.branch-rules{font-size:14px;line-height:1.7;margin-top:10px;color:#c9d5e8}
+.branch-rules summary{cursor:pointer;color:#e5c48a}
+.keyword-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.keyword-list h3{font-size:18px;margin:0 0 6px;color:#e5c48a}
+.keyword-list p{font-size:15px;line-height:1.75;margin:0}
+.battle-page .dock-main .reserve-energy{display:flex;flex-direction:column;gap:1px;justify-content:center;align-items:center;padding:4px 10px;line-height:1.2;min-height:43px;border-color:#91b9da80;color:#c9e4ff;background:#1d38523d;min-width:78px}
+.reserve-energy small{font-size:11px;color:#a7c1dd}
+.reserve-energy:disabled{opacity:.5}
+.battle-page .energy-display{flex-shrink:0}
+.battle-page .final-arena{position:relative;display:block;isolation:isolate;padding:0;overflow:hidden;border-color:#d7b17670;background-color:#141426;background-blend-mode:multiply}
+.final-arena:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 73% 38%,#ce9f6c50,transparent 36%),linear-gradient(105deg,#101b3699 0%,#100f2188 44%,#2b102655 100%);box-shadow:inset 0 0 75px #070916a0}
+.final-arena:after{content:"";position:absolute;left:46%;right:2%;bottom:0;height:30%;border-radius:50%;background:radial-gradient(ellipse,#d7b17635,transparent 65%);z-index:0;pointer-events:none}
+.battle-page .final-arena>.arena-label{display:none!important}
+.battle-page .final-arena .fighters.allies{position:absolute;left:12px;bottom:7px;width:47%;height:70%;display:flex;align-items:stretch;gap:9px;z-index:3}
+.battle-page .final-arena .allies .fighter{max-width:none;flex:1;min-width:0}
+.battle-page .final-arena .allies .fighter-art{overflow:visible}
+.battle-page .final-arena .allies .fighter-art img{filter:drop-shadow(0 4px 10px #071426)}
+.battle-page .final-arena .fighters.enemies{position:absolute;left:35%;right:1%;top:0;bottom:0;height:auto;width:auto;display:block;padding:0;z-index:2;pointer-events:none}
+.battle-page .final-arena .fighter.enemy,.battle-page .arena.final-arena .fighter.boss{position:relative;display:block;width:100%;height:100%;max-width:none;min-height:0;margin:0;pointer-events:auto}
+.battle-page .arena.final-arena .fighter.boss .enemy-art,.battle-page .final-arena .fighter.enemy .enemy-art{position:absolute;inset:0;display:block;height:100%;width:100%;max-width:none;margin:0;grid-column:auto;grid-row:auto;overflow:visible}
+.battle-page .final-arena .enemy-art .enemy-portrait{height:100%;width:100%;max-width:none;object-fit:contain;object-position:60% bottom;filter:drop-shadow(0 0 18px #ca8b6b55) drop-shadow(0 8px 22px #0009)}
+.battle-page .final-arena .fighter.enemy>.intent{position:absolute;top:10px;right:12px;width:min(310px,52%);min-height:43px;padding:6px 12px;background:#19182be8;border-color:#e5c48a90;border-width:1px;z-index:6;grid-column:auto;grid-row:auto;box-shadow:0 5px 18px #0005}
+.battle-page .final-arena .fighter.enemy>.fighter-info,.battle-page .arena.final-arena .fighter.boss .fighter-info{position:absolute;right:10px;bottom:8px;width:35%;padding:4px 10px;border:1px solid #c4a17866;background:#171a2be6;z-index:6;grid-column:auto;grid-row:auto;min-height:0}
+.battle-page .final-arena .fighter.enemy .fighter-name,.battle-page .final-arena .enemy-art .fighter-front{display:none}
+.battle-page .final-arena .fighter.enemy .statuses{height:20px;justify-content:center;margin:0}
+.battle-page.final-battle>.boss-health{border-color:#ddb87599;background:linear-gradient(100deg,#392733e8,#171d33);box-shadow:inset 0 0 25px #c5884325;flex-basis:47px}
+.final-battle .boss-heading h3{color:#f0d9a7;letter-spacing:2px}
+.final-battle .boss-hp-fill{background:linear-gradient(90deg,#9c3a57,#e8bd76);box-shadow:0 0 12px #e3b67455}
+.final-arena[data-phase=critical]:before{background:radial-gradient(ellipse at 73% 38%,#a6294d66,transparent 40%),linear-gradient(105deg,#101b3699,#2b1026aa)}
+@media(max-width:760px) and (min-height:501px){
+ .keyword-list{grid-template-columns:1fr}
+ .battle-page .dock-main .reserve-energy{min-width:65px;min-height:43px;padding:3px 6px;font-size:12px}
+ .reserve-energy small{font-size:10px}
+ .battle-page .dock-main .end-turn{min-width:112px}
+ .battle-page .energy-dot{width:13px;height:13px}
+ .battle-page .energy-text{font-size:11px}
+ .battle-page .final-arena .fighters.allies{left:5px;bottom:4px;width:calc(100% - 10px);height:43%;gap:5px}
+ .battle-page .final-arena .fighters.enemies{left:18%;right:0;top:0;bottom:26%;height:auto}
+ .battle-page .final-arena .fighter.enemy>.intent{left:-20%;right:auto;top:6px;width:51%;font-size:11px;padding:3px 5px;min-height:32px}
+ .battle-page .final-arena .fighter.enemy>.fighter-info,.battle-page .arena.final-arena .fighter.boss .fighter-info{left:-20%;right:auto;top:53px;bottom:auto;width:44%;padding:2px 4px}
+ .battle-page .final-arena .fighter.enemy .statuses{height:16px}
+ .battle-page .final-arena .enemy-art .enemy-portrait{object-position:60% top}
+ .battle-page.final-battle>.boss-health{flex-basis:37px}
+ .final-battle .boss-heading h3{font-size:18px}
+}
+@media(max-height:500px) and (min-width:600px){
+ .battle-page .final-arena .fighters.allies{left:5px;bottom:3px;width:48%;height:76%;gap:4px}
+ .battle-page .final-arena .fighters.enemies{left:36%;right:0;top:0;bottom:0}
+ .battle-page .final-arena .fighter.enemy>.intent{left:-32%;right:auto;top:3px;width:49%;min-height:29px;font-size:10px;padding:2px 4px}
+ .battle-page .final-arena .fighter.enemy>.fighter-info,.battle-page .arena.final-arena .fighter.boss .fighter-info{left:-32%;right:auto;top:45px;bottom:auto;padding:1px 3px}
+ .battle-page .final-arena .fighter.enemy .statuses{height:14px}
+ .battle-page .final-arena .fighter.enemy .status{font-size:9px}
+ .battle-page.final-battle>.boss-health{height:28px;min-height:0;flex-basis:auto}
+ .battle-page .dock-main .reserve-energy{min-width:74px}
+}
+@media(max-width:760px) and (min-height:501px) and (max-height:680px){
+ body[data-screen=battle]{--hand-height:225px}
+ .battle-page .hand .card{flex-basis:230px;min-width:230px;max-width:230px}
+ .battle-page .final-arena .fighters.allies{height:max(43%,145px)}
+}
+@media(max-width:400px){.battle-page .dock-main .reserve-energy{min-width:61px}.battle-page .dock-main .end-turn{min-width:105px;font-size:15px}.battle-page .energy-dot{display:none}}
