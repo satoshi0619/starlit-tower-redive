@@ -6,13 +6,16 @@
   const $ = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const SAVE = 'starlitTower.redesign.v2', SETTINGS = 'starlitTower.settings.v2', TUTORIAL_SEEN='starlitTower.tutorial.v2.2';
-  const defaults = {audio:true,volume:.32,fullBurst:true};
+  const defaults = {audio:true,volume:.32,fullBurst:true,hints:true};
+  const HINTS='starlitTower.hints.v3.6';
+  let hintSeen={},hintBefore=null,previewCardUid=null;
   let settings = {...defaults}, run = null, screen = 'home', chosen = ['pecorine','rei','kokkoro'];
   let selected = null, spendBlock = 0, consumeCurse = true, hoverTarget = null, modalContext = null;
   let bgm = null, bgmMode = '', voice = null, voiceController=null, voiceSequence=0, voiceDucking=false, activeBossPerformance=null, activePresentation = null, toastTimer = null;
   let saved = null, busy = false, eventCursor = 0, activeFeedback=null, tutorialEnabled=true, merchantLine='', merchantEntering=false, dockObserver=null, burstSession=0;
   try { settings = {...defaults,...JSON.parse(localStorage.getItem(SETTINGS)||'{}')}; saved = JSON.parse(localStorage.getItem(SAVE)||'null'); } catch (_) {}
   try { tutorialEnabled=localStorage.getItem(TUTORIAL_SEEN)!=='done'; }catch(_){}
+  try { hintSeen=JSON.parse(localStorage.getItem(HINTS)||'{}')||{}; }catch(_){}
   if (!C || !E || !R) { $('app').innerHTML='<div class="page"><h2>游戏文件尚未加载完整</h2><p>请确认 content.js、combat-engine.js、tower-run.js 与入口放在同一文件夹。</p></div>'; return; }
   const heroes = Object.values(C.heroes), definitions = Object.values(C.cards);
   const heroArt = h => h.art || h.portrait;
@@ -25,7 +28,7 @@
   const enemyNames={ 'Goblin Guard':'哥布林护卫','Kobold':'狗头人','Gellatina':'软泥怪','Wood Soul':'木灵','Golem':'魔像','Blue Golem':'蓝魔像','Fire Mage':'火焰法师','Werewolf':'狼人','Flaming Skulls':'火焰骷髅','Lizardman':'蜥蜴人','Sea Drake':'希德雷克','Orc Leader':'兽人首领' };
   function applyEnemyArt(unit){const cast=window.TowerEncounterCast?.enemies?.[unit.id];if(cast){unit.art=cast.art;unit.name=cast.displayName;unit.originalName=cast.originalName||cast.displayName;unit.isBoss=true;unit.castColor=cast.accent||cast.color;return unit;}const m=window.TowerEnemyMedia?.enemies?.[unit.id];if(m){unit.art=m.art;unit.combatRoleName??=unit.name;unit.name=unit.device?'封印魔像':enemyNames[m.originalName]||m.indexName||m.originalName;unit.originalName=m.originalName;}return unit;}
   // Keep changed standing art fresh for returning online players.
-  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.5.0';});
+  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.8.0';});
   Object.values(C.encounters).forEach(enc=>enc.enemies.forEach(applyEnemyArt));
   const battle = () => run?.battle;
   const inEcho = () => run?.echo?.status==='active';
@@ -36,7 +39,7 @@
     if (!run) return;
     try { localStorage.setItem(SAVE,JSON.stringify(run)); saved=run; } catch (_) { toast('浏览器未允许本地存档；本次仍可继续游玩。'); }
   }
-  function toast(message) { $('toast').textContent=message; $('toast').classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('toast').classList.remove('show'),3000); }
+  function toast(message,duration=3000) { $('toast').textContent=message; $('toast').classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('toast').classList.remove('show'),duration); }
   function closeModal() { $('modal').close(); modalContext=null; updateTutorialPointer(); }
   function modal(title,body,label='EXPEDITION NOTES') { window.TowerTutorialPointer?.hide(); $('modal-title').textContent=title; $('modal-label').textContent=label; $('modal-body').innerHTML=body; if(!$('modal').open)$('modal').showModal(); }
   function music(mode) {
@@ -72,7 +75,101 @@
     });
     if(!controller.getState().completed)voiceController=controller;return controller;
   }
-  function hpBar(hp,max){return `<div class="hp-track ${hp/max<.35?'low':''}"><i style="width:${Math.max(0,Math.min(100,hp/max*100))}%"></i></div>`;}
+  function hpBar(hp,max,id=null){return `<div class="hp-track ${hp/max<.35?'low':''}" ${id?`data-hp-unit="${esc(id)}"`:''}><i style="width:${Math.max(0,Math.min(100,hp/max*100))}%"></i>${id?'<span class="hp-forecast" aria-hidden="true"></span>':''}</div>`;}
+  function previewSpec(choice,target){return choice.kind==='burst'?{kind:'burst',heroId:choice.heroId,target,options:{consumeCurse}}:{kind:'card',uid:choice.uid,target,options:{spendBlock,consumeCurse}};}
+  function previewPlans(choice){
+    if(!choice||!battle()||!window.TowerCombatPreview)return [];
+    const b=battle(),card=b.hand.find(c=>c.uid===choice.uid),v=choice.kind==='burst'?C.heroes[choice.heroId]?.burst:card&&cardView(card);
+    if(!v)return [];
+    let targets;
+    if(['none','allEnemies','self'].includes(v.target))targets=[v.target==='self'?v.owner||choice.heroId:null];
+    else targets=(choice.kind==='burst'?E.legalBurstTargets(b,choice.heroId):E.legalTargets(b,choice.uid)).map(x=>typeof x==='object'?uidOf(x):x);
+    return targets.map(target=>({target,result:window.TowerCombatPreview.action(b,previewSpec(choice,target))})).filter(p=>p.result.ok);
+  }
+  function previewUnitText(unit){
+    const parts=[];
+    if(unit.hp.delta)parts.push(unit.hp.after<=0?'可击倒':`生命 ${unit.hp.before}→${unit.hp.after}`);
+    if(unit.block.delta)parts.push(`盾 ${unit.block.before}→${unit.block.after}`);
+    unit.statuses.forEach(s=>parts.push(`${s.label} ${s.before}→${s.after}`));
+    if(unit.tp.delta)parts.push(`TP ${unit.tp.before}→${unit.tp.after}`);
+    return parts.join(' · ');
+  }
+  function refreshBattlePreview(){
+    const host=$('live-preview');if(screen!=='battle'||!battle()||!host||!window.TowerCombatPreview)return;
+    host.classList.remove('has-reserve');
+    const app=$('app'),b=battle();
+    app.querySelectorAll('[data-preview-unit]').forEach(el=>{el.textContent='';el.title='';el.hidden=true;});
+    app.querySelectorAll('[data-hp-unit] .hp-forecast').forEach(el=>{el.style.width='0%';});
+    function paint(unit){
+      if(!unit.changed)return;
+      const label=Array.from(app.querySelectorAll('[data-preview-unit]')).find(el=>el.dataset.previewUnit===unit.uid);
+      if(label){label.textContent=unit.hp.delta?(unit.hp.after<=0?'预计击倒':`预计 ${unit.hp.delta>0?'+':'−'}${Math.abs(unit.hp.delta)}生命`):unit.block.delta?`护盾 ${unit.block.before}→${unit.block.after}`:unit.statuses[0]?`${unit.statuses[0].label} ${unit.statuses[0].before}→${unit.statuses[0].after}`:'';label.title=previewUnitText(unit);label.hidden=!label.textContent;}
+      if(unit.hp.delta){const real=b.party.concat(b.enemies).find(u=>uidOf(u)===unit.uid),bar=Array.from(app.querySelectorAll('[data-hp-unit]')).find(el=>el.dataset.hpUnit===unit.uid),ghost=bar?.querySelector('.hp-forecast');if(real&&ghost){ghost.style.left=(Math.min(unit.hp.before,unit.hp.after)/real.maxHp*100)+'%';ghost.style.width=(Math.abs(unit.hp.delta)/real.maxHp*100)+'%';ghost.classList.toggle('is-heal',unit.hp.delta>0);}}
+    }
+    if(busy||b.pending){host.innerHTML='<span>完成当前演出或选牌后继续</span>';return;}
+    const choice=selected||(previewCardUid?{kind:'card',uid:previewCardUid}:null),plans=previewPlans(choice);
+    let summary='',detail='';
+    if(choice&&plans.length){
+      const focused=plans.find(p=>p.target===hoverTarget)||(plans.length===1?plans[0]:null);
+      if(focused){focused.result.units.forEach(paint);summary=focused.result.summary;detail=focused.result.units.filter(u=>u.changed).map(u=>u.name+'：'+previewUnitText(u)).concat(focused.result.notice||[]).join('；');}
+      else{plans.forEach(p=>{const target=p.result.units.find(u=>u.uid===p.target);if(target)paint(target);});summary='目标旁已显示预计结果 · 点击目标打出';detail=plans.map(p=>p.result.units.find(u=>u.uid===p.target)).filter(Boolean).map(u=>u.name+'：'+previewUnitText(u)).join('；');}
+      const reserve=focused?.result.reserve;
+      host.classList.toggle('has-reserve',!!reserve);
+      host.innerHTML=`<span class="preview-action" title="${esc(detail)}">预估：${esc(summary)}</span>${reserve?`<span class="forecast-reserve">${esc(reserve.text)}</span>`:''}`;
+    }else if(choice){host.innerHTML='<span>当前无法准确预览，请查看完整规则</span>';}
+    else{
+      const result=window.TowerCombatPreview.turn(b);
+      if(result.ok){result.units.forEach(paint);const hurt=result.units.filter(u=>u.hp.delta<0),text=result.status==='won'?'预计本轮结束后获胜':result.status==='lost'?'全队将倒地':hurt.length?hurt.map(u=>u.name+'−'+Math.abs(u.hp.delta)).join(' · '):'三人本轮不会掉血',reserve=result.reserve;host.classList.toggle('has-reserve',!!reserve);host.innerHTML=`<button class="forecast-link" data-action="turn-forecast" title="${esc(result.summary+(reserve?'；'+reserve.text:''))}" aria-label="查看回合结算预览：${esc(text+(reserve?'；'+reserve.text:''))}"><span class="forecast-main">现在结束：${esc(text)}</span>${reserve?`<span class="forecast-reserve">${esc(reserve.text)}</span>`:''}<span class="forecast-more">详情 ›</span></button>`;}
+      else host.textContent='选牌后查看预计结果';
+    }
+  }
+  function showContextHint(){
+    if(screen!=='battle'||busy||teaching()||$('modal').open||!settings.hints||!window.TowerCombatPreview)return;
+    const hint=window.TowerCombatPreview.hint(battle(),{seen:hintSeen,before:hintBefore});hintBefore=null;
+    if(!hint)return;
+    toast(hint.text,7000);hintSeen[hint.id]=true;try{localStorage.setItem(HINTS,JSON.stringify(hintSeen));}catch(_){}
+  }
+  function inspectPreview(card){
+    if(screen!=='battle'||!battle()?.hand.some(c=>c.uid===card.uid))return '';
+    const plans=previewPlans({kind:'card',uid:card.uid});
+    return `<section class="inspect-preview"><h3>当前战斗预估</h3>${plans.length?plans.map(p=>`<p>${esc(p.result.summary)}</p>${p.result.notice?`<small>${esc(p.result.notice)}</small>`:''}`).join(''):'<p>当前没有可用的准确预览。</p>'}<small>按当前公开状态计算，实际出牌后才会揭示抽牌结果。</small></section>`;
+  }
+  function pressureRule(b){
+    const f=b?.fatigue;
+    return {startRound:f?.startRound||7,every:f?.every||3,amount:f?(f.amount||0):(b?.encounterType==='boss'?2:1)};
+  }
+  function pressureActive(b){const f=pressureRule(b);return f.amount>0&&b.round>=f.startRound;}
+  function pressureSummary(b){
+    const f=pressureRule(b);
+    return f.amount>0?'第'+f.startRound+'回合起，每'+f.every+'回合，攻击每段伤害再增加'+f.amount+'。':'本场没有逐轮增伤。';
+  }
+  function bossRhythmInfo(){
+    const view=E.bossRhythmView?.(battle());if(!view)return;
+    const next=view.nextRound;
+    modal('守关幻影 · 招式节奏',`<p class="eyebrow">${esc(view.currentPhaseName)}</p><p class="rule-copy">${esc(view.currentSummary)}</p><p class="muted">${esc(view.transitionHint)}</p><section class="inspect-preview"><h3>按当前状态结束回合</h3><p>${esc(view.forecastHint)}</p>${next?`<p>第 ${next.round} 回合 · ${esc(next.phaseName)}</p><div class="intent">${intentText({intent:next.intent})}</div>`:'<p>当前无法进入下一轮，或仍有选牌尚未完成。</p>'}</section><p class="explain">已预告的本轮动作保持不变。阶段不会锁血或回复生命；继续出牌后，下一轮预估也会更新。${esc(pressureSummary(battle()))}切换阶段不会重置加压。</p>`,'观察准备与进攻的窗口');
+  }
+  function encounterDescription(b,enc){
+    const rhythm=b?.bossRhythm;
+    if(rhythm){
+      if(typeof rhythm.description==='string'&&rhythm.description.trim())return rhythm.description;
+      const phases=Array.isArray(rhythm.phases)?rhythm.phases:[];
+      const saved=phases.map(phase=>[phase.name,phase.summary].filter(Boolean).join('：')).filter(Boolean).join(' ');
+      const transition=phases.length>1&&Number.isFinite(rhythm.threshold)?'生命不高于'+Math.round(rhythm.threshold*100)+'%时，从下一轮切换阶段。':'';
+      return saved+transition+'已预告的本轮行动不变。';
+    }
+    return enc.bossRhythm?.legacyDescription||enc.description;
+  }
+  function hoverPreview(event){
+    if(screen!=='battle'||busy||$('modal').open||event.pointerType==='touch')return;
+    const target=event.target.closest?.('[data-action="target"]');
+    if(selected&&target){if(hoverTarget===target.dataset.id)return;hoverTarget=target.dataset.id;refreshBattlePreview();return;}
+    if(!selected){const card=event.target.closest?.('[data-action="select-card"]'),next=card?.dataset.id||null;if(next===previewCardUid)return;previewCardUid=next;refreshBattlePreview();}
+  }
+  function leavePreview(event){
+    const next=event.relatedTarget?.closest?.('[data-action="target"],[data-action="select-card"]');
+    if(next)return;
+    if(hoverTarget||previewCardUid){hoverTarget=null;previewCardUid=null;refreshBattlePreview();}
+  }
   function partyPanel(){return `<div class="party-strip">${run.heroIds.map(id=>{const h=C.heroes[id];return `<div class="party-mini"><img src="${esc(heroArt(h))}" alt=""><div class="mini-info"><div><span>${esc(h.name)}</span><span>${run.hp[id]} / ${h.hp}</span></div>${hpBar(run.hp[id],h.hp)}</div></div>`;}).join('')}</div>`;}
   function relicPanel(){return run.relics.length?`<div class="relic-strip">${run.relics.map(id=>{const r=C.relics[id];return r?`<button class="relic-icon" style="padding:0" data-action="relic-info" data-id="${esc(id)}" title="${esc(r.name+'：'+r.text)}"><img class="relic-icon" src="${esc(r.art)}" alt="${esc(r.name)}" style="border:0;width:100%;height:100%"></button>`:'';}).join('')}</div>`:'<p class="explain">遗物会改变战斗节奏。挑战精英和Boss，可以挑选一件。</p>';}
   function cardView(card,b){try{return E.cardView(card,b||battle())||C.cards[card.defId];}catch(_){const d=C.cards[card.defId];return {...d,...(card.branch?d.branches[card.branch]:{})};}}
@@ -104,9 +201,10 @@
     eventCursor=screen==='battle'?(battle().events||[]).length:0;
     if(screen==='battle'&&!teaching()&&!busy&&C.encounters[battle().encounterId]?.type==='boss'&&run.room&&!run.room.introSeen)showBossEntry();
     updateTutorialPointer();
+    refreshBattlePreview();showContextHint();
   }
   function renderHome(){
-    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div><div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.5 公开试玩版 · 三幕十战 · 登顶后可选回响<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
+    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div><div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.8 公开试玩版 · 三幕十战 · 登顶后可选回响<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
   }
   function recommendedTeams(){
     const labels=[['初次登塔推荐','护盾承伤 → 破甲 → 剑锋收尾','物理爆发 · 稳住前排'],['喜欢魔法与群攻','咒痕点杀 → 星痕清场 → 指路调牌','魔法输出 · 处理后排'],['喜欢治疗与容错','佩可掩护 → 凯露突破 → 优衣修复','物魔搭配 · 治疗容错']];
@@ -132,7 +230,12 @@
     if(u.coverFrom)s.push(`<span class="status shield">${esc(C.heroes[u.coverFrom]?.name||'队友')}掩护</span>`);
     return s.join('')||'<span class="status">无附加状态</span>';
   }
-  function keywordsModal(){modal('卡牌关键词',`<div class="keyword-list">${Object.entries(window.TowerCardCopy?.terms||{}).map(([name,text])=>`<section><h3>${esc(name)}</h3><p>${esc(text)}</p></section>`).join('')}<section><h3>蓄势</h3><p>本轮支付1行动，下一轮获得1行动，每轮最多预备1点。不抽牌、不增加TP、不触发出牌被动，正常上限4行动；迟缓仍然扣除1行动。剩余手牌仍在轮末弃置，需要为下一轮提前安排。</p></section><section><h3>叠加与到期</h3><p>鼓舞、减攻和破甲数值相加。鼓舞与减攻在下一次对应攻击首段一次消耗；破甲每一层独立到期。破绽在下一次敌方命中合计消耗，毒分层结算。净化1种状态会清除该类型所有层。迟缓全队每轮最多扣1行动，阻滞最多减少2张抽牌。</p></section></div>`,'完整规则始终可以查看');}
+  function keywordsModal(){modal('卡牌关键词',`<div class="keyword-list">${Object.entries(window.TowerCardCopy?.terms||{}).map(([name,text])=>`<section><h3>${esc(name)}</h3><p>${esc(text)}</p></section>`).join('')}<section><h3>蓄势</h3><p>本轮支付1行动，整轮无人受到生命伤害，下一轮获得1行动，正常上限4行动。本轮任一队员已受伤就不能蓄势；蓄势后受伤会打断，已支付的行动不退还，本轮不能重做。护盾完全挡住、主动支付生命费用不算受伤；毒和反伤计入，之后治疗不能恢复资格。每轮最多预备1点，不抽牌、不增加TP、不触发出牌被动；迟缓仍扣1行动。剩余手牌仍在轮末弃置。</p></section><section><h3>叠加与到期</h3><p>鼓舞、减攻和破甲数值相加。鼓舞与减攻在下一次对应攻击首段一次消耗；破甲每一层独立到期。破绽在下一次敌方命中合计消耗，毒分层结算。净化1种状态会清除该类型所有层。迟缓全队每轮最多扣1行动，阻滞最多减少2张抽牌。</p></section></div>`,'完整规则始终可以查看');}
+  function reserveButton(b){
+    const view=window.TowerCombatPreview?.reserveView(b);
+    if(!view)return '';
+    return bText(`<span>${esc(view.label)}</span><small>${esc(view.detail)}</small>`,'reserve-energy',`data-reserve-state="${view.state}" aria-label="${esc(view.label+'：'+view.message)}" title="${esc(view.message)}" ${view.disabled||busy?'disabled':''}`,'small reserve-energy');
+  }
   function selectedTargets(){const all=legalSelectedTargets(),e=teaching()?T.expected(run):null;return e&&e.target?all.filter(id=>id===e.target):all;}
   function legalSelectedTargets(){
     if(!selected||!battle())return [];
@@ -164,20 +267,21 @@
     if(enc.type!=='boss')return '';
     const unit=b.enemies.find(e=>e.uid===b.bossCoreUid)||b.enemies[0];
     const ratio=Math.max(0,unit.hp/unit.maxHp),phase=ratio>.65?'生命充裕 · 观察招式':ratio>.3?'生命受创 · 抓住破绽':'濒临击破 · 集中火力';
-    return `<section class="boss-health" aria-label="Boss生命条" style="--boss:${esc(unit.castColor||unit.color||'#ca9cde')}"><div class="boss-heading"><span class="eyebrow">${inEcho()?'回响练招':`ACT ${run.act} · BOSS`}</span><h3>${esc(unit.name)}</h3><strong>${unit.hp} / ${unit.maxHp}</strong></div><div class="boss-hp-track"><i class="boss-hp-fill" style="width:${ratio*100}%"></i></div><span class="boss-phase">${phase} · ${b.round>=7?'伤害逐步增强':'第7回合起伤害逐步增强'}</span></section>`;
+    const rhythm=E.bossRhythmView?.(b),rhythmText=rhythm?`${rhythm.currentPhaseName} · ${rhythm.transitionPending?'下轮转势':rhythm.nextRound?'下轮：'+rhythm.nextRound.intent.name:'招式详解'} ›`:'';
+    return `<section class="boss-health" aria-label="Boss生命条" style="--boss:${esc(unit.castColor||unit.color||'#ca9cde')}"><div class="boss-heading"><span class="eyebrow">${inEcho()?'回响练招':`ACT ${run.act} · BOSS`}</span><h3>${esc(unit.name)}</h3><strong>${unit.hp} / ${unit.maxHp}</strong></div><div class="boss-hp-track" data-hp-unit="${esc(uidOf(unit))}"><i class="boss-hp-fill" style="width:${ratio*100}%"></i><span class="hp-forecast" aria-hidden="true"></span></div>${rhythm?bText(esc(rhythmText),'boss-rhythm-info',`title="${esc(rhythm.currentSummary+' '+rhythm.transitionHint)}"`,'boss-phase rhythm-link'):`<span class="boss-phase">${phase} · ${pressureRule(b).amount<=0?'无逐轮增伤':pressureActive(b)?'伤害逐步增强':'第'+pressureRule(b).startRound+'回合起伤害逐步增强'}</span>`}</section>`;
   }
   function renderBattle(){
     const b=battle(),enc=C.encounters[b.encounterId]||{},targets=selectedTargets(),lesson=teaching()?T.expected(run):null;
     const finale=enc.type==='boss'&&(enc.bossId==='kaiser'||['paper_kaiser','summit_boss'].includes(enc.id)),core=b.enemies.find(e=>e.uid===b.bossCoreUid)||b.enemies[0],phase=core.hp/core.maxHp<.3?'critical':core.hp/core.maxHp<.65?'wounded':'steady',turnEnergy=b.turnEnergy||Math.max(3,b.energy);
     const allies=b.party.map((u,i)=>{
       const h=C.heroes[u.id],id=uidOf(u),lit=lesson?.kind==='burst'&&lesson.owner===u.id;
-      return `<article class="fighter ${targets.includes(id)?'targetable':''} ${u.hp<=0?'dead down':''}" data-action="target" data-id="${esc(id)}" tabindex="${targets.includes(id)?'0':'-1'}" aria-label="${esc(h.name)}，${u.hp<=0?'已倒地':u.hp+'生命'}"><div class="fighter-art"><span class="fighter-front">${['前排','中位','后排'][i]}${u.hp<=0?' · 倒地':''}</span><img src="${esc(heroArt(h))}" alt=""></div><div class="fighter-info"><div class="fighter-name"><span>${esc(h.name)}</span><span class="hp-number">${u.hp} / ${u.maxHp}</span></div>${hpBar(u.hp,u.maxHp)}<div class="statuses">${u.hp<=0?'<span class="status mark">本场退出 · 获胜后恢复</span>':fighterStatus(u,true)}</div><div class="tp-row" aria-label="${u.tp} / 6 TP">${Array.from({length:6},(_,j)=>`<i class="${j<u.tp?'on':''}"></i>`).join('')}</div><button class="ub-button ${u.tp>=6&&u.hp>0?'ready':''} ${lit?'tutorial-highlight':''}" data-action="select-burst" data-id="${u.id}" data-tp="${u.hp<=0?'倒地':u.tp+'/6'}" aria-label="${esc(h.name+' · '+h.burst.name+' · '+(u.hp<=0?'本场倒地':u.tp+'/6 TP'))}" ${u.hp<=0||u.tp<6||b.energy<1||busy||(lesson&&!lit)?'disabled':''}><span>${esc(h.burst.name)}</span><small>${u.hp<=0?'暂时倒地':`必杀 · ${u.tp}/6 TP`}</small></button></div></article>`;
+      return `<article class="fighter ${targets.includes(id)?'targetable':''} ${u.hp<=0?'dead down':''}" data-action="target" data-id="${esc(id)}" tabindex="${targets.includes(id)?'0':'-1'}" aria-label="${esc(h.name)}，${u.hp<=0?'已倒地':u.hp+'生命'}"><div class="fighter-art"><span class="fighter-front">${['前排','中位','后排'][i]}${u.hp<=0?' · 倒地':''}</span><img src="${esc(heroArt(h))}" alt=""></div><div class="fighter-info"><div class="fighter-name"><span>${esc(h.name)}</span><span class="hp-number">${u.hp} / ${u.maxHp}</span></div>${hpBar(u.hp,u.maxHp,id)}<span class="unit-preview" data-preview-unit="${esc(id)}" hidden></span><div class="statuses">${u.hp<=0?'<span class="status mark">本场退出 · 获胜后恢复</span>':fighterStatus(u,true)}</div><div class="tp-row" aria-label="${u.tp} / 6 TP">${Array.from({length:6},(_,j)=>`<i class="${j<u.tp?'on':''}"></i>`).join('')}</div><button class="ub-button ${u.tp>=6&&u.hp>0?'ready':''} ${lit?'tutorial-highlight':''}" data-action="select-burst" data-id="${u.id}" data-tp="${u.hp<=0?'倒地':u.tp+'/6'}" aria-label="${esc(h.name+' · '+h.burst.name+' · '+(u.hp<=0?'本场倒地':u.tp+'/6 TP'))}" ${u.hp<=0||u.tp<6||b.energy<1||busy||(lesson&&!lit)?'disabled':''}><span>${esc(h.burst.name)}</span><small>${u.hp<=0?'暂时倒地':`必杀 · ${u.tp}/6 TP`}</small></button></div></article>`;
     }).join('');
     const enemies=b.enemies.filter(e=>e.hp>0).map(u=>{
-      const id=uidOf(u);return `<article class="fighter enemy ${u.isBoss?'boss':''} ${targets.includes(id)?'targetable':''}" data-action="target" data-id="${esc(id)}" data-unit-id="${esc(u.id)}" tabindex="${targets.includes(id)?'0':'-1'}" aria-label="${esc(u.name)}，${u.hp}生命"><div class="intent">${intentText(u)}</div><div class="enemy-art" style="--foe:${esc(u.color||'#b194c0')}">${enemyArt(u)}<span class="fighter-front">${u.device?'装置':u.isBoss?'BOSS':enc.victoryCoreId===u.id?'胜利目标':u.position==='back'?'后排':'前排'}</span></div><div class="fighter-info"><div class="fighter-name"><span>${esc(u.name)}</span><span class="hp-number">${u.hp}/${u.maxHp}</span></div>${u.isBoss?'':hpBar(u.hp,u.maxHp)}<div class="statuses">${fighterStatus(u,false)}</div></div></article>`;
+      const id=uidOf(u);return `<article class="fighter enemy ${u.isBoss?'boss':''} ${targets.includes(id)?'targetable':''}" data-action="target" data-id="${esc(id)}" data-unit-id="${esc(u.id)}" tabindex="${targets.includes(id)?'0':'-1'}" aria-label="${esc(u.name)}，${u.hp}生命"><div class="intent">${intentText(u)}</div><div class="enemy-art" style="--foe:${esc(u.color||'#b194c0')}">${enemyArt(u)}<span class="fighter-front">${u.device?'装置':u.isBoss?'BOSS':enc.victoryCoreId===u.id?'胜利目标':u.position==='back'?'后排':'前排'}</span></div><div class="fighter-info"><div class="fighter-name"><span>${esc(u.name)}</span><span class="hp-number">${u.hp}/${u.maxHp}</span></div>${u.isBoss?'':hpBar(u.hp,u.maxHp,id)}<span class="unit-preview" data-preview-unit="${esc(id)}" hidden></span><div class="statuses">${fighterStatus(u,false)}</div></div></article>`;
     }).join('');
     const hand=visibleHand(),handHTML=hand.map((c,i)=>cardHTML(c,'select-card','',i===0||C.cards[c.defId].owner!==C.cards[hand[i-1].defId].owner?'hand-group-start':'')).join('');
-    return `<section class="battle-page ${finale?'final-battle':''}"><div class="battle-toolbar"><div><p class="eyebrow">${inEcho()?'ECHO':`ACT ${run.act}`} · ${teaching()?'TRAINING':enc.type==='boss'?'BOSS ENCOUNTER':enc.type==='elite'?'ELITE ENCOUNTER':'BATTLE'}</p><h2>${esc(enc.name||b.name||'遭遇战')} <span class="round-label">第 ${b.round} 回合</span></h2><p>${esc(enc.description||'')}</p></div><div class="actions">${b.round>=7?'<span class="pill gold">敌人正在逐步加压</span>':''}${window.TowerTestTools&&window.TowerBuild?.testTools===true?bText('测试胜利','test-victory',lesson?'disabled title="请先完成或跳过练习"':(inEcho()?'title="只结束本次回响，不发奖励，不改主线战果"':'title="跳过本场战斗，正常发放奖励，并标记本局为测试远征"'),'small test-victory'):''}${inEcho()?bText('结束回响','echo-exit','','small'):''}${bText('记录','battle-log','','small')}</div></div>${enc.objective?`<div class="battle-objective" role="note"><span>胜利条件</span>${esc(enc.objective)}</div>`:''}${tutorialPanel()}${bossHealth(b,enc)}<div class="arena ${enc.type==='boss'?'boss-arena':''} ${finale?'final-arena':''} ${enc.type==='boss'&&!finale?'solo-boss-arena':''}" data-phase="${phase}" ${enc.type==='boss'?`style="background-image:linear-gradient(#10182b88,#10182bcc),url('${esc(currentAct().background)}')"`:''}><span class="arena-label">同行伙伴 · 前排 → 后排</span><span class="arena-label enemy-label">敌方 · 下一步意图</span><div class="fighters allies">${allies}</div><div class="fighters enemies">${enemies}</div></div><section class="hand-panel"><div class="hand-toolbar"><span class="hand-order-note">手牌 · 按同行顺序排列</span><div class="draw-counters">${bText('手牌详情','battle-pile','data-pile="hand"','small')}${bText('战况','battle-info','','small')}${bText(`牌库 ${b.drawPile.length}`,'battle-pile','data-pile="draw"','small')}${bText(`弃牌 ${b.discardPile.length}`,'battle-pile','data-pile="discard"','small')}${bText('免费调度','redraw',b.redrawUsed||b.flags?.redrawUsed||lesson?'disabled':'','small')}</div></div><div class="hand">${handHTML||'<p class="empty">本轮没有手牌了，可以释放必杀或结束回合。</p>'}</div><div class="log-box">${b.log.slice(-3).map(t=>`<p>${esc(typeof t==='string'?t:t.text||JSON.stringify(t))}</p>`).join('')}</div></section><section class="battle-dock ${selected?'is-selecting':''} ${selected?.kind==='burst'&&['none','allEnemies','self'].includes(C.heroes[selected.heroId].burst.target)?'has-burst-confirm':''}" aria-label="战斗操作栏"><div class="dock-main"><div class="energy-display">${Array.from({length:turnEnergy},(_,i)=>`<span class="energy-dot ${i>=b.energy?'off':''}"><span>${i<b.energy?'✦':'·'}</span></span>`).join('')}<span class="energy-text">行动 ${b.energy}/${turnEnergy}</span></div><div class="dock-options">${renderTargetPanel()}</div><span class="shortcut">1–5 选牌 · Enter 结束回合</span><div class="actions">${selected?bText('取消','cancel-select','','small'):''}${!lesson?bText(b.energyReserve?'<span>已蓄势</span><small>下轮 +1</small>':'<span>蓄势 −1</span><small>下轮 +1</small>','reserve-energy',`aria-label="蓄势：本轮支付1行动，下一轮获得1行动；最多预备1点，不加TP" title="本轮少1行动，下一轮多1行动，最多4；不抽牌、不增加TP" ${b.energy<1||b.energyReserve||b.flags?.reserveUsed||busy||b.pending?'disabled':''}`,'small reserve-energy'):''}${bText('结束回合 →','end-turn',busy||b.pending||(lesson&&lesson.kind!=='endTurn')?'disabled':'',`primary end-turn ${lesson?.kind==='endTurn'?'tutorial-highlight':''}`)}</div></div></section></section>`;
+    return `<section class="battle-page ${finale?'final-battle':''}"><div class="battle-toolbar"><div><p class="eyebrow">${inEcho()?'ECHO':`ACT ${run.act}`} · ${teaching()?'TRAINING':enc.type==='boss'?'BOSS ENCOUNTER':enc.type==='elite'?'ELITE ENCOUNTER':'BATTLE'}</p><h2>${esc(enc.name||b.name||'遭遇战')} <span class="round-label">第 ${b.round} 回合</span></h2><p>${esc(encounterDescription(b,enc)||'')}</p></div><div class="actions">${pressureActive(b)?'<span class="pill gold">敌人正在逐步加压</span>':''}${window.TowerTestTools&&window.TowerBuild?.testTools===true?bText('测试胜利','test-victory',lesson?'disabled title="请先完成或跳过练习"':(inEcho()?'title="只结束本次回响，不发奖励，不改主线战果"':'title="跳过本场战斗，正常发放奖励，并标记本局为测试远征"'),'small test-victory'):''}${inEcho()?bText('结束回响','echo-exit','','small'):''}${bText('记录','battle-log','','small')}</div></div>${enc.objective?`<div class="battle-objective" role="note"><span>胜利条件</span>${esc(enc.objective)}</div>`:''}${tutorialPanel()}${bossHealth(b,enc)}<div class="arena ${enc.type==='boss'?'boss-arena':''} ${finale?'final-arena':''} ${enc.type==='boss'&&!finale?'solo-boss-arena':''}" data-phase="${phase}" ${enc.type==='boss'?`style="background-image:linear-gradient(#10182b88,#10182bcc),url('${esc(currentAct().background)}')"`:''}><span class="arena-label">同行伙伴 · 前排 → 后排</span><span class="arena-label enemy-label">敌方 · 下一步意图</span><div class="fighters allies">${allies}</div><div class="fighters enemies">${enemies}</div></div><section class="hand-panel"><div class="hand-toolbar"><span class="hand-order-note">手牌 · 按同行顺序排列</span><div class="draw-counters">${bText('手牌详情','battle-pile','data-pile="hand"','small')}${bText('战况','battle-info','','small')}${bText(`牌库 ${b.drawPile.length}`,'battle-pile','data-pile="draw"','small')}${bText(`弃牌 ${b.discardPile.length}`,'battle-pile','data-pile="discard"','small')}${bText('免费调度','redraw',b.redrawUsed||b.flags?.redrawUsed||lesson?'disabled':'','small')}</div></div><div class="hand">${handHTML||'<p class="empty">本轮没有手牌了，可以释放必杀或结束回合。</p>'}</div><div class="log-box">${b.log.slice(-3).map(t=>`<p>${esc(typeof t==='string'?t:t.text||JSON.stringify(t))}</p>`).join('')}</div></section><section class="battle-dock ${selected?'is-selecting':''} ${selected?.kind==='burst'&&['none','allEnemies','self'].includes(C.heroes[selected.heroId].burst.target)?'has-burst-confirm':''}" aria-label="战斗操作栏"><div id="live-preview" class="live-preview" aria-live="polite"></div><div class="dock-main"><div class="energy-display">${Array.from({length:turnEnergy},(_,i)=>`<span class="energy-dot ${i>=b.energy?'off':''}"><span>${i<b.energy?'✦':'·'}</span></span>`).join('')}<span class="energy-text">行动 ${b.energy}/${turnEnergy}</span></div><div class="dock-options">${renderTargetPanel()}</div><span class="shortcut">1–5 选牌 · Enter 结束回合</span><div class="actions">${selected?bText('取消','cancel-select','','small'):''}${!lesson?reserveButton(b):''}${bText('结束回合 →','end-turn',busy||b.pending||(lesson&&lesson.kind!=='endTurn')?'disabled':'',`primary end-turn ${lesson?.kind==='endTurn'?'tutorial-highlight':''}`)}</div></div></section></section>`;
   }
 
   function renderTargetPanel(){
@@ -258,18 +362,18 @@
     modalContext={type:'deck',mode,onDone,source,options};
   }
   function branchModal(card,done,options={}){const d=C.cards[card.defId];modal('为这张牌选择一种方向',`<p class="muted">${esc(d.name)} · ${esc(C.heroes[d.owner].name)}。分支会改变卡牌用途，原有卡牌的其它副本不变。</p>${options.hpCost?`<p class="danger-note">${esc(C.heroes[d.owner].name)}将亲自支付 ${options.hpCost.amount} 生命：${run.hp[d.owner]} → ${run.hp[d.owner]-options.hpCost.amount}。</p>`:''}<div class="upgrade-branches">${['A','B'].map(branch=>`<div>${cardHTML({...card,branch},'pick-branch',`data-branch="${branch}"`,'reward-card',{...d,...d.branches[branch]})}<details class="branch-rules"><summary>完整规则</summary><p class="rule-copy">${esc(d.branches[branch].text)}</p></details></div>`).join('')}</div>`,'A DIFFERENT WAY TO PLAY');modalContext={type:'branch',card,done};}
-  function rules(){modal('在下一手牌里找到配合',`<div class="rule-grid"><section><h3>本次更新的新内容</h3><p>新远征三幕共16节点、10场战斗。第二幕增加指挥者据点；交替双卫与第三幕指挥所可从地图选择。第一、二幕卡牌奖励可花40金币，用同角色未升级起手副本换取展示的新牌；每幕一次，保留另一张同名牌。登顶结算后可用最终构筑参加一场自选回响，随时结束，不影响主线结果。</p></section><section><h3>三人，整局同行</h3><p>每人三种起始牌，各两张，共18张。奖励只出同行角色的牌。站位从左到右，前排挡住近战对后排的攻击；法术可以越过前排。只有全队倒地才会失败。倒地角色本场不能行动，她的牌暂离循环；获胜后以25%生命重新同行。</p></section><section><h3>行动与必杀</h3><p>每轮基础3行动、抽5张牌，剩余手牌在轮末弃置。可主动蓄势：本轮支付1行动，下轮多1行动，最多预备1点，正常上限4；不抽牌、不加TP。每人每轮自然获得1TP；打出自己的付费普通牌再得1TP。6TP可使用UB，仍需1行动。普通护盾在敌方阶段结束后清零。</p></section><section><h3>搜索与免费调度</h3><p>指路花1行动，查看实际牌顶，选一张入手、其余置底。每战还可以免费调度一次：选择一张手牌，从当前抽牌堆随机找一张指定角色牌替换，原牌置底；没有对应牌不会消耗次数。</p></section><section><h3>状态可以叠加</h3><p>鼓舞、减攻与破甲数值相加。鼓舞和减攻只在下一次对应单体攻击的首段兑现并消耗；破甲逐层独立到期。咒痕刷新时长，星屑最多3层。迟缓全队最多扣1行动，阻滞最多少抽2张。</p></section><section><h3>伤害顺序很重要</h3><p>物理每段受护甲减免和破甲加成。魔法先消耗有限魔法屏障。星屑最多3层，轮末造成层数伤害再减1。咒痕每轮首次被主动命中额外受2伤；引爆会消耗它。群攻和星屑不吃鼓舞。</p></section><section><h3>看清敌人的意图</h3><p>目标在回合开始时锁定。击杀敌人可以阻止它行动；牵星等减攻只影响下一次单体攻击，挡不住群攻。第7轮起，敌人的伤害会公开逐步增加，战斗不能无限拖延。</p></section><section><h3>沿途做出取舍</h3><p>每幕有普通战、事件、普通或精英分支、营地或商店、Boss，新远征共16节点、10场战斗。战斗胜利时存活者各回复2生命，倒地者恢复至25%最大生命，通过一幕额外恢复35%。营地可选治疗或升级；无用的牌可以跳过奖励或在商店移除。</p></section></div><div class="divider"></div><p class="explain">自动存档保存在此浏览器。新版与旧版存档分开。音频及完整演出可在设置中调整。键盘：1–5选手牌，Enter结束回合，Esc取消。</p>`,'HOW TO PLAY');}
-  function showSettings(){modal('声音与演出',`<div class="setting-row"><span>游戏声音<small>音乐、效果音与角色原声</small></span><input type="checkbox" id="setting-audio" ${settings.audio?'checked':''} aria-label="开启游戏声音"></div><div class="setting-row"><span>音量</span><input type="range" id="setting-volume" min="0" max="1" step=".01" value="${settings.volume}" aria-label="游戏音量"></div><div class="setting-row"><span>完整必杀演出<small>短片后接战场特效；Boss命中后即可行动，余音自然播完。快速模式省略视频</small></span><input type="checkbox" id="setting-burst" ${settings.fullBurst?'checked':''} aria-label="完整必杀演出"></div><div class="divider"></div><div class="actions">${bText('查看素材来源','media-info')}${bText('返回标题','return-title')}</div><p class="media-credit" style="margin-top:20px">18名角色均已接入本人的原版短cut-in与必杀配音。短片结束后，剩余语音会自然播完；可在素材页查看每人的来源与接入状态。</p>`,'MAKE YOURSELF COMFORTABLE');}
+  function rules(){modal('在下一手牌里找到配合',`<div class="rule-grid"><section><h3>本次更新的新内容</h3><p>本次调整蓄势：必须整轮无人受到生命伤害，才能保住下一轮的额外行动。保留出牌与回合预览、五位主线Boss的新版节奏，营地、幕间和结局均无同行对白。新节奏适用于之后新进入的主线Boss战；已经进行中的Boss保留原规则。新远征三幕共16节点、10场战斗。第二幕增加指挥者据点；交替双卫与第三幕指挥所可从地图选择。第一、二幕卡牌奖励可花40金币，用同角色未升级起手副本换取展示的新牌；每幕一次，保留另一张同名牌。登顶结算后可用最终构筑参加一场自选回响，随时结束，不影响主线结果。</p></section><section><h3>三人，整局同行</h3><p>每人三种起始牌，各两张，共18张。奖励只出同行角色的牌。站位从左到右，前排挡住近战对后排的攻击；法术可以越过前排。只有全队倒地才会失败。倒地角色本场不能行动，她的牌暂离循环；获胜后以25%生命重新同行。</p></section><section><h3>行动与必杀</h3><p>每轮基础3行动、抽5张牌，剩余手牌在轮末弃置。可主动蓄势：支付1行动，整轮无人受到生命伤害，下轮多1行动。本轮已受伤就不能蓄势；蓄势后受伤会打断，不退行动、本轮不能重做。护盾完全挡住、主动付血不算，毒和反伤计入，治疗不恢复资格。最多预备1点，正常上限4；不抽牌、不加TP。每人每轮自然获得1TP；打出自己的付费普通牌再得1TP。6TP可使用UB，仍需1行动。普通护盾在敌方阶段结束后清零。</p></section><section><h3>搜索与免费调度</h3><p>指路花1行动，查看实际牌顶，选一张入手、其余置底。每战还可以免费调度一次：选择一张手牌，从当前抽牌堆随机找一张指定角色牌替换，原牌置底；没有对应牌不会消耗次数。</p></section><section><h3>状态可以叠加</h3><p>鼓舞、减攻与破甲数值相加。鼓舞和减攻只在下一次对应单体攻击的首段兑现并消耗；破甲逐层独立到期。咒痕刷新时长，星屑最多3层。迟缓全队最多扣1行动，阻滞最多少抽2张。</p></section><section><h3>伤害顺序很重要</h3><p>物理每段受护甲减免和破甲加成。魔法先消耗有限魔法屏障。星屑最多3层，轮末造成层数伤害再减1。咒痕每轮首次被主动命中额外受2伤；引爆会消耗它。群攻和星屑不吃鼓舞。</p></section><section><h3>看清敌人的意图</h3><p>目标在回合开始时锁定。击杀敌人可以阻止它行动；牵星等减攻只影响下一次单体攻击，挡不住群攻。敌人的加压轮数与幅度可在敌方意图和战况中查看，战斗不能无限拖延。</p></section><section><h3>沿途做出取舍</h3><p>每幕有普通战、事件、普通或精英分支、营地或商店、Boss，新远征共16节点、10场战斗。战斗胜利时存活者各回复2生命，倒地者恢复至25%最大生命，通过一幕额外恢复35%。营地可选治疗或升级；无用的牌可以跳过奖励或在商店移除。</p></section></div><div class="divider"></div><p class="explain">自动存档保存在此浏览器。同一浏览器与地址共用本地进度，线上与本地分别保存。音频及完整演出可在设置中调整。键盘：1–5选手牌，Enter结束回合，Esc取消。</p>`,'HOW TO PLAY');}
+  function showSettings(){modal('声音与演出',`<div class="setting-row"><span>游戏声音<small>音乐、效果音与角色原声</small></span><input type="checkbox" id="setting-audio" ${settings.audio?'checked':''} aria-label="开启游戏声音"></div><div class="setting-row"><span>音量</span><input type="range" id="setting-volume" min="0" max="1" step=".01" value="${settings.volume}" aria-label="游戏音量"></div><div class="setting-row"><span>完整必杀演出<small>短片后接战场特效；Boss命中后即可行动，余音自然播完。快速模式省略视频</small></span><input type="checkbox" id="setting-burst" ${settings.fullBurst?'checked':''} aria-label="完整必杀演出"></div><div class="setting-row"><span>情境提示<small>调度、无伤蓄势、鼓舞消费各提示一次，不暂停战斗</small></span><input type="checkbox" id="setting-hints" ${settings.hints?'checked':''} aria-label="情境提示"></div><div class="divider"></div><div class="actions">${bText('查看素材来源','media-info')}${bText('返回标题','return-title')}</div><p class="media-credit" style="margin-top:20px">18名角色均已接入本人的原版短cut-in与必杀配音。短片结束后，剩余语音会自然播完；可在素材页查看每人的来源与接入状态。</p>`,'MAKE YOURSELF COMFORTABLE');}
   function mediaInfo(){const media=window.TowerMedia?.characters||{};modal('角色原声与演出来源',`<p class="muted">角色影音与BGM来自公主连接公开资源清单，原作魔物模型经社区镜像取得并导出完整姿势。各项来源已分别记录；立绘、魔物与影音版权属于 Cygames 等相关权利方。</p><div class="rule-grid">${heroes.map(h=>{const m=media[h.id]?.ub;return `<section><h3>${esc(h.name)}</h3><p>${m?.video?'原版短cut-in已接入':'当前使用立绘演出'} · ${m?.voice?'原版UB配音已接入':'暂无UB原声'}</p>${m?bText('试听UB','audition',`data-id="${h.id}"`,'small'):''}</section>`;}).join('')}</div><div class="divider"></div><p class="media-credit">角色影音、魔物和BGM均有独立来源清单。原作魔物模型与曲目选用不改变本作的战斗数值和剧情。</p>`,'MEDIA CREDITS');}
   function startRun(ids=chosen,seed=null){
     try{stopBossPerformance();run=R.create({heroIds:[...ids],seed:seed||$('seed-input')?.value||Date.now().toString(36)});if(tutorialEnabled)T.begin(run);selected=null;closeModal();save();render();window.scrollTo(0,0);}catch(error){toast(error.message||'无法开始远征');}
   }
   function applyResult(result,{rerender=true}={}){if(result?.ok===false){toast(result.message||'当前无法执行');return false;}if(result?.message)toast(result.message);save();if(rerender)render();return true;}
-  function combatLock(value){busy=value;$('app').inert=value;document.querySelector('.topbar').inert=value;document.body.classList.toggle('combat-busy',value);if(value)window.TowerTutorialPointer?.hide();else updateTutorialPointer();}
+  function combatLock(value){busy=value;$('app').inert=value;document.querySelector('.topbar').inert=value;document.body.classList.toggle('combat-busy',value);if(value){window.TowerTutorialPointer?.hide();refreshBattlePreview();}else updateTutorialPointer();}
   async function afterCombat(result,{before=null,owner=null,presented=false,trainingAction=null}={}){
     if(result?.ok===false){toast(result.message);return false;}
     const b=battle(),events=(b.events||[]).slice(before?.events?.length??eventCursor);
-    selected=null;hoverTarget=null;spendBlock=0;save();combatLock(true);
+    selected=null;hoverTarget=null;previewCardUid=null;hintBefore=before;spendBlock=0;save();combatLock(true);
     if(!presented){
       try{
         const bossCue=window.TowerBossPerformance?.plan({before,events,cast:window.TowerEncounterCast});let remaining=events;
@@ -326,6 +430,7 @@
     if(busy||battle()?.pending)return;
     const c=battle()?.hand.find(c=>c.uid===id);if(!c)return;
     const v=cardView(c);if(teaching()){const step=T.expected(run);if(step.kind!=='card'||step.uid!==id){toast('请先完成高亮提示的这一步。');return;}}if(v.cost>battle().energy){toast('本轮行动不足。');return;}
+    previewCardUid=null;hoverTarget=null;
     if(selected?.uid===id){selected=null;render();return;}selected={kind:'card',uid:id};spendBlock=0;consumeCurse=true;
     if(['none','self','allEnemies'].includes(v.target)){playTarget(v.target==='self'?v.owner:null);return;}render();
   }
@@ -334,7 +439,8 @@
     const after=p.after, before=p.before;
     const party=before.party.map(h=>{const a=after.party.find(x=>x.id===h.id);return `<p><strong>${esc(C.heroes[h.id].name)}</strong>：${h.hp} → ${a.hp} 生命${a.hp===h.hp?' · 本轮不会掉血':''}${a.hp<=0?' · 将倒下':''}</p>`;}).join('');
     const stars=after.events.slice(before.events.length).filter(e=>e.source==='starlight_ward'&&e.type==='block').map(e=>`星光护符先为${C.heroes[e.target]?.name||'队友'}提供${e.amount}盾。`).join('');
-    modal('如果现在结束回合',`<p class="muted" style="font-size:12px">按当前护盾、星屑、减攻、掩护与锁定目标结算。继续出牌后，结果也会变化；预览不会消耗资源或改变真实牌序。</p><div class="forecast">${party}${stars?`<p>${esc(stars)}</p>`:''}<p>${after.status==='won'?'敌方倒下，战斗胜利。':after.status==='lost'?'全队将倒地，本次远征将失败。':'敌方行动结束后进入下一轮。'}</p></div>`,'READ THE NEXT MOVE');
+    const reserve=window.TowerCombatPreview?.turn(battle()).reserve;
+    modal('如果现在结束回合',`<p class="muted" style="font-size:12px">按当前护盾、星屑、减攻、掩护与锁定目标结算。继续出牌后，结果也会变化；预览不会消耗资源或改变真实牌序。</p><div class="forecast">${party}${stars?`<p>${esc(stars)}</p>`:''}${reserve?`<p class="forecast-reserve">${esc(reserve.text)}。${reserve.state==='broken'?'已支付的1行动不会退还。':''}</p>`:''}<p>${after.status==='won'?'敌方倒下，战斗胜利。':after.status==='lost'?'全队将倒地，本次远征将失败。':'敌方行动结束后进入下一轮。'}</p></div>`,'READ THE NEXT MOVE');
   }
   function burstAnimation(id,{before,events},done){
     stopVoice();
@@ -394,7 +500,7 @@
 
   function finishTutorial(skipped){const result=T.finish(run,skipped);if(result.ok){tutorialEnabled=false;try{localStorage.setItem(TUTORIAL_SEEN,'done');}catch(_){}selected=null;applyResult(result);window.scrollTo(0,0);}else toast(result.message);}
   function scrollLesson(){const e=T.expected(run);if(e?.kind==='card'){const el=$('app').querySelector(`.card[data-id="${CSS.escape(e.uid)}"]`),hand=el?.parentElement;if(el&&hand){const r=el.getBoundingClientRect(),p=hand.getBoundingClientRect();if(r.left<p.left||r.right>p.right)hand.scrollTo({left:Math.max(0,el.offsetLeft-hand.offsetLeft-8),behavior:'smooth'});}}updateTutorialPointer();}
-  function battleInfo(){const b=battle(),enc=C.encounters[b.encounterId]||{};modal('战场详情',`<div class="actions" style="margin-bottom:14px">${bText('完整记录','battle-log','','small')}${bText('结算预览','turn-forecast','','small')}${bText('关键词说明','card-keywords','','small')}</div><p class="muted">${esc(enc.description||'查看当前生命、状态与敌人的下一步行动。')}</p><div class="battle-inspection">${b.party.concat(b.enemies.filter(e=>e.hp>0)).map(u=>`<article><h3>${esc(C.heroes[u.id]?.name||u.name)}</h3><p>生命 ${u.hp} / ${u.maxHp}${C.heroes[u.id]?` · 必杀 ${u.tp}/6 TP`:''}</p><div>${u.hp<=0?'本场退出 · 胜利后以25%生命归队':fighterStatus(u,!!C.heroes[u.id])}</div>${u.intent?`<div class="intent">${intentText(u)}</div>`:''}</article>`).join('')}</div>`,'BATTLE DETAILS');}
+  function battleInfo(){const b=battle(),enc=C.encounters[b.encounterId]||{};modal('战场详情',`<div class="actions" style="margin-bottom:14px">${bText('完整记录','battle-log','','small')}${bText('结算预览','turn-forecast','','small')}${bText('关键词说明','card-keywords','','small')}</div><p class="muted">${esc(encounterDescription(b,enc)||'查看当前生命、状态与敌人的下一步行动。')}</p><p class="explain">${esc(pressureSummary(b))}</p><div class="battle-inspection">${b.party.concat(b.enemies.filter(e=>e.hp>0)).map(u=>`<article><h3>${esc(C.heroes[u.id]?.name||u.name)}</h3><p>生命 ${u.hp} / ${u.maxHp}${C.heroes[u.id]?` · 必杀 ${u.tp}/6 TP`:''}</p><div>${u.hp<=0?'本场退出 · 胜利后以25%生命归队':fighterStatus(u,!!C.heroes[u.id])}</div>${u.intent?`<div class="intent">${intentText(u)}</div>`:''}</article>`).join('')}</div>`,'BATTLE DETAILS');}
 
   function playBossEntryVoice(){
     const m=bossCast(),layer=$('boss-entry');if(!m||layer.hidden)return;
@@ -439,9 +545,9 @@
     if(a==='echo-start'){const result=R.startEcho(run,id);selected=null;applyResult(result);return;}
     if(a==='echo-exit'){modal('结束这场回响？',`<p class="muted">你的主线已经登顶。结束后保留主线通关、金币、牌组与遗物；本局不能再次开启回响。</p><div class="actions">${bText('结束回响，保留登顶','echo-exit-confirm','','primary')}${bText('继续这场挑战','close-modal')}</div>`,'主线战果不受影响');return;}
     if(a==='echo-exit-confirm'){const result=R.exitEcho(run);if(result.ok){stopBossPerformance();selected=null;closeModal();}applyResult(result);return;}
-    if(a==='select-card'){selectCard(id);return;}if(a==='cancel-select'){selected=null;render();return;}
+    if(a==='select-card'){selectCard(id);return;}if(a==='cancel-select'){selected=null;hoverTarget=null;previewCardUid=null;render();return;}
     if(a==='target'){if(selectedTargets().includes(id))playTarget(id);return;}
-    if(a==='select-burst'){if(teaching()){const step=T.expected(run);if(step.kind!=='burst'||step.owner!==id){toast('先体验高亮伙伴的必杀。');return;}}selected={kind:'burst',heroId:id};consumeCurse=true;render();return;}
+    if(a==='select-burst'){if(teaching()){const step=T.expected(run);if(step.kind!=='burst'||step.owner!==id){toast('先体验高亮伙伴的必杀。');return;}}selected={kind:'burst',heroId:id};previewCardUid=null;hoverTarget=null;consumeCurse=true;render();return;}
     if(a==='confirm-burst'){const h=C.heroes[selected?.heroId];if(h)playTarget(h.burst.target==='self'?selected.heroId:null);return;}
     if(a==='test-victory'){if(window.TowerBuild?.testTools!==true)return;const result=window.TowerTestTools?.grantVictory(run);if(!result)return;selected=null;if(result.ok)closeModal();applyResult(result);return;}
     if(a==='reserve-energy'){if(!teaching()){selected=null;performAction(()=>E.reserveEnergy(battle()));}return;}
@@ -465,17 +571,22 @@
     if(a==='pick-payer'){modalContext?.onDone?.({heroId:id});return;}
     if(a==='pick-deck-card'){const ctx=modalContext,card=ctx.source.find(c=>c.uid===id);if(ctx.mode==='upgrade')branchModal(card,s=>ctx.onDone(s),ctx.options);else ctx.onDone({cardUid:id});return;}
     if(a==='pick-branch'){const ctx=modalContext;ctx.done({cardUid:ctx.card.uid,branch:el.dataset.branch});return;}
-    if(a==='inspect-card'){const card=run?.deck.find(c=>c.uid===id)||{uid:id,defId:id,branch:null},d=C.cards[card.defId];if(d){const v=cardView(card);modal(v.name,`<p class="muted rule-copy">${esc(v.text)}</p>${bText('关键词说明','card-keywords','','small')}<div class="upgrade-branches">${['A','B'].map(branch=>`<div>${cardHTML({...card,branch},'noop','','reward-card',{...d,...d.branches[branch]})}<p class="branch-full-copy rule-copy">${esc(d.branches[branch].text)}</p></div>`).join('')}</div>`,'CARD & UPGRADE BRANCHES');}return;}
+    if(a==='boss-rhythm-info'){bossRhythmInfo();return;}
+    if(a==='inspect-card'){const card=run?.deck.find(c=>c.uid===id)||{uid:id,defId:id,branch:null},d=C.cards[card.defId];if(d){const v=cardView(card);modal(v.name,`<p class="muted rule-copy">${esc(v.text)}</p>${inspectPreview(card)}${bText('关键词说明','card-keywords','','small')}<div class="upgrade-branches">${['A','B'].map(branch=>`<div>${cardHTML({...card,branch},'noop','','reward-card',{...d,...d.branches[branch]})}<p class="branch-full-copy rule-copy">${esc(d.branches[branch].text)}</p></div>`).join('')}</div>`,'CARD & UPGRADE BRANCHES');}return;}
     if(a==='skip-burst'){window.finishBurst?.();}
   });
-  document.addEventListener('input',event=>{const el=event.target;if(el.id==='tutorial-enabled')tutorialEnabled=el.checked;if(el.id==='spend-block'){spendBlock=Number(el.value);el.nextElementSibling.textContent=spendBlock;el.closest('.combat-choice').querySelector('summary').textContent='耗盾 '+spendBlock;}if(el.id==='consume-curse'){consumeCurse=el.checked;el.closest('.combat-choice').querySelector('summary').textContent=consumeCurse?'引爆咒痕':'保留咒痕';}if(el.id.startsWith('setting-')){if(el.id==='setting-audio')settings.audio=el.checked;if(el.id==='setting-burst')settings.fullBurst=el.checked;if(el.id==='setting-volume')settings.volume=Number(el.value);if(bgm){refreshBgmVolume();settings.audio?bgm.play().catch(()=>{}):bgm.pause();}refreshBossAudio();if(voiceController)voiceController.setVolume(Math.min(1,settings.volume*2));if(voice&&!settings.audio)stopVoice();try{localStorage.setItem(SETTINGS,JSON.stringify(settings));}catch(_){}}});
+  document.addEventListener('pointerover',hoverPreview);
+  document.addEventListener('focusin',hoverPreview);
+  document.addEventListener('pointerout',leavePreview);
+  document.addEventListener('focusout',leavePreview);
+  document.addEventListener('input',event=>{const el=event.target;if(el.id==='tutorial-enabled')tutorialEnabled=el.checked;if(el.id==='spend-block'){spendBlock=Number(el.value);el.nextElementSibling.textContent=spendBlock;el.closest('.combat-choice').querySelector('summary').textContent='耗盾 '+spendBlock;refreshBattlePreview();}if(el.id==='consume-curse'){consumeCurse=el.checked;el.closest('.combat-choice').querySelector('summary').textContent=consumeCurse?'引爆咒痕':'保留咒痕';refreshBattlePreview();}if(el.id.startsWith('setting-')){if(el.id==='setting-audio')settings.audio=el.checked;if(el.id==='setting-burst')settings.fullBurst=el.checked;if(el.id==='setting-volume')settings.volume=Number(el.value);if(el.id==='setting-hints')settings.hints=el.checked;if(bgm){refreshBgmVolume();settings.audio?bgm.play().catch(()=>{}):bgm.pause();}refreshBossAudio();if(voiceController)voiceController.setVolume(Math.min(1,settings.volume*2));if(voice&&!settings.audio)stopVoice();try{localStorage.setItem(SETTINGS,JSON.stringify(settings));}catch(_){}}});
   document.addEventListener('keydown',event=>{
     const target=event.target.closest('[data-action="target"]');
     if(target&&['Enter',' '].includes(event.key)&&selectedTargets().includes(target.dataset.id)){event.preventDefault();playTarget(target.dataset.id);return;}
     if(event.key==='Escape'){
       if(!$('boss-entry').hidden){stopVoice();$('boss-entry').hidden=true;combatLock(false);return;}
       if(busy){window.finishBurst?.();return;}
-      if(battle()?.pending){event.preventDefault();return;}selected=null;
+      if(battle()?.pending){event.preventDefault();return;}selected=null;hoverTarget=null;previewCardUid=null;
       if($('modal').open)closeModal();else if(screen==='battle')render();return;
     }
     if(event.target.matches('input,select,textarea')||$('modal').open||busy||screen!=='battle')return;

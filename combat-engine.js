@@ -293,6 +293,14 @@
     h.hp -= dealt;
     event(b, 'hit', e ? e.uid : null, h.uid, dealt, { absorbed: absorbed, sourceKind: kind || 'enemy', raw: n });
     log(b, (e ? e.name : '状态') + ' → ' + h.name + '：' + dealt + (absorbed ? '（吸收' + absorbed + '）' : ''));
+    if (dealt > 0) {
+      b.flags.reserveDamaged = true;
+      if (b.energyReserve > 0) {
+        var cancelledReserve = b.energyReserve; b.energyReserve = 0; b.flags.reserveBroken = true;
+        event(b, 'reserveBroken', e ? e.uid : null, h.uid, cancelledReserve, { sourceKind: kind || 'enemy', round: b.round });
+        log(b, h.name + '受到生命伤害，蓄势被打断；下轮不再增加行动，本轮已支付的行动不返还。');
+      }
+    }
     if (checkEnd(b)) return h;
     if (kind === 'enemy' && single && absorbed > 0 && alive(h) && h.id === 'pecorine' && !h.flags.counter && alive(e)) {
       h.flags.counter = true;
@@ -619,8 +627,21 @@
     }
     return next;
   }
+  function advanceBossRhythm(b) {
+    var state = b.bossRhythm, core = state && enemy(b, b.bossCoreUid);
+    if (!state || state.phaseIndex !== 0 || !state.phases || !state.phases[1] || !alive(core) || core.hp > core.maxHp * state.threshold) return;
+    state.phaseIndex = 1; state.startedRound = b.round;
+    var phase = state.phases[state.phaseIndex];
+    event(b, 'bossPhase', core.uid, null, state.phaseIndex, { phaseId: phase.id, phaseName: phase.name, round: b.round });
+    log(b, core.name + '进入「' + phase.name + '」。本轮行动已公开。');
+  }
   function roundIntent(b, e) {
-      var cycle = e.cycle || [{ name: '待机', type: 'guard', amount: 0 }], intent = clone(cycle[(b.round - 1) % cycle.length]);
+      var cycle = e.cycle || [{ name: '待机', type: 'guard', amount: 0 }], cycleIndex = (b.round - 1) % cycle.length;
+      var state = b.bossRhythm, phase = state && state.phases && state.phases[state.phaseIndex];
+      if (e.uid === b.bossCoreUid && phase && Array.isArray(phase.cycle) && phase.cycle.length) {
+        cycle = phase.cycle; cycleIndex = Math.max(0, b.round - state.startedRound) % cycle.length;
+      }
+      var intent = clone(cycle[cycleIndex]);
       var fatigue = b.fatigue, pressure = fatigue ? Math.max(0, Math.floor((b.round - (fatigue.startRound || 7)) / (fatigue.every || 3)) + 1) * (fatigue.amount || 0) : Math.max(0, Math.floor((b.round - 1) / 3) - 1) * (b.encounterType === 'boss' ? 2 : 1);
       var growth = Math.min((e.growth || 0) * (b.round - 1), e.growthCap === undefined ? Infinity : e.growthCap);
       intent.increase = ['attack', 'aoe'].includes(intent.type) ? pressure + growth + (e.attackBuff || 0) : 0;
@@ -659,23 +680,49 @@
       b.nextConcertRound = 0; var front = b.party.find(alive);
       if (front) { block(b, front, 2, 'concert_ribbon'); relicEvent(b, 'concert_ribbon', front.uid, 2, { delivered: true }); }
     }
-    draw(b, 5 - Math.min(2, clog)); prepare(b); event(b, 'round', null, null, b.round); log(b, '第' + b.round + '轮，' + b.energy + '行动点。');
+    draw(b, 5 - Math.min(2, clog)); advanceBossRhythm(b); prepare(b); event(b, 'round', null, null, b.round); log(b, '第' + b.round + '轮，' + b.energy + '行动点。');
+  }
+  function hasReserveDamage(b) {
+    if (!b) return false;
+    if (b.flags && b.flags.reserveDamaged) return true;
+    // Historical saves have no damage flag. The last round marker separates
+    // this turn's real HP damage from earlier wounds and later healing.
+    var events = b.events || [], start = -1;
+    for (var i = events.length - 1; i >= 0; i--) {
+      if (events[i].type === 'round') { if (events[i].amount === b.round) start = i; break; }
+    }
+    if (start < 0) return false;
+    var partyIds = (b.party || []).map(function (h) { return h.uid || h.id; });
+    for (var j = start + 1; j < events.length; j++) {
+      var record = events[j];
+      if (record.type === 'hit' && record.amount > 0 && record.sourceKind !== 'payHp' && partyIds.includes(record.target)) return true;
+    }
+    return false;
   }
   function reserveEnergy(b) {
     // Preflight is deliberately read-only, including for a legacy save whose
     // normalization would otherwise add fields to a rejected operation.
     if (!b || b.status !== 'active' || !b.party || !b.party.some(alive)) return result(false, '当前不能预备行动。');
     if (b.pending) return result(false, '请先完成当前选牌。');
+    if (hasReserveDamage(b)) return result(false, b.flags && b.flags.reserveBroken ? '蓄势已被打断，本轮不能再次蓄势。' : '本轮已有队员受到生命伤害，不能蓄势。');
     if (b.flags && b.flags.reserveUsed || b.energyReserve >= 1) return result(false, '本轮已经预备过行动。');
     if (!(b.energy >= 1)) return result(false, '预备需要本轮1行动。');
     normalizeBattle(b);
     b.energy--; b.energyReserve = 1; b.flags.reserveUsed = true;
     event(b, 'reserveEnergy', null, null, 1, { deliveredRound: b.round + 1 });
-    log(b, '花费1行动预备：下一轮额外获得1行动，最多4行动。');
-    return result(true, '已预备1行动，将在下一轮返还。');
+    log(b, '花费1行动蓄势：本轮无人受到生命伤害时，下轮额外获得1行动，最多4行动；受伤会打断。');
+    return result(true, '已蓄势；本轮无人受到生命伤害时，下轮获得1行动。');
   }
   function endTurn(b) {
     var stop = gate(b); if (stop) return stop;
+    // An older save could reserve after suffering reflected damage. Enforce
+    // the whole-turn rule at settlement too, without mutating it on load.
+    if (b.energyReserve > 0 && hasReserveDamage(b)) {
+      var invalidReserve = b.energyReserve; b.energyReserve = 0;
+      b.flags.reserveDamaged = true; b.flags.reserveBroken = true;
+      event(b, 'reserveBroken', null, null, invalidReserve, { sourceKind: 'history', reason: 'priorDamage', round: b.round });
+      log(b, '本轮已有队员受到生命伤害，蓄势被打断；下轮不再增加行动，本轮已支付的行动不返还。');
+    }
     b.enemies.filter(alive).forEach(function (e) {
       if (b.status !== 'active' || e.stars <= 0) return;
       hit(b, 'hatsune', e, e.stars, 'magic', { active: false, all: false, kind: 'star', reactions: [] }); e.stars = Math.max(0, e.stars - 1);
@@ -744,6 +791,9 @@
       b.bossCoreUid = core.uid;
     } else if (encounter.type === 'boss') b.bossCoreUid = b.enemies[0].uid;
     if (encounter.type === 'boss' && encounter.soloRevision > 0 && encounter.enemies.length === 1) b.bossSoloRevision = encounter.soloRevision;
+    // Opt in only at creation. A legacy active battle must not acquire a new
+    // phase, re-lock its current intent, or replay any turn-start effects.
+    if (encounter.bossRhythm) b.bossRhythm = Object.assign(clone(encounter.bossRhythm), { phaseIndex: 0, startedRound: 1 });
     if (options.shuffle !== false) shuffle(b, b.drawPile);
     if (!checkEnd(b)) beginTurn(b, true);
     return b;
@@ -773,9 +823,29 @@
     var before = clone(b), after = clone(b), outcome = choose(after, cardUid);
     return { ok: outcome.ok, message: outcome.message, before: before, after: after, damage: [], blockDiff: [] };
   }
-  return { createBattle: createBattle, play: play, chooseGuide: chooseGuide, burst: burst, endTurn: endTurn, redraw: redraw, reserveEnergy: reserveEnergy,
+  function bossRhythmView(b, forecastAfter) {
+    var state = b && b.bossRhythm, core = state && enemy(b, b.bossCoreUid);
+    if (!state || !alive(core) || b.status !== 'active') return null;
+    var phase = state.phases[state.phaseIndex], thresholdHp = Math.floor(core.maxHp * state.threshold);
+    var nextPhase = state.phases[1];
+    var transitionPending = !!nextPhase && state.phaseIndex === 0 && core.hp <= core.maxHp * state.threshold;
+    var next = !b.pending ? (forecastAfter || previewEndTurn(b).after) : null;
+    var nextCore = next && next.status === 'active' && enemy(next, next.bossCoreUid);
+    var nextState = next && next.bossRhythm;
+    return {
+      revision: state.revision, currentPhaseId: phase.id, currentPhaseName: phase.name, currentSummary: phase.summary,
+      thresholdHp: thresholdHp, transitionPending: transitionPending,
+      transitionHint: !nextPhase ? '按公开循环行动；本轮行动以意图为准。' : state.phaseIndex === 0 ? (transitionPending ? '下轮进入「' : '生命≤' + thresholdHp + '时，下轮进入「') + nextPhase.name + '」；本轮预告不变。' : '阶段已切换；本轮行动以意图为准。',
+      forecastHint: b.pending ? '先完成选牌，再查看下轮预告。' : '按当前状态结束回合推演；继续出牌后会更新。',
+      nextRound: nextCore && alive(nextCore) && nextState ? {
+        round: next.round, phaseId: nextState.phases[nextState.phaseIndex].id, phaseName: nextState.phases[nextState.phaseIndex].name,
+        intent: clone(nextCore.intent), targetUid: nextCore.intent.lockedTargetUid || null
+      } : null
+    };
+  }
+  return { createBattle: createBattle, play: play, chooseGuide: chooseGuide, burst: burst, endTurn: endTurn, redraw: redraw, reserveEnergy: reserveEnergy, hasReserveDamage: hasReserveDamage,
     chooseRedraw: chooseRedraw, chooseRecoverTop: chooseRecoverTop, chooseRecovery: chooseRecoverTop,
     previewRedraw: function (b, uid) { return previewKnownChoice(b, uid, chooseRedraw); },
     previewRecoverTop: function (b, uid) { return previewKnownChoice(b, uid, chooseRecoverTop); }, normalizeBattle: normalizeBattle,
-    preview: preview, previewEndTurn: previewEndTurn, legalTargets: legalTargets, legalBurstTargets: legalBurstTargets, cardView: cardView, setContent: function (content) { C = content; } };
+    preview: preview, previewEndTurn: previewEndTurn, bossRhythmView: bossRhythmView, legalTargets: legalTargets, legalBurstTargets: legalBurstTargets, cardView: cardView, setContent: function (content) { C = content; } };
 });

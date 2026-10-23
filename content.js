@@ -390,5 +390,296 @@
     enc.description = '可选单场回响：使用登顶牌组、升级与遗物，全员满血开始。胜负不改变主线通关，不发成长奖励。敌方意图以战斗内数值为准。';
     encounters[enc.id] = enc;
   });
-  return { version: 'local-2026-10-23-v3.5', heroes: heroes, cards: cards, relics: relics, encounters: encounters, events: events, acts: acts, teams: teams, release: release };
+  // Standard v3.7 Boss challenge: tested public rhythms are snapshotted only
+  // on battle creation. Historical cycles, active saves and echoes stay intact.
+  var standardBossRhythms = {
+    "paper_fubuki": {
+      "threshold": 0.5,
+      "phases": [
+        {
+          "id": "armaments",
+          "name": "武装轮转",
+          "summary": "前排6 → 后排3×2 → 全队4 → 整理不攻击。",
+          "cycle": [
+            {
+              "name": "精密射击：前排6",
+              "type": "attack",
+              "amount": 6,
+              "target": "front"
+            },
+            {
+              "name": "武装连射：后排3×2",
+              "type": "attack",
+              "amount": 3,
+              "target": "back",
+              "hits": 2
+            },
+            {
+              "name": "武装齐射：全队4",
+              "type": "aoe",
+              "amount": 4
+            },
+            {
+              "name": "过热整理：本轮不攻击",
+              "type": "guard",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "revision": 2,
+      "challengeVersion": "candidate-2",
+      "description": "独自迎战。前排6 → 后排3×2 → 全队4 → 整理不攻击。已预告的本轮行动保持不变。第7轮起每次命中加2伤，此后每3轮再加2。",
+      "legacyDescription": "布武机独自迎战：前排4伤、后排2伤连射2次、全队各2伤、获得4护盾，按四轮循环。\n减攻只减少连射的第一次命中；第三轮用全队护盾，第四轮可蓄势或整理手牌。"
+    },
+    "paper_christina": {
+      "threshold": 0.5,
+      "phases": [
+        {
+          "id": "duel",
+          "name": "试探决斗",
+          "summary": "后排5 → 前排11 → 全队4 → 整顿2盾。",
+          "cycle": [
+            {
+              "name": "远击：后排5",
+              "type": "attack",
+              "amount": 5,
+              "target": "back"
+            },
+            {
+              "name": "不败重斩：前排11",
+              "type": "attack",
+              "amount": 11,
+              "target": "front"
+            },
+            {
+              "name": "封印解放：全队4",
+              "type": "aoe",
+              "amount": 4
+            },
+            {
+              "name": "整顿架势：2护盾",
+              "type": "guard",
+              "amount": 2
+            }
+          ]
+        },
+        {
+          "id": "assault",
+          "name": "决斗追击",
+          "summary": "前排12 → 全队5 → 后排6 → 收势不攻击。",
+          "cycle": [
+            {
+              "name": "决斗重斩：前排12",
+              "type": "attack",
+              "amount": 12,
+              "target": "front"
+            },
+            {
+              "name": "封印解放：全队5",
+              "type": "aoe",
+              "amount": 5
+            },
+            {
+              "name": "追击：后排6",
+              "type": "attack",
+              "amount": 6,
+              "target": "back"
+            },
+            {
+              "name": "决斗收势：本轮不攻击",
+              "type": "guard",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "revision": 2,
+      "challengeVersion": "candidate-2",
+      "description": "独自迎战。后排5 → 前排11 → 全队4 → 整顿2盾。生命不高于25时，下一轮进入「决斗追击」：前排12 → 全队5 → 后排6 → 收势不攻击。已预告的本轮行动保持不变。第7轮起每次命中加2伤，此后每3轮再加2。",
+      "legacyDescription": "克莉丝提娜独自迎战。后排4伤、前排7伤、全队各4伤、获得4护盾，按四轮循环。重斩用减攻或护盾应对，第三轮准备全队保护。"
+    },
+    "paper_ranpha": {
+      "threshold": 0.5,
+      "phases": [
+        {
+          "id": "song",
+          "name": "幽声咏唱",
+          "summary": "咏唱减2 → 全队5 → 后排9并留腐毒2 → 间奏。",
+          "cycle": [
+            {
+              "name": "幽声咏唱：下轮首张普通攻击主伤减2",
+              "type": "chant",
+              "amount": 2
+            },
+            {
+              "name": "幽声共鸣：全队5",
+              "type": "aoe",
+              "amount": 5
+            },
+            {
+              "name": "回响魔弹：后排9并留腐毒2",
+              "type": "attack",
+              "amount": 9,
+              "target": "back",
+              "poison": 2
+            },
+            {
+              "name": "回响间奏：本轮不攻击",
+              "type": "guard",
+              "amount": 0
+            }
+          ]
+        },
+        {
+          "id": "requiem",
+          "name": "终曲回响",
+          "summary": "后排10并留腐毒2 → 全队6 → 咏唱减2 → 间奏。",
+          "cycle": [
+            {
+              "name": "终曲魔弹：后排10并留腐毒2",
+              "type": "attack",
+              "amount": 10,
+              "target": "back",
+              "poison": 2
+            },
+            {
+              "name": "终曲共鸣：全队6",
+              "type": "aoe",
+              "amount": 6
+            },
+            {
+              "name": "幽声咏唱：下轮首张普通攻击主伤减2",
+              "type": "chant",
+              "amount": 2
+            },
+            {
+              "name": "回响间奏：本轮不攻击",
+              "type": "guard",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "revision": 2,
+      "challengeVersion": "candidate-2",
+      "description": "独自迎战。咏唱减2 → 全队5 → 后排9并留腐毒2 → 间奏。生命不高于29时，下一轮进入「终曲回响」：后排10并留腐毒2 → 全队6 → 咏唱减2 → 间奏。已预告的本轮行动保持不变。第7轮起每次命中加2伤，此后每3轮再加2。",
+      "legacyDescription": "兰法独自迎战。咏唱让下一轮第一张普通攻击牌的主伤少2，必杀、星痕与附加效果不变。\n之后依次全队各2伤、后排6伤并留下下轮腐毒2、获得4护盾。腐毒在下轮敌人行动前结算，可用护盾吸收或净化。"
+    },
+    "paper_misora": {
+      "threshold": 0.5,
+      "phases": [
+        {
+          "id": "barrage",
+          "name": "猎手弹幕",
+          "summary": "后排3×2 → 追击伤者8 → 后排3×3 → 装填不攻击。",
+          "cycle": [
+            {
+              "name": "试探弹幕：后排3×2",
+              "type": "attack",
+              "amount": 3,
+              "target": "back",
+              "hits": 2
+            },
+            {
+              "name": "瞄准伤者：8伤",
+              "type": "attack",
+              "amount": 8,
+              "target": "lowest"
+            },
+            {
+              "name": "加特林齐射：后排3×3",
+              "type": "attack",
+              "amount": 3,
+              "target": "back",
+              "hits": 3
+            },
+            {
+              "name": "弹仓装填：本轮不攻击",
+              "type": "guard",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "revision": 2,
+      "challengeVersion": "candidate-2",
+      "description": "独自迎战。后排3×2 → 追击伤者8 → 后排3×3 → 装填不攻击。已预告的本轮行动保持不变。第7轮起每次命中加2伤，此后每3轮再加2。",
+      "legacyDescription": "美空独自迎战：后排2伤连射2次、获得4护盾、后排2伤连射3次、追击伤者6伤。\n减攻只减少连击的第一次命中；第二轮装填不攻击，可准备护盾、指路和TP。"
+    },
+    "paper_kaiser": {
+      "threshold": 0.5,
+      "phases": [
+        {
+          "id": "dominion",
+          "name": "王权压迫",
+          "summary": "前排13 → 后排5×2 → 全队7 → 俯瞰不攻击。",
+          "cycle": [
+            {
+              "name": "王权重斩：前排13",
+              "type": "attack",
+              "amount": 13,
+              "target": "front"
+            },
+            {
+              "name": "两重裁决：后排5×2",
+              "type": "attack",
+              "amount": 5,
+              "target": "back",
+              "hits": 2
+            },
+            {
+              "name": "王权震荡：全队7",
+              "type": "aoe",
+              "amount": 7
+            },
+            {
+              "name": "俯瞰高塔：本轮不攻击",
+              "type": "guard",
+              "amount": 0
+            }
+          ]
+        },
+        {
+          "id": "judgment",
+          "name": "终焉裁决",
+          "summary": "全队7 → 后排6×2 → 前排15 → 收势不攻击。",
+          "cycle": [
+            {
+              "name": "终焉震荡：全队7",
+              "type": "aoe",
+              "amount": 7
+            },
+            {
+              "name": "终焉裁决：后排6×2",
+              "type": "attack",
+              "amount": 6,
+              "target": "back",
+              "hits": 2
+            },
+            {
+              "name": "终焉重斩：前排15",
+              "type": "attack",
+              "amount": 15,
+              "target": "front"
+            },
+            {
+              "name": "王权收势：本轮不攻击",
+              "type": "guard",
+              "amount": 0
+            }
+          ]
+        }
+      ],
+      "revision": 2,
+      "challengeVersion": "candidate-2",
+      "description": "独自迎战。前排13 → 后排5×2 → 全队7 → 俯瞰不攻击。生命不高于34时，下一轮进入「终焉裁决」：全队7 → 后排6×2 → 前排15 → 收势不攻击。已预告的本轮行动保持不变。第7轮起每次命中加2伤，此后每3轮再加2。",
+      "legacyDescription": "前排9伤害、全队各4、获得6护盾休整、后排4伤害连射2次，按四轮循环。\n第七轮开始每次命中加2伤害，此后每三轮再加2。抓住第三轮准备，别忽略后排保护。"
+    }
+  };
+  Object.keys(standardBossRhythms).forEach(function (id) {
+    encounters[id].bossRhythm = standardBossRhythms[id];
+    encounters[id].description = standardBossRhythms[id].description;
+  });
+  return { version: 'local-2026-10-23-v3.7', heroes: heroes, cards: cards, relics: relics, encounters: encounters, events: events, acts: acts, teams: teams, release: release };
 });
