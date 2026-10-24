@@ -1,1 +1,1 @@
-(function(root){'use strict';const config=Object.freeze({version:'3.8.0',testTools:false});if(typeof module==='object'&&module.exports)module.exports=config;if(root)root.TowerBuild=config;})(typeof globalThis!=='undefined'?globalThis:this);
+(function(root){'use strict';const config=Object.freeze({version:'3.9.0',testTools:false});if(typeof module==='object'&&module.exports)module.exports=config;if(root)root.TowerBuild=config;})(typeof globalThis!=='undefined'?globalThis:this);

@@ -1,0 +1,183 @@
+/* v3.9: a daylight storybook palette. Layout and combat rules stay in their
+   existing styles; this final layer owns surfaces, contrast and decoration. */
+:root{
+  color-scheme:light;--ink:#344b66;--muted:#60748b;--gold:#91632b;
+  --line:#cddfec;--sky:#4b91b6;--rose:#b94f79;--mint:#37836c;
+  --paper:#fffefb;--soft-shadow:0 7px 22px #527fa014;
+  font-family:"Microsoft YaHei UI","Yu Gothic UI",system-ui,sans-serif;
+  background:#eff8ff;color:var(--ink);
+}
+body{background:radial-gradient(ellipse at 5% 6%,#fff3e5 0,transparent 40%),radial-gradient(ellipse at 95% 30%,#f9eaf5 0,transparent 43%),linear-gradient(165deg,#f3fbff,#edf6ff 65%,#fdf6ef)}
+.ambient{background:radial-gradient(circle at 8% 20%,#fff 0 2px,transparent 3px),radial-gradient(circle at 75% 12%,#fff 0 3px,transparent 4px),radial-gradient(circle at 90% 80%,#fff 0 2px,transparent 3px);background-size:170px 170px,260px 260px,220px 220px;opacity:.65;z-index:0}
+.topbar,main,footer{position:relative}
+h1,h2,h3,.brand,.recommend-title{font-family:"Microsoft YaHei UI","Yu Gothic UI",system-ui,sans-serif;font-weight:650;letter-spacing:.035em}
+button{color:var(--ink);background:#ffffffb8;border-color:#cbddeb;border-radius:13px;box-shadow:0 2px 0 #7babc40c}
+button:hover:not(:disabled){background:#f2fbff;border-color:#79afca;color:#294b6a;box-shadow:0 4px 12px #5a91b51c}
+button:disabled{opacity:.7}
+.card:disabled{opacity:.86}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #9a568d;outline-offset:3px}
+button.primary{color:#743650;border:1px solid #e49db7;background:linear-gradient(#ffe8f0,#ffcddd);box-shadow:inset 0 1px 0 #fff,0 4px 0 #e6aec04d,0 7px 18px #c7749521}
+button.primary:hover:not(:disabled){color:#682b47;background:linear-gradient(#fff1f6,#ffdbe8);border-color:#cf799d}
+button.danger{color:#a53a51;background:#fff1f2;border-color:#e8b0bd}
+.topbar{background:#fffffff2;border-bottom:1px solid #c5ddec;box-shadow:0 3px 15px #6b96b10c}
+.brand{color:#426481}.brand:hover:not(:disabled){background:transparent;box-shadow:none}
+.brand-star{color:#d1a04f;text-shadow:0 2px 0 #fff3c8}.brand small{color:#647f96}
+.edition{color:#926328;border-color:#dfc59e;background:#fff8e8;border-radius:7px}
+.topbar nav>button{color:#516c86}.topbar nav>button:hover:not(:disabled){background:#edf7ff}
+#run-meta{color:#8a6435}footer{color:#667e93;border-color:#d3e4ee;background:#ffffff70;letter-spacing:.04em}
+.eyebrow{color:#8c6936}.muted,.explain,.preview-text,.media-credit,.branch-full-copy,.branch-rules{color:var(--muted)}
+.gold{color:var(--gold)}.divider{background:linear-gradient(90deg,transparent,#c9dce9 15%,#c9dce9 85%,transparent)}
+.pill{color:#586e87;background:#f5fbff;border-color:#c8ddeb;border-radius:20px}.pill.gold{color:#875a2a;background:#fff7e6;border-color:#e2c894}
+
+/* The tower keeps its existing illustration, now seen through daylight. */
+.landing-art{inset:0 0 0 38%;opacity:.94;background:linear-gradient(90deg,#f4faff 0%,#f4faff55 27%,transparent 60%),linear-gradient(0deg,#f2f8fe55,transparent 35%),url('assets/ui/map_bg.webp') center 50%/135% auto no-repeat;mask-image:linear-gradient(90deg,transparent,#000 22%)}
+.landing:after{content:"✧";position:absolute;right:5%;top:5%;font-size:46px;color:#fff5c2;text-shadow:0 2px 15px #ffebad;pointer-events:none}
+.landing-copy h1{color:#426b8b;text-shadow:0 2px 0 #fff;line-height:1.32}
+.landing-copy h1 em{color:#b75f83}.landing-story{color:#4b667e}.landing-story strong{color:#a35275;font-weight:650}
+.landing-copy>.eyebrow{color:#946734}.landing-copy .primary{border-radius:18px}
+.landing-notes{border-color:#c7ddea}.landing-notes strong{color:#92713e}.landing-notes span,.landing-footnote{color:#61788c}
+.landing-quote{color:#fffef2;text-shadow:0 2px 5px #325879,0 0 12px #325879;font-weight:600}
+.panel,.selection-bar,.shop-item,.relic-card,.result-stats>div,.battle-inspection article{background:linear-gradient(145deg,#fffefdf5,#f5fbfff0);border-color:#ccdfec;border-radius:18px;box-shadow:var(--soft-shadow)}
+.room-choice{background:linear-gradient(110deg,#fffefc,#f3faff);border-color:#cfdfeb;border-radius:16px;box-shadow:0 3px 12px #5c8da910}
+.room-choice .choice-icon,.room-choice .arrow{color:#a77942}.room-choice small{color:#62788e}
+.room-choice:hover:not(:disabled){background:#fff9f1;border-color:#d8b583}
+.room-art{border-color:#bfd6e8;box-shadow:var(--soft-shadow);border-radius:23px;background-image:linear-gradient(#fff6e50a,#e9f5ff30),var(--room-art,url('assets/story/tower_appears.webp'))}
+.room-art[style]{background-size:auto,135% auto;background-repeat:no-repeat}
+.formation-chip{background:#ffffffd9;border-radius:12px;border-color:color-mix(in srgb,var(--hero) 65%,#9c7a99)}
+.formation>span,.seed-field{color:var(--muted)}
+input,select,.seed-field input,.target-panel select,select#redraw-hero{color:var(--ink);background:#fffefa!important;border:1px solid #bcd5e7;border-radius:10px;accent-color:#ba638a}
+.seed-field input::placeholder{color:#728598}
+
+/* Party selection is a set of character keepsakes, with a clear recommendation. */
+.recommended-teams{background:linear-gradient(125deg,#fff5e2,#fffefa 45%,#eef8ff);border-color:#ddc29c;border-radius:22px;box-shadow:var(--soft-shadow)}
+.recommended-heading h3{color:#896136}.recommended-heading p,.custom-party-heading p,.recommend-caution{color:#61758a}
+.recommend-hint{color:#8e6537;border-color:#d6b786}.recommended-team{background:#ffffffd9;border-color:#ccdeeb;border-radius:17px;box-shadow:0 3px 9px #6799b50b}
+.recommended-team.is-picked{background:linear-gradient(145deg,#fff3f7,#fffdfa 65%);border-color:#d78ca8;box-shadow:inset 0 0 0 1px #ecc2d3,0 5px 18px #ba6b9014}
+.recommend-title{color:#4b6483;font-size:25px}.recommend-tag,.recommended-team:first-child .recommend-tag{color:#967242}
+.recommend-plan,.recommend-members>span{color:#546c85}.recommend-members img{border:2px solid #fff;background:#ebf5fc;box-shadow:0 0 0 1px #d0e1ec,0 3px 8px #6b92b21a}
+.recommend-footer{border-color:#d8e6ee;color:#657d91}.recommend-footer strong{color:#a4547b}.is-picked .recommend-footer strong{color:#32765e}
+.hero-choice{border-color:#c9dce9;border-radius:19px;background:radial-gradient(ellipse at 50% 35%,#ffffffd9,transparent 65%),linear-gradient(150deg,color-mix(in srgb,var(--hero) 15%,#fff),#edf7ff);box-shadow:var(--soft-shadow)}
+.hero-choice.selected{border-color:#ca88aa;box-shadow:0 0 0 2px #e9b2ce,0 7px 20px #8b729b1a}
+.hero-choice img{filter:drop-shadow(0 7px 9px #6b8cac33)}
+.hero-choice .hero-copy{background:#fffffff2;border-color:#d3e4ef}.hero-copy h3{color:#405d7b}
+.hero-copy .role{color:color-mix(in srgb,var(--hero) 46%,#344b66);font-weight:600}.hero-copy p{color:#5d7189}
+.hero-choice .selection-index{color:#a65579;background:#fffefa;border-color:#cba0b8;box-shadow:0 2px 8px #946d941f}
+.hero-choice.selected .selection-index{background:#ffdfec;color:#863759}
+
+/* Travel and rewards use warm paper over the original world artwork. */
+.map-canvas{background:linear-gradient(#b3dbf00c,#bddef535),url('assets/ui/map_bg.webp') center 47%/cover;border-color:#b9d7e9;border-radius:22px;box-shadow:var(--soft-shadow)}
+.map-canvas{background-size:auto,135% auto;background-repeat:no-repeat}
+.map-vignette{background:linear-gradient(0deg,#e8f3ff7a,transparent 60%)}
+.map-title{background:#ffffffe0;border:1px solid #d1e4ee;border-radius:14px;padding:8px 14px;max-width:calc(100% - 40px);top:16px;left:20px}
+.map-title h3{color:#456887;text-shadow:none;font-size:22px;line-height:1.3;margin-bottom:2px}.map-title p{color:#607b92;margin-bottom:0}
+.map-title .eyebrow{font-size:11px;line-height:1.3;margin-bottom:4px}.map-title p:not(.eyebrow){font-size:13px;line-height:1.4}
+.map-node{background:#fffffff2;border-color:#b7d4e4;border-radius:14px;box-shadow:0 4px 10px #37688a1a;color:#42617b}
+.map-node:before{width:2px;background:repeating-linear-gradient(#93bad0 0 5px,transparent 5px 10px)}
+.map-node .node-icon{color:#678fb0}.map-node small{color:#698092}
+.map-node.current{border-color:#c68ba8;background:#fff2f7;box-shadow:0 0 0 2px #fff,0 0 0 3px #deaac0,0 5px 15px #7c7fa12e}
+.map-node.current .node-icon{color:#b2577c}.map-node.future{opacity:.78}.map-node.done{opacity:.72}
+.party-mini img,.relic-icon,.relic-art-box{background:#f1f7fc;border-color:#ccdfed;box-shadow:0 2px 7px #6b91ad12}
+.shop-item .price{color:#88602b}.merchant-scene{background:radial-gradient(ellipse at 15% 80%,#fff3cb,transparent 60%),linear-gradient(110deg,#eef9ff,#fffafd);border-color:#d3dfeb;border-radius:23px;box-shadow:var(--soft-shadow)}
+.merchant-portrait img{filter:drop-shadow(0 8px 13px #7890aa33)}.merchant-dialogue{border-color:#d3b586}
+.merchant-dialogue h3{color:#9b6178}.merchant-dialogue p,.merchant-line{color:#5d7189}.merchant-dialogue .eyebrow{color:#7e704e}
+.reward-mark,.result .result-icon{color:#c18d43;text-shadow:0 3px 0 #fff4d5}
+.relic-card p,.relic-reward .rule-copy{color:#5d7187}.result-stats strong{color:#987244}
+.reward-take-note,.swap-reason,.swap-budget,.swap-comparison>div>p{color:#637b90}
+.swap-button{background:#fff6e7;border-color:#ddc399;color:#8b602e}.swap-budget,.swap-preview{background:#fffdf6;border-color:#e2cfaa;border-radius:12px}
+.swap-preview strong,.swap-budget strong,.swap-comparison>span{color:#8f672f}
+.echo-section,.echo-result{background:linear-gradient(135deg,#f8efff,#f5fbff);border-color:#d6c6e8;border-radius:22px}
+.echo-choice{background:#ffffffd9;border-color:#d0c4e5;border-radius:16px}.echo-choice strong{color:#6c5986}.echo-choice small{color:#716288}.echo-choice>span>span{color:#926533}.echo-result p{color:#61718a}
+
+/* Keep the board geometry: brightening never adds a row above the hand. */
+body[data-screen=battle]{background:linear-gradient(145deg,#eaf6ff,#fff6f3)}
+.battle-page .arena{background-image:linear-gradient(#e9f6ff12,#e5f1ff30),var(--arena-art,url('assets/ui/battle_stage.webp'));background-color:#dfedf8;background-blend-mode:normal;border-color:#b9d3e5;border-radius:16px;box-shadow:inset 0 0 20px #c6e4f22e}
+.battle-page .arena{background-size:auto,max(120%,110dvh) auto;background-repeat:no-repeat}
+.battle-page .arena-label{color:#375776;background:#ffffffdb;border-radius:6px;padding:0 5px;letter-spacing:.04em}
+.battle-page .fighter{border-radius:12px}
+.battle-page .fighter-info,.battle-page .arena.boss-arena .fighter.boss .fighter-info,.battle-page .arena.solo-boss-arena .fighter.boss .fighter-info,.battle-page .arena.final-arena .fighter.boss .fighter-info,.battle-page .solo-boss-arena .allies .fighter-info{background:#fffffff0;border-color:#bdd6e7;border-radius:10px;color:var(--ink);box-shadow:0 3px 10px #3e739421}
+.battle-page .fighter-name,.battle-page .hp-number{color:#3e5b74}.battle-page .hand-order-note,.battle-page .energy-text{color:#56718b}
+.battle-page .allies .fighter-front,.battle-page .enemy-art .fighter-front{color:#425e7a;background:#fffefbea;border-color:#bcd4e4;border-radius:6px}
+.battle-page .fighter-art img{filter:drop-shadow(0 4px 6px #3d64884d)}
+.battle-page .fighter.targetable{border-color:#d781a8;box-shadow:0 0 0 2px #ffeff7b3,inset 0 0 20px #ffd6e666}
+.battle-page .fighter.targetable:hover{border-color:#b5568a;box-shadow:0 0 0 3px #f1a9c688,inset 0 0 28px #ffe3ef88}
+.battle-page .fighter.targetable .fighter-info{border-color:#cc80a4}
+.battle-page .fighter.targetable .fighter-art,.battle-page .fighter.targetable .enemy-art{outline-color:#c16b9a;background-color:#ffd9ec22;box-shadow:0 0 18px #e593bc44}
+.battle-page .fighter.targetable:hover .fighter-art,.battle-page .fighter.targetable:hover .enemy-art{outline-color:#aa447f}
+.battle-page .fighter.enemy .intent,.battle-page .arena.boss-arena .fighter.boss .intent,.battle-page .solo-boss-arena .fighter.boss>.intent,.battle-page .final-arena .fighter.enemy>.intent{color:#9d3d55;background:#fff7eff5;border:1px solid #d9aaa7;border-radius:10px;box-shadow:0 3px 10px #764d6d1a}
+.battle-page .intent span{color:#705469}.battle-page .fighter.dead .fighter-info,.battle-page .fighter.down .fighter-info{background:#e4e9f1;border-color:#b6c3d1}
+.down-label{color:#5f6d83;background:#e7edf3;border-color:#bbc9d8}
+.hp-track{background:#dceae8}.hp-track>i{background:linear-gradient(90deg,#45ad9a,#78caa4)}.hp-track.low>i{background:linear-gradient(90deg,#d76986,#ee9b9e)}
+.status{color:#536c85;background:#eaf1f9}.status.shield{color:#2d6388;background:#e1f1ff}.status.star{color:#886125;background:#fff1c9}.status.curse{color:#865296;background:#f2e7fa}.status.mark{color:#ac3f5b;background:#ffedf0}
+.tp-row i{background:#d7e5f1}.tp-row i.on{background:#6badd5;box-shadow:0 0 5px #7eb7db66}
+.battle-page .ub-button{color:#64778b;background:#edf4fa;border-color:#cadce9;border-radius:8px}
+.battle-page .ub-button.ready{color:#843f60;background:linear-gradient(100deg,#ffdfec,#ffeecf);border-color:#d48eac;box-shadow:inset 0 1px 0 #fff,0 2px 6px #bd7f9633;animation:daylight-ub 2.4s ease-in-out infinite}
+.battle-page .solo-boss-arena .allies .ub-button:before{color:#80445f}
+.battle-page .ub-button:after{color:#6f5675}
+@keyframes daylight-ub{50%{box-shadow:inset 0 1px 0 #fff,0 0 9px #e58ebc66}}
+.battle-page .boss-health,.battle-page.final-battle>.boss-health{background:linear-gradient(105deg,#fff5ed,#fff1f7 60%,#edf5ff);border-color:#d8aeb9;box-shadow:inset 0 1px 0 #fff,0 3px 10px #ad6b9717;border-radius:10px}
+.boss-health:before{background:radial-gradient(ellipse at 20% 0,#ffd8df66,transparent 70%)}
+.boss-health h3,.final-battle .boss-heading h3,.boss-heading strong,.boss-health .boss-hp-number{color:#8c4566}.boss-heading .eyebrow{color:#a26169}
+.boss-phase,.battle-page .boss-phase.rhythm-link{color:#795a76}.boss-hp-track{background:#e5cfda;border-color:#d5a9bd;border-radius:8px;box-shadow:inset 0 1px 3px #a671912e}
+.boss-hp-fill,.final-battle .boss-hp-fill{background:linear-gradient(90deg,#ad527b,#e997a9 70%,#f4ba96);box-shadow:none}
+.battle-page .final-arena{background-color:#e0dfef;border-color:#c2accc;background-blend-mode:normal}
+.final-arena:before{background:radial-gradient(ellipse at 73% 38%,#ffe1a23d,transparent 45%),linear-gradient(105deg,#eaf5ff15,#9767ae25);box-shadow:inset 0 0 40px #5f458b40}
+.final-arena[data-phase=critical]:before{background:radial-gradient(ellipse at 73% 38%,#ff879c44,transparent 45%),linear-gradient(105deg,#eaf5ff15,#ae569e40)}
+.battle-page .final-arena .allies .fighter-art img{filter:drop-shadow(0 4px 7px #486a8e55)}
+.battle-objective{color:#6c5c43;background:#fff6e6;border-color:#c59b55;border-radius:8px}.battle-objective>span{color:#8d642b}
+
+/* Cards retain each owner's accent, on legible cream paper. */
+.card{color:#3e5774;background:linear-gradient(150deg,color-mix(in srgb,var(--hero) 12%,#fff),#fffefa 62%,#f4faff);border-color:#c7d9e7;border-radius:15px;box-shadow:inset 0 1px 0 #fff,0 3px 9px #6491ae14}
+.card h3{font-weight:650;letter-spacing:.02em}.card p{color:#506982}.card .card-owner{color:color-mix(in srgb,var(--hero) 45%,#344b66)}
+.card-avatar{background:#fff5ef;border-color:color-mix(in srgb,var(--hero) 65%,#7d6594);box-shadow:0 2px 5px #6385a024}
+.card-cost{background:#f1f8ff;color:#4a7499;border:1px solid #adcde2;box-shadow:inset 0 1px 0 #fff;font-weight:700}
+.card-tags span{color:#637d92;background:#f0f6fa;border-color:#d6e2eb;border-radius:6px}
+.card .upgraded,.branch-label{color:#a1632b}.card.unaffordable{opacity:.72;background:linear-gradient(145deg,#f4f4f7,#eaf0f5)}
+.card.unaffordable .card-cost{color:#8d566d;background:#f8e6ef;border-color:#d6b0c1}
+.card.selected,.battle-page .hand .card.selected{border-color:#c26394;outline:2px solid #cf7caa;box-shadow:inset 0 0 0 2px #ffe6f2,0 3px 13px #c8739e33}
+.hand{scrollbar-color:#b5cddd #e4eef7}.hand::-webkit-scrollbar-thumb{background:#b5cddd}
+.battle-page>.battle-dock{background:#ffffffe8;border:1px solid #c8ddea;border-radius:12px;box-shadow:0 -2px 12px #7499b011}
+.battle-page .dock-main{border-color:#d6e5ee}.live-preview,.live-preview .forecast-link{color:#516e89}.live-preview .forecast-link>span{color:#9a5e80}
+.live-preview.has-reserve .forecast-reserve,.live-preview.has-reserve>.forecast-reserve{color:#916035}
+.unit-preview{color:#8a4c68;background:#fff5eaf7;border-color:#d4b08e;border-radius:7px;box-shadow:0 2px 7px #5b6d8826}
+.battle-page .energy-dot{background:#dcf3ff;border-color:#88b7d2;box-shadow:inset 0 0 0 2px #fff9;border-radius:5px}
+.battle-page .energy-dot>span{color:#477fa5}.battle-page .energy-dot.off{background:#edf1f7;border-color:#c8d4e1}
+.battle-page .dock-main .reserve-energy{color:#396783;background:#e8f6ff;border-color:#a3cbe2;border-radius:11px}.reserve-energy small{color:#51758f}
+.battle-page .reserve-energy[data-reserve-state=broken],.battle-page .reserve-energy[data-reserve-state=damaged]{color:#96546a;background:#faedf2;border-color:#d2a8b8}
+.shortcut{color:#72879b}.target-panel{color:#4c6683;background:#fffdf8;border-color:#c5dbe9}.target-panel .gold,.target-panel .preview-text{color:#7e536d}
+.inspect-preview{background:#f3f8ff;border-color:#b08e62;border-radius:8px}.inspect-preview small{color:#667d95}
+.forecast{background:#edf6ff;border-color:#c4d9e9;color:#506882;border-radius:12px}
+.combat-choice summary{color:#805470;background:#fff3f9;border-color:#d7b3c8;border-radius:10px}
+.combat-choice-panel{color:#4e6982;background:#fffdf8f7;border-color:#c1d7e7;border-radius:12px;box-shadow:0 5px 20px #536e8a33}
+.media-credit a{color:#416d9a}
+.keyword-list h3,.branch-rules summary{color:#8d6536}.log-box{color:#60798f;border-color:#d5bf9c}
+
+/* Help is a friendly, high-contrast speech bubble; cinematic shots keep theirs. */
+dialog{color:var(--ink);background:linear-gradient(155deg,#fffefa,#f1f9ff);border:1px solid #bad4e7;border-radius:22px;box-shadow:0 22px 80px #3b5a7c3d}
+dialog::backdrop{background:#354c7070;backdrop-filter:blur(5px)}.close{color:#6b7a91;background:#eaf3fc;border-radius:50%}
+.rule-grid h3{color:#97647f}.rule-grid p,.setting-row small{color:#5b738b}.setting-row{border-color:#d1e2ed}
+dialog .intent{color:#9d3d55;background:#fff4ed;border-color:#d9aaa7;border-radius:10px}dialog .intent span{color:#705469}
+.tutorial-panel{background:linear-gradient(110deg,#fff7df,#fff4fb 65%,#eff8ff);border-color:#d6b58d;box-shadow:0 3px 10px #98699616}
+.tutorial-copy h3{color:#985773}.tutorial-copy p{color:#4b6481}.tutorial-progress{color:#8b693d}
+.tutorial-highlight{outline-color:#b85f8e!important;box-shadow:0 0 0 6px #fff5fb99,0 0 15px #e391ba66!important}
+.tutorial-pointer-line{stroke:#ab4e84}.tutorial-pointer-head{fill:#cf79a4;stroke:#fff3fa}.tutorial-pointer-svg{filter:drop-shadow(0 2px 2px #fff)}
+.tutorial-pointer-label{color:#864363;background:#fff6eafc;border-color:#c17fa2;border-radius:13px;box-shadow:0 4px 12px #775b842e}
+.tutorial-pointer-focus{border-color:#b75c8f;box-shadow:0 0 0 2px #fff9,0 0 12px #c774a644}
+#toast{color:#4c6380;background:#fffdf7f7;border-color:#c8a8c1;border-radius:14px;box-shadow:0 7px 25px #51648633}
+.test-victory{color:#91652e;background:#fff5df;border-color:#c99d5d}.test-run-label{color:#946835}
+.danger-note{color:#a24562}.victory-banner{color:#397862;background:#ebf8f0;border-color:#badbcc}
+.burst-overlay,.boss-entry,.boss-performance{color:#fff0df}
+.burst-overlay button,.boss-entry button,.boss-performance-skip{color:#fef3e9;background:#26324bd9;border-color:#c1a7c3;border-radius:12px}
+.burst-overlay button:hover:not(:disabled),.boss-entry button:hover:not(:disabled),.boss-performance-skip:hover:not(:disabled){background:#fff1f8;color:#6d4163}
+.burst-overlay kbd{color:#efcfdf}.burst-overlay button:hover kbd{color:#82516c}
+.burst-caption h2,.burst-caption p,.burst-caption>span{color:#fff4e6}.boss-entry .eyebrow{color:#e5c4ad}
+.burst-tail{color:#536681;background:#fffcf5f0;border-color:#c4d5e9}.burst-tail button{color:#77536e}
+
+@media(max-width:760px){
+  .landing-art{inset:0;opacity:.42;background:linear-gradient(90deg,#f5faffed,#f5faff65),url('assets/ui/map_bg.webp') center/cover;mask-image:none}
+  .landing-quote{color:#58788e;text-shadow:0 1px 2px #fff}
+  .landing-copy h1{font-size:clamp(36px,8.3vw,59px)}
+  .recommended-teams,.merchant-scene{border-radius:18px}.recommend-title{font-size:23px}
+  .battle-page>.battle-dock,.battle-page .arena{border-radius:10px}
+  .battle-page .fighter-info{border-radius:8px}
+}
+@media(prefers-reduced-motion:reduce){.battle-page .ub-button.ready{animation:none}}
