@@ -47,7 +47,7 @@
     if (!scope || !doc || typeof doc.createElement !== 'function') return Promise.resolve({ played: 0 });
     if (owners.has(scope)) owners.get(scope)();
     var reduce = options.reducedMotion === undefined ? !!(global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches) : !!options.reducedMotion;
-    var records = plan(options), animations = [], nodes = [], cancelled = false, done = false;
+    var records = plan(options), animations = [], nodes = [], timers = [], cancelled = false, done = false, canvas = null;
     var boss = options.boss || null;
     records.forEach(function (e) {
       if (boss && e.type === 'hit' && e.source === boss.unitId && e.sourceKind === 'enemy') {
@@ -67,9 +67,14 @@
       layer.dataset.arenaBounded = 'true';
     }
     (doc.body || scope).appendChild(layer);
+    // The canvas renderer is optional: unsupported devices keep the original
+    // DOM effects and numbers. Both renderers use the same resolved events.
+    try { canvas = global.TowerVFX && global.TowerVFX.create({layer:layer,document:doc,bounds:bounds,quality:options.quality || 'auto',reducedMotion:reduce}); } catch (_) {}
     var resolve, promise = new Promise(function (yes) { resolve = yes; });
     function cleanup() {
       if (done) return; done = true;
+      timers.forEach(function (t) { global.clearTimeout(t); });
+      if (canvas) canvas.cancel();
       animations.forEach(function (a) { try { a.cancel(); } catch (_) {} });
       nodes.forEach(function (n) { n.remove(); }); layer.remove();
       if (owners.get(scope) === cancel) owners.delete(scope);
@@ -84,7 +89,27 @@
     function art(el) { return el && (el.querySelector('.fighter-art, .enemy-art') || el); }
     function point(el) {
       if (!el) return null; var r = el.getBoundingClientRect();
+      // object-fit:contain leaves transparent gutters around full-height Boss
+      // art. Aim at the rendered image body instead of its container centre.
+      var img = el.querySelector && el.querySelector('img');
+      if (img && img.naturalWidth > 0 && img.naturalHeight > 0 && global.getComputedStyle) {
+        var ir = img.getBoundingClientRect(), style = global.getComputedStyle(img);
+        if (style.objectFit === 'contain' && ir.width > 0 && ir.height > 0) {
+          var scale = Math.min(ir.width / img.naturalWidth, ir.height / img.naturalHeight);
+          var w = img.naturalWidth * scale, h = img.naturalHeight * scale;
+          var pos = (style.objectPosition || '50% 50%').split(' ');
+          var px = parseFloat(pos[0]) / 100, py = parseFloat(pos[1]) / 100;
+          r = {left:ir.left + (ir.width-w)*(isFinite(px)?px:.5),top:ir.top+(ir.height-h)*(isFinite(py)?py:.5),width:w,height:h};
+        }
+      }
       return { x: r.left + r.width / 2, y: r.top + r.height * .49, width: r.width, height: r.height };
+    }
+    function impact(e, at) {
+      if (typeof options.onImpact !== 'function') return Promise.resolve();
+      return new Promise(function (yes) {
+        var timer = global.setTimeout(function () { if (!cancelled) { try { options.onImpact(e); } catch (_) {} } yes(); }, at);
+        timers.push(timer);
+      });
     }
     function mark(kind, p, color, text) {
       var n = doc.createElement('span'); n.className = 'combat-fx fx-' + kind;
@@ -102,13 +127,13 @@
       return animate(n, reduce ? [{ opacity: 0 }, { opacity: 1, offset: .25 }, { opacity: 0 }] :
         [{ opacity: 0, transform: 'translate(-50%,-50%) scale(.25)' }, { opacity: 1, offset: .2, transform: 'translate(-50%,-50%) scale(.9)' }, { opacity: 0, transform: 'translate(-50%,-50%) scale(' + (scale || 1.5) + ')' }], duration, delay);
     }
-    function float(p, color, text, delay, big) {
+    function float(p, color, text, delay, big, label) {
       var anchor = { x: p.x, y: p.y - Math.min(35, p.height * .18) };
       if (bounds) {
         anchor.x = Math.max(bounds.left + 34, Math.min(bounds.left + bounds.width - 34, anchor.x));
         anchor.y = Math.max(bounds.top + Math.min(58, bounds.height * .32), anchor.y);
       }
-      var n = mark('number' + (big ? ' big' : ''), anchor, color, text);
+      var n = mark('number' + (big ? ' big' : '') + (label ? ' label' : ''), anchor, color, text);
       return animate(n, reduce ? [{ opacity: 0 }, { opacity: 1, offset: .2 }, { opacity: 0 }] :
         [{ opacity: 0, transform: 'translate(-50%,10px) scale(.75)' }, { opacity: 1, transform: 'translate(-50%,-8px) scale(1.12)', offset: .22 }, { opacity: 1, offset: .6 }, { opacity: 0, transform: 'translate(-50%,-65px) scale(1)' }], reduce ? 350 : 720, delay);
     }
@@ -188,6 +213,7 @@
       // same target are staggered, so a sword combo reads as several strikes.
       var same = records.slice(0, i).filter(function (x) { return x.source === e.source && x.target === e.target && x.type === e.type; }).length;
       var delay = reduce ? 0 : Math.min(800, actionAt + same * 105), impactAt = delay + (reduce ? 0 : 210);
+      all.push(impact(e, e.type === 'hit' ? impactAt : e.type === 'downed' ? delay + (reduce ? 0 : 350) : delay + 40));
       if (e.type === 'downed') {
         all.push(animate(targetArt, [{ opacity: 1, filter: 'grayscale(0)' }, { opacity: .4, filter: 'grayscale(1)' }], reduce ? 180 : 450, delay + (reduce ? 0 : 350)));
         all.push(float(p, '#c6cbd8', '倒地', delay + (reduce ? 0 : 480)));
@@ -196,17 +222,18 @@
       if (e.type === 'hit') {
         var magic = e.visual === 'magic', enemyAttack = !targetEl.classList.contains('enemy');
         color = e.bossImpact ? boss.accent : magic ? colors[e.source] || '#b4c4ff' : enemyAttack ? '#ffac9d' : colors[e.source] || '#ffe1a2';
+        if (canvas) canvas.cue(e, {origin:origin,target:p,color:color,delay:delay,impactAt:impactAt});
         if (!reduce && sourceArt && !sourceMoved.has(e.source)) {
           sourceMoved.add(e.source);
           var direction = p.x >= origin.x ? 1 : -1;
           all.push(animate(sourceArt, magic ? [{ filter: 'brightness(1)' }, { filter: 'brightness(1.35) drop-shadow(0 0 13px ' + color + ')', offset: .4 }, { filter: 'brightness(1)' }] :
             [{ transform: 'translateX(0)' }, { transform: 'translateX(' + direction * 13 + 'px)', offset: .3 }, { transform: 'translateX(' + direction * 13 + 'px)', offset: .42 }, { transform: 'translateX(0)' }], 410, delay));
-          if (magic) {
+          if (magic && !canvas) {
             var charge = size(mark('cast-ring', origin, color), 72);
             all.push(fade(charge, 430, delay, 1.15));
           }
         }
-        if (magic && !reduce) {
+        if (magic && !reduce && !canvas) {
           var missile = mark('missile', origin, color), dx = p.x - origin.x, dy = p.y - origin.y;
           all.push(trail(origin, p, color, delay, true));
           all.push(animate(missile, [{ opacity: 0, transform: 'translate(-50%,-50%) scale(.3)' }, { opacity: 1, offset: .15 }, { opacity: 1, transform: 'translate(calc(-50% + ' + dx + 'px),calc(-50% + ' + dy + 'px)) scale(.9)' }], 230, delay, 'ease-in'));
@@ -216,7 +243,7 @@
             all.push(animate(echo, [{ opacity: 0, transform: 'translate(-50%,-50%) scale(.25)' }, { opacity: .65, offset: .2 },
               { opacity: 0, transform: 'translate(calc(-50% + ' + dx * (1 - .15 * ghost) + 'px),calc(-50% + ' + dy * (1 - .15 * ghost) + 'px)) scale(.5)' }], 290, delay + ghost * 30, 'ease-in'));
           }
-        } else if (!reduce) {
+        } else if (!reduce && !canvas) {
           if (sourceArt) all.push(trail(origin, p, color, delay, false));
           all.push(arc(p, color, impactAt - 65, enemyAttack ? 30 : -25, e.burst));
           if (!enemyAttack) {
@@ -224,13 +251,17 @@
             all.push(fade(cross, e.burst ? 500 : 320, impactAt + 55, e.burst ? 1.6 : 1.1));
           }
         }
-        var hit = mark(magic ? 'blast' : enemyAttack ? 'claw' : 'slash', p, color);
-        all.push(fade(hit, reduce ? 220 : e.burst ? 560 : 360, impactAt, e.burst ? 2.1 : 1.45));
-        all = all.concat(particles(p, color, impactAt, e.burst ? 10 : 6));
+        if (!canvas) {
+          var hit = mark(magic ? 'blast' : enemyAttack ? 'claw' : 'slash', p, color);
+          all.push(fade(hit, reduce ? 220 : e.burst ? 560 : 360, impactAt, e.burst ? 2.1 : 1.45));
+          all = all.concat(particles(p, color, impactAt, e.burst ? 10 : 6));
+        }
         if (!reduce) {
-          all.push(ring(p, color, impactAt + 15, e.burst));
-          var core = mark('impact-core', p, color);
-          all.push(fade(core, e.burst ? 330 : 240, impactAt, e.burst ? 1.7 : 1.2));
+          if (!canvas) {
+            all.push(ring(p, color, impactAt + 15, e.burst));
+            var core = mark('impact-core', p, color);
+            all.push(fade(core, e.burst ? 330 : 240, impactAt, e.burst ? 1.7 : 1.2));
+          }
           if (!targetMoved.has(e.target)) {
             targetMoved.add(e.target);
             all.push(animate(targetArt, [{ filter: 'brightness(1)', transform: 'translateX(0)' },
@@ -244,9 +275,10 @@
       } else {
         var heal = e.type === 'heal', block = e.type === 'block', payment = e.type === 'payHp', negative = e.type === 'debuff' || ['breakAmount', 'weak', 'curseExpires', 'stars'].includes(e.status);
         color = payment ? '#ff91ac' : heal ? '#9cf4c4' : block ? '#a6dcff' : negative ? '#d6b0ff' : colors[e.source] || '#d9f6cf';
+        if (canvas && !payment) canvas.cue(e, {origin:origin,target:p,color:color,delay:delay,impactAt:delay+40});
         var glow = mark(heal ? 'heal' : block ? 'shield' : 'aura', p, color);
         all.push(fade(glow, reduce ? 250 : 600, delay, 1.3));
-        if (!reduce) {
+        if (!reduce && !canvas) {
           var floor = size(mark('ground-halo', { x: p.x, y: p.y + Math.min(46, p.height * .25) }, color), block ? 108 : 125);
           all.push(fade(floor, 700, delay, 1.3));
           all = all.concat(supportParticles(p, color, delay + 70, heal ? 'heal' : 'block', e.burst));
@@ -255,7 +287,7 @@
             all.push(fade(crest, 590, delay + 90, 1.1));
           }
         }
-        if (heal && !reduce) {
+        if (heal && !reduce && !canvas) {
           for (var j = 0; j < 3; j++) {
             var plus = mark('plus', { x: p.x - 32 + j * 32, y: p.y + 30 }, color, '+');
             all.push(animate(plus, [{ opacity: 0, transform: 'translate(-50%,0)' }, { opacity: 1, offset: .2 }, { opacity: 0, transform: 'translate(-50%,-85px)' }], 650, delay + j * 55));
@@ -263,7 +295,7 @@
         }
         var label = payment ? '付血 −' + e.amount : heal ? '+' + e.amount : block ? '护盾 +' + e.amount : e.type === 'cleanse' ? '净化' : e.type === 'debuff' ? '负面状态' : e.label || '支援';
         var numberPoint = { x: p.x, y: p.y + (heal ? -10 : block ? 28 : 19), height: 0 };
-        all.push(float(numberPoint, color, label, delay + 40, false));
+        all.push(float(numberPoint, color, label, delay + 40, false, !heal));
       }
       if (typeof options.onCue === 'function') { try { options.onCue(e); } catch (_) {} }
     });
@@ -271,7 +303,7 @@
       layer.dataset.bossImpact = boss.bossId;
       var bossTargets = [], bossSeen = new Set();
       records.filter(function (e) { return e.bossImpact; }).forEach(function (e) { if (bossSeen.has(e.target)) return; bossSeen.add(e.target); var p = point(art(find(e.target))); if (p) bossTargets.push(p); });
-      if (!reduce && bossTargets.length) {
+      if (!reduce && bossTargets.length && !canvas) {
         var center = { x: bossTargets.reduce(function (sum, p) { return sum + p.x; }, 0) / bossTargets.length, y: bossTargets.reduce(function (sum, p) { return sum + p.y; }, 0) / bossTargets.length };
         if (bounds) {
           var dark = mark('vignette boss-impact-vignette', { x: bounds.left + bounds.width / 2, y: bounds.top + bounds.height / 2 }, boss.color);
@@ -290,12 +322,15 @@
           }
         }
       }
+      if (canvas && bossTargets.length) canvas.boss({bossId:boss.bossId,focus:{x:bossTargets.reduce(function (n,p){return n+p.x;},0)/bossTargets.length,y:bossTargets.reduce(function (n,p){return n+p.y;},0)/bossTargets.length},targets:bossTargets,color:boss.accent});
     }
     var burstEvent = (options.events || []).find(function (e) { return e.type === 'burst'; });
     if ((options.burst || burstEvent) && records.length) {
       var owner = options.owner || burstEvent && burstEvent.source || records[0].source, color = colors[owner] || '#ffe3ad';
       var unique = [], seen = new Set();
-      records.filter(function (e) { return e.type === 'hit' || (['kokkoro', 'yui'].includes(owner) && ['heal', 'block'].includes(e.type)); }).forEach(function (e) {
+      var strikeRecords = records.filter(function (e) { return e.type === 'hit' && e.source === owner; });
+      var focusRecords = strikeRecords.length ? strikeRecords : records.filter(function (e) { return ['heal','block','status','support'].includes(e.type); });
+      focusRecords.forEach(function (e) {
         if (seen.has(e.target)) return; seen.add(e.target); var p = point(art(find(e.target))); if (p) unique.push(p);
       });
       var caster = point(art(find(owner))), focus = unique.length ? { x: unique.reduce(function (n, p) { return n + p.x; }, 0) / unique.length, y: unique.reduce(function (n, p) { return n + p.y; }, 0) / unique.length } : caster;
@@ -305,6 +340,8 @@
           var seal = size(mark('signature-' + owner + ' quiet-seal', focus, color), 80);
           seal.textContent = owner === 'hatsune' ? '✦' : owner === 'yui' ? '♡' : owner === 'kokkoro' ? '❀' : '◇';
           all.push(fade(seal, 360, 0, 1));
+        } else if (canvas) {
+          canvas.burst({owner:owner,focus:focus,targets:unique,color:color});
         } else {
           if (bounds) {
             var stage = mark('vignette', { x: bounds.left + bounds.width / 2, y: bounds.top + bounds.height / 2 }, color);
@@ -349,6 +386,7 @@
         }
       }
     }
+    if (canvas) all.push(canvas.finished);
     Promise.all(all).then(cleanup, cleanup);
     return promise;
   }

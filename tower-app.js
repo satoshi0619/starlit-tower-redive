@@ -6,7 +6,7 @@
   const $ = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const SAVE = 'starlitTower.redesign.v2', SETTINGS = 'starlitTower.settings.v2', TUTORIAL_SEEN='starlitTower.tutorial.v2.2';
-  const defaults = {audio:true,volume:.32,fullBurst:true,hints:true};
+  const defaults = {audio:true,volume:.32,fullBurst:true,hints:true,effectsQuality:'auto'};
   const HINTS='starlitTower.hints.v3.6';
   let hintSeen={},hintBefore=null,previewCardUid=null;
   let settings = {...defaults}, run = null, screen = 'home', chosen = ['pecorine','rei','kokkoro'];
@@ -28,7 +28,7 @@
   const enemyNames={ 'Goblin Guard':'哥布林护卫','Kobold':'狗头人','Gellatina':'软泥怪','Wood Soul':'木灵','Golem':'魔像','Blue Golem':'蓝魔像','Fire Mage':'火焰法师','Werewolf':'狼人','Flaming Skulls':'火焰骷髅','Lizardman':'蜥蜴人','Sea Drake':'希德雷克','Orc Leader':'兽人首领' };
   function applyEnemyArt(unit){const cast=window.TowerEncounterCast?.enemies?.[unit.id];if(cast){unit.art=cast.art;unit.name=cast.displayName;unit.originalName=cast.originalName||cast.displayName;unit.isBoss=true;unit.castColor=cast.accent||cast.color;return unit;}const m=window.TowerEnemyMedia?.enemies?.[unit.id];if(m){unit.art=m.art;unit.combatRoleName??=unit.name;unit.name=unit.device?'封印魔像':enemyNames[m.originalName]||m.indexName||m.originalName;unit.originalName=m.originalName;}return unit;}
   // Keep changed standing art fresh for returning online players.
-  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.10.0';});
+  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.11.0';});
   Object.values(C.encounters).forEach(enc=>enc.enemies.forEach(applyEnemyArt));
   const battle = () => run?.battle;
   const inEcho = () => run?.echo?.status==='active';
@@ -204,7 +204,7 @@
     refreshBattlePreview();showContextHint();
   }
   function renderHome(){
-    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div><div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.10 公开试玩版 · 三幕十战 · 登顶后可选回响<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
+    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div><div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.11 公开试玩版 · 三幕十战 · 登顶后可选回响<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
   }
   function recommendedTeams(){
     const labels=[['初次登塔推荐','护盾承伤 → 破甲 → 剑锋收尾','物理爆发 · 稳住前排'],['喜欢魔法与群攻','咒痕点杀 → 星痕清场 → 指路调牌','魔法输出 · 处理后排'],['喜欢治疗与容错','佩可掩护 → 凯露突破 → 优衣修复','物魔搭配 · 治疗容错']];
@@ -379,13 +379,32 @@
       '</div><p class="guide-footnote">以上是基础规则。角色、卡牌和遗物可能带来特殊效果，以当前牌面、状态和敌人预告为准。</p><div class="actions guide-actions">'+bText('我知道了','close-modal','','primary')+bText('查看卡牌关键词','card-keywords')+'</div></div>',
       '三人同行 · 轻松上手');
   }
-  function showSettings(){modal('声音与演出',`<div class="setting-row"><span>游戏声音<small>音乐、效果音与角色原声</small></span><input type="checkbox" id="setting-audio" ${settings.audio?'checked':''} aria-label="开启游戏声音"></div><div class="setting-row"><span>音量</span><input type="range" id="setting-volume" min="0" max="1" step=".01" value="${settings.volume}" aria-label="游戏音量"></div><div class="setting-row"><span>完整必杀演出<small>短片后接战场特效；Boss命中后即可行动，余音自然播完。快速模式省略视频</small></span><input type="checkbox" id="setting-burst" ${settings.fullBurst?'checked':''} aria-label="完整必杀演出"></div><div class="setting-row"><span>情境提示<small>调度、无伤蓄势、鼓舞消费各提示一次，不暂停战斗</small></span><input type="checkbox" id="setting-hints" ${settings.hints?'checked':''} aria-label="情境提示"></div><div class="divider"></div><div class="actions">${bText('查看素材来源','media-info')}${bText('返回标题','return-title')}</div><p class="media-credit" style="margin-top:20px">18名角色均已接入本人的原版短cut-in与必杀配音。短片结束后，剩余语音会自然播完；可在素材页查看每人的来源与接入状态。</p>`,'MAKE YOURSELF COMFORTABLE');}
+  function showSettings(){modal('声音与演出',`<div class="setting-row"><span>游戏声音<small>音乐、效果音与角色原声</small></span><input type="checkbox" id="setting-audio" ${settings.audio?'checked':''} aria-label="开启游戏声音"></div><div class="setting-row"><span>音量</span><input type="range" id="setting-volume" min="0" max="1" step=".01" value="${settings.volume}" aria-label="游戏音量"></div><div class="setting-row"><span>完整必杀演出<small>短片后接战场特效；Boss命中后即可行动，余音自然播完。快速模式省略视频</small></span><input type="checkbox" id="setting-burst" ${settings.fullBurst?'checked':''} aria-label="完整必杀演出"></div><div class="setting-row"><span>战斗特效<small>自动按屏幕选择；精致模式增加光轨、粒子与专属必杀，轻量模式保留关键动作</small></span><select id="setting-effects" aria-label="战斗特效精细度"><option value="auto" ${settings.effectsQuality==='auto'?'selected':''}>自动</option><option value="rich" ${settings.effectsQuality==='rich'?'selected':''}>精致</option><option value="light" ${settings.effectsQuality==='light'?'selected':''}>轻量</option></select></div><div class="setting-row"><span>情境提示<small>调度、无伤蓄势、鼓舞消费各提示一次，不暂停战斗</small></span><input type="checkbox" id="setting-hints" ${settings.hints?'checked':''} aria-label="情境提示"></div><div class="divider"></div><div class="actions">${bText('查看素材来源','media-info')}${bText('返回标题','return-title')}</div><p class="media-credit" style="margin-top:20px">18名角色均已接入本人的原版短cut-in与必杀配音。短片结束后，剩余语音会自然播完；可在素材页查看每人的来源与接入状态。</p>`,'MAKE YOURSELF COMFORTABLE');}
   function mediaInfo(){const media=window.TowerMedia?.characters||{};modal('角色原声与演出来源',`<p class="muted">角色影音与BGM来自公主连接公开资源清单，原作魔物模型经社区镜像取得并导出完整姿势。各项来源已分别记录；立绘、魔物与影音版权属于 Cygames 等相关权利方。</p><div class="rule-grid">${heroes.map(h=>{const m=media[h.id]?.ub;return `<section><h3>${esc(h.name)}</h3><p>${m?.video?'原版短cut-in已接入':'当前使用立绘演出'} · ${m?.voice?'原版UB配音已接入':'暂无UB原声'}</p>${m?bText('试听UB','audition',`data-id="${h.id}"`,'small'):''}</section>`;}).join('')}</div><div class="divider"></div><p class="media-credit">角色影音、魔物和BGM均有独立来源清单。原作魔物模型与曲目选用不改变本作的战斗数值和剧情。</p>`,'MEDIA CREDITS');}
   function startRun(ids=chosen,seed=null){
     try{stopBossPerformance();run=R.create({heroIds:[...ids],seed:seed||$('seed-input')?.value||Date.now().toString(36)});if(tutorialEnabled)T.begin(run);selected=null;closeModal();save();render();window.scrollTo(0,0);}catch(error){toast(error.message||'无法开始远征');}
   }
   function applyResult(result,{rerender=true}={}){if(result?.ok===false){toast(result.message||'当前无法执行');return false;}if(result?.message)toast(result.message);save();if(rerender)render();return true;}
   function combatLock(value){busy=value;$('app').inert=value;document.querySelector('.topbar').inert=value;document.body.classList.toggle('combat-busy',value);if(value){window.TowerTutorialPointer?.hide();refreshBattlePreview();}else updateTutorialPointer();}
+  function playCombatFeedback(options={}){
+    const initial=options.before||battle(), shown=new Map((initial?.party||[]).concat(initial?.enemies||[]).map(u=>[uidOf(u),{...u}]));
+    let lastSound=-Infinity, soundCount=0;
+    return window.TowerFeedback.play({...options,root:$('app'),quality:settings.effectsQuality,onImpact:e=>{
+      // Only the presentation copy changes here. Rules and saving continue to
+      // use the already resolved combat state, including every combo hit.
+      const u=shown.get(e.target);
+      if(u&&['hit','heal','payHp','downed'].includes(e.type)){
+        u.hp=e.type==='downed'?0:Math.max(0,Math.min(u.maxHp,u.hp+(e.type==='heal'?1:-1)*(e.amount||0)));
+        const el=Array.from($('app').querySelectorAll('.fighter[data-id]')).find(el=>el.dataset.id===String(e.target));
+        const number=el?.querySelector('.hp-number'),fill=el?.querySelector('.hp-track i');
+        if(number)number.textContent=`${u.hp} / ${u.maxHp}`;
+        if(fill)fill.style.width=`${u.hp/u.maxHp*100}%`;
+        if(e.target===battle()?.bossCoreUid){const bossFill=$('app').querySelector('.boss-hp-fill'),bossNumber=$('app').querySelector('.boss-heading strong');if(bossFill)bossFill.style.width=`${u.hp/u.maxHp*100}%`;if(bossNumber)bossNumber.textContent=`${u.hp} / ${u.maxHp}`;}
+      }
+      const now=Date.now();
+      if(['hit','heal','block'].includes(e.type)&&now-lastSound>=95&&soundCount<4){sound(e.type==='hit'?(e.burst?'burst':'attack'):'heal');lastSound=now;soundCount++;}
+    }});
+  }
   async function afterCombat(result,{before=null,owner=null,presented=false,trainingAction=null}={}){
     if(result?.ok===false){toast(result.message);return false;}
     const b=battle(),events=(b.events||[]).slice(before?.events?.length??eventCursor);
@@ -395,7 +414,7 @@
         const bossCue=window.TowerBossPerformance?.plan({before,events,cast:window.TowerEncounterCast});let remaining=events;
         if(bossCue){
           const preceding=events.slice(0,bossCue.firstHitIndex);remaining=events.slice(bossCue.firstHitIndex);
-          if(preceding.length){activeFeedback=window.TowerFeedback.play({events:preceding,root:$('app')});await activeFeedback;activeFeedback=null;}
+          if(preceding.length){activeFeedback=playCombatFeedback({events:preceding,before});await activeFeedback;activeFeedback=null;}
           // Cards remain usable during the previous voice tail. Only another
           // Boss cut-in waits for that voice, so two Boss lines never overlap.
           if(activeBossPerformance)await activeBossPerformance;
@@ -403,7 +422,7 @@
           let impact=null;
           const performance=window.TowerBossPerformance.play({cue:bossCue,root:$('app'),audio:settings.audio,fullVideo:settings.fullBurst,volume:Math.min(1,settings.volume*2),onVisualComplete:()=>{
             if(impact)return;
-            sound('burst');impact=window.TowerFeedback.play({events:remaining,root:$('app'),before,after:b,owner,boss:bossCue});activeFeedback=impact;
+            impact=playCombatFeedback({events:remaining,before,after:b,owner,boss:bossCue});activeFeedback=impact;
           }});
           activeBossPerformance=performance;
           performance.then(()=>{if(activeBossPerformance===performance){activeBossPerformance=null;refreshBgmVolume();}});
@@ -411,8 +430,7 @@
           if(impact){await impact;remaining=[];activeFeedback=null;}
           refreshBgmVolume();
         }
-        if(remaining.some(e=>e.type==='hit'))sound('attack');else if(remaining.some(e=>e.type==='heal'))sound('heal');
-        activeFeedback=window.TowerFeedback.play({events:remaining,root:$('app'),before,after:b,owner,boss:bossCue});await activeFeedback;
+        activeFeedback=playCombatFeedback({events:remaining,before,after:b,owner,boss:bossCue});await activeFeedback;
       }catch(_){toast('这次效果未能显示，战斗已正常结算。');}
       activeFeedback=null;refreshBgmVolume();
     }
@@ -479,8 +497,7 @@
         if(fullVideo&&!immediate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)await new Promise(resolve=>setTimeout(resolve,200));
         if(!current())return;
         layer.hidden=true;
-        sound(events.some(e=>e.type==='hit')?'burst':'heal');
-        try{localEffects=window.TowerFeedback.play({events,root:$('app'),before,after:battle(),owner:id,burst:true});activeFeedback=localEffects;await localEffects;}catch(_){}
+        try{localEffects=playCombatFeedback({events,before,after:battle(),owner:id,burst:true});activeFeedback=localEffects;await localEffects;}catch(_){}
         if(!current())return;if(activeFeedback===localEffects)activeFeedback=null;
         document.querySelectorAll('.fighter[data-id]').forEach(el=>{
           const u=battle()?.party.concat(battle()?.enemies||[]).find(x=>uidOf(x)===el.dataset.id);if(!u)return;
@@ -595,7 +612,7 @@
   document.addEventListener('focusin',hoverPreview);
   document.addEventListener('pointerout',leavePreview);
   document.addEventListener('focusout',leavePreview);
-  document.addEventListener('input',event=>{const el=event.target;if(el.id==='tutorial-enabled')tutorialEnabled=el.checked;if(el.id==='spend-block'){spendBlock=Number(el.value);el.nextElementSibling.textContent=spendBlock;el.closest('.combat-choice').querySelector('summary').textContent='耗盾 '+spendBlock;refreshBattlePreview();}if(el.id==='consume-curse'){consumeCurse=el.checked;el.closest('.combat-choice').querySelector('summary').textContent=consumeCurse?'引爆咒痕':'保留咒痕';refreshBattlePreview();}if(el.id.startsWith('setting-')){if(el.id==='setting-audio')settings.audio=el.checked;if(el.id==='setting-burst')settings.fullBurst=el.checked;if(el.id==='setting-volume')settings.volume=Number(el.value);if(el.id==='setting-hints')settings.hints=el.checked;if(bgm){refreshBgmVolume();settings.audio?bgm.play().catch(()=>{}):bgm.pause();}refreshBossAudio();if(voiceController)voiceController.setVolume(Math.min(1,settings.volume*2));if(voice&&!settings.audio)stopVoice();try{localStorage.setItem(SETTINGS,JSON.stringify(settings));}catch(_){}}});
+  document.addEventListener('input',event=>{const el=event.target;if(el.id==='tutorial-enabled')tutorialEnabled=el.checked;if(el.id==='spend-block'){spendBlock=Number(el.value);el.nextElementSibling.textContent=spendBlock;el.closest('.combat-choice').querySelector('summary').textContent='耗盾 '+spendBlock;refreshBattlePreview();}if(el.id==='consume-curse'){consumeCurse=el.checked;el.closest('.combat-choice').querySelector('summary').textContent=consumeCurse?'引爆咒痕':'保留咒痕';refreshBattlePreview();}if(el.id.startsWith('setting-')){if(el.id==='setting-audio')settings.audio=el.checked;if(el.id==='setting-burst')settings.fullBurst=el.checked;if(el.id==='setting-volume')settings.volume=Number(el.value);if(el.id==='setting-hints')settings.hints=el.checked;if(el.id==='setting-effects'&&['auto','rich','light'].includes(el.value))settings.effectsQuality=el.value;if(bgm){refreshBgmVolume();settings.audio?bgm.play().catch(()=>{}):bgm.pause();}refreshBossAudio();if(voiceController)voiceController.setVolume(Math.min(1,settings.volume*2));if(voice&&!settings.audio)stopVoice();try{localStorage.setItem(SETTINGS,JSON.stringify(settings));}catch(_){}}});
   document.addEventListener('keydown',event=>{
     const target=event.target.closest('[data-action="target"]');
     if(target&&['Enter',' '].includes(event.key)&&selectedTargets().includes(target.dataset.id)){event.preventDefault();playTarget(target.dataset.id);return;}
