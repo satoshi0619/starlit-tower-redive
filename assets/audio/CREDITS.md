@@ -2,7 +2,7 @@
 
 ## Original Princess Connect BGM — preferred in the remake
 
-Nine original game recordings are stored in `assets/audio/priconne/`. They were
+Eleven original game recordings are stored in `assets/audio/priconne/`. They were
 downloaded as matching ACB metadata and AWB sound banks from Cygames' public game
 resource CDN, verified against resource-manifest version `10071200` by file size
 and MD5, decoded by exact cue/subsong, and converted to browser-playable AAC/M4A.
@@ -22,6 +22,8 @@ that each song originally played in the same type of scene.
 | Act 1 boss | 魔物が！！ — `bgm_M17_02` | `priconne/bgm_M17.m4a` |
 | Act 2 boss | 覇瞳皇帝 — `bgm_M49` | `priconne/bgm_M49.m4a` |
 | Act 3 boss / boss fallback | 覇瞳皇帝' — `bgm_MC283` | `priconne/bgm_MC283.m4a` |
+| Christina / Ranpha phase two | 魔星獣決戦 — `bgm_M55` | `priconne/bgm_M55.m4a` |
+| Kaiser phase two | 神たる者との決戦 — `bgm_M299` | `priconne/bgm_M299.m4a` |
 | Camp / rest / shop / event / chest / card rewards | 思い出の足跡 — `bgm_M333` | `priconne/bgm_M333.m4a` |
 | Victory | Exact internal victory-jingle cue `bgm_jingle_win_01` | `priconne/bgm_jingle_win_01.m4a` |
 | Defeat | 不穏な空気と立ち向かう闘志 — `bgm_M42_juke` | `priconne/bgm_M42.m4a` |
@@ -31,7 +33,8 @@ existing local master database; base soundtrack titles were cross-checked with
 the publisher's [official soundtrack tracklist](https://columbia.jp/prod-info/COCX-40805-6/).
 The victory jingle deliberately retains its internal cue name, without guessing
 which named CD track it corresponds to. No music from uploads, fan covers, or AI
-generation was substituted for these nine originals.
+generation was substituted for these recordings. The publisher lists
+神たる者との決戦 on the [volume 3 tracklist](https://columbia.jp/prod-info/COCX-41394-6/).
 
 ## Legacy BGM — preserved, not the preferred remake music
 

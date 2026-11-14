@@ -28,7 +28,10 @@
         var old=state(unit,before.round),current=state(target,after.round),statuses=[];
         Object.keys(old).forEach(function(key){if(old[key]!==current[key])statuses.push({key:key,label:labels[key],before:old[key],after:current[key]});});
         var hp=change(unit.hp,target.hp),block=change(unit.block,target.block),tp=change(unit.tp,target.tp);
-        return {uid:String(uid(unit)),name:String(C.heroes[unit.id]?.name||unit.name||unit.id),side:(before.party||[]).some(function(h){return uid(h)===uid(unit);})?'party':'enemy',hp:hp,block:block,tp:tp,statuses:statuses,changed:!!(hp.delta||block.delta||tp.delta||statuses.length)};
+        var intentChange=target.intent?.interrupted&&!unit.intent?.interrupted?{before:unit.intent.name,after:target.intent.name}:null;
+        var view={uid:String(uid(unit)),name:String(C.heroes[unit.id]?.name||unit.name||unit.id),side:(before.party||[]).some(function(h){return uid(h)===uid(unit);})?'party':'enemy',hp:hp,block:block,tp:tp,statuses:statuses,changed:!!(hp.delta||block.delta||tp.delta||statuses.length||intentChange)};
+        if(intentChange)view.intentChange=intentChange;
+        return view;
       });
     }
     function fail(message){return {ok:false,summary:message||'当前无法预览。',units:[],notice:''};}
@@ -59,6 +62,7 @@
       units.forEach(function(unit){if(unit.block.delta)parts.push(unit.name+(unit.block.delta<0?' −':' +')+Math.abs(unit.block.delta)+'盾');});
       if(parts.length>3)parts=parts.slice(0,3).concat(['其他变化见目标详情']);
       if(!parts.length)parts.push(turn?'三人本轮不会掉血':pendingKind?'出牌后需完成选牌':'生命与护盾不变');
+      units.forEach(function(unit){if(unit.intentChange)parts.push(unit.name+'的'+unit.intentChange.before+'将被打断');});
       if(!turn&&energy.spent>0)parts.push('支付'+energy.spent+'行动');
       return parts.join('；');
     }
@@ -71,7 +75,16 @@
       if(pendingKind==='recoverTop')notices.push('实际出牌后选择弃牌置顶；不立即抽牌。');
       if(kind==='turn')notices.push('仅预览公开战况；不展示下一轮手牌。');
       if(reserve)notices.push(reserve.text+'。');
-      return {ok:true,kind:kind,summary:summarize(units,energy,pendingKind,kind==='turn'),units:units,energy:energy,status:String(after.status),pendingKind:pendingKind,reserve:reserve,notice:notices.join(' ')};
+      var view={ok:true,kind:kind,summary:summarize(units,energy,pendingKind,kind==='turn'),units:units,energy:energy,status:String(after.status),pendingKind:pendingKind,reserve:reserve,notice:''};
+      var mark=kind==='turn'?E.holdView?.(before):null;
+      if(mark?.state==='marked'){
+        if(after.status!=='active')view.hold={state:'finished',text:'战斗结束，留招结束'};
+        else if(E.holdView(after)?.state==='used')view.hold={state:'kept',text:'下轮保留「'+mark.cardName+'」'};
+        else view.hold={state:'lost',text:'牌主将倒地，留招机会仍保留'};
+        notices.push(view.hold.text+'。');
+      }
+      view.notice=notices.join(' ');
+      return view;
     }
     function action(b,spec){
       spec=spec||{};

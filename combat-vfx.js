@@ -257,6 +257,9 @@
           // Delayed damage belongs to its victim. It must not make a dead or
           // unrelated caster appear to perform an additional active attack.
           motes(p, color, impact, 5, record.sourceKind === 'star' ? 'star' : 'diamond', unit * .45);
+        } else if (points.stageMotion) {
+          // The stage layer draws the individual spell, blade, or shell.
+          // Keep Canvas hit sparks and absorption without a second projectile.
         } else if (record.visual === 'magic' || family === 'arrow' || family === 'wind') {
           rune(o, color, start, .26, 300); bolt(o, p, color, start, 210, family === 'arrow' ? 'arrow' : 'magic');
         } else if (family === 'fist') {

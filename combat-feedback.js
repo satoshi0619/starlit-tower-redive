@@ -7,20 +7,44 @@
   'use strict';
   var owners = new WeakMap();
   var colors = { pecorine: '#ffd078', rei: '#9adaff', kokkoro: '#8debc1', kyaru: '#ba82ff', hatsune: '#c3b6ff', yui: '#ffc4ce' };
+  var indirectHits = new Set(['star', 'poison', 'reflect', 'counter', 'relic', 'passive']);
   Object.values(global.TowerContent && global.TowerContent.heroes || {}).forEach(function (h) { if (h.color) colors[h.id] = h.color; });
+  var bossStyles = {
+    christina: { motif: 'blade', color: '#ffc681', defaultAttack: 'slash' },
+    fubuki: { motif: 'shell', color: '#bdefff', defaultAttack: 'projectile' },
+    ranpha: { motif: 'petal', color: '#edbfff', defaultAttack: 'projectile' },
+    misora: { motif: 'prism', color: '#ff9ed7', defaultAttack: 'projectile' },
+    kaiser: { motif: 'ember', color: '#ffb2b6', defaultAttack: 'slash' }
+  };
+  var legacyBossIds = { seal_knight: 'christina', tower_crown: 'kaiser' };
   var statusLabels = { buff: '鼓舞', breakAmount: '破甲', weak: '减攻', stars: '星屑', curseExpires: '咒痕', coverFrom: '掩护' };
   function units(b) { return b ? (b.party || []).concat(b.enemies || []) : []; }
   function unitId(u) { return u && (u.uid || u.id); }
   function plan(options) {
     options = options || {};
     var events = options.events || [], output = [], actionOwner = options.owner || null;
+    var core = options.before?.enemies?.find(function (unit) { return unitId(unit) === options.before.bossCoreUid; });
+    var style = core && bossStyles[legacyBossIds[core.id] || core.id];
+    var move = core && events.find(function (e) { return e.type === 'bossMove' && e.source === unitId(core); });
+    var intent = core?.intent;
+    var attack = move?.presentation || intent?.presentation || (intent?.type === 'aoe' ? 'wave' : intent?.hits > 1 ? 'volley' : style?.defaultAttack);
     events.forEach(function (e) {
       if (e.type === 'play' || e.type === 'burst') actionOwner = e.source || actionOwner;
       if (e.type === 'relic' && e.relicId === 'last_ember_locket') output.push({type:'status',visual:'status',target:e.target,source:e.target,label:'命锁 · 留下1生命',amount:0});
-      if (['hit', 'heal', 'block', 'cleanse', 'debuff', 'downed', 'payHp'].includes(e.type) && e.target) {
-        output.push(Object.assign({}, e, { source: e.source || actionOwner,
+      if (e.type === 'intentChange' && e.source) output.push(Object.assign({}, e, { target: e.source, visual: 'status' }));
+      if (e === move && style && ['guard', 'chant', 'curse'].includes(e.moveType)) {
+        output.push(Object.assign({}, e, { bossStyle: style, bossAttack: e.moveType === 'guard' ? 'guard' : 'debuff' }));
+      }
+      if (['hit', 'heal', 'block', 'cleanse', 'debuff', 'downed', 'payHp', 'stripBlock'].includes(e.type) && e.target) {
+        var record = Object.assign({}, e, { source: e.source || actionOwner,
           visual: e.type === 'hit' ? (e.damageType === 'magic' || e.sourceKind === 'star' ? 'magic' : 'physical') : e.type,
-          burst: !!options.burst || e.sourceKind === 'burst' }));
+          burst: !!options.burst || e.sourceKind === 'burst' });
+        if (style && e.source === unitId(core) && e.sourceKind === 'enemy' && e.type === 'hit') {
+          record.bossStyle = style;
+          record.bossAttack = attack;
+          if (style.motif === 'petal') record.visual = 'magic';
+        }
+        output.push(record);
       }
     });
     // Buffs and status applications are represented in state, not engine events.
@@ -49,6 +73,8 @@
     var reduce = options.reducedMotion === undefined ? !!(global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches) : !!options.reducedMotion;
     var records = plan(options), animations = [], nodes = [], timers = [], cancelled = false, done = false, canvas = null;
     var boss = options.boss || null;
+    var opening = !boss && options.phaseOpening;
+    var openingStyle = opening && Object.hasOwn(bossStyles, opening.bossId) && bossStyles[opening.bossId];
     records.forEach(function (e) {
       if (boss && e.type === 'hit' && e.source === boss.unitId && e.sourceKind === 'enemy') {
         e.burst = true; e.bossImpact = true;
@@ -58,6 +84,10 @@
     var layer = doc.createElement('div'); layer.className = 'combat-fx-layer' + (reduce ? ' reduced-motion' : ''); layer.setAttribute('aria-hidden', 'true');
     var arena = scope.querySelector && scope.querySelector('.arena'), arenaRect = arena && arena.getBoundingClientRect();
     var bounds = arenaRect && arenaRect.width > 0 && arenaRect.height > 0 ? { left: arenaRect.left, top: arenaRect.top, width: arenaRect.width, height: arenaRect.height } : null;
+    var battlePage = arena && arena.closest && arena.closest('.battle-page');
+    var phase = battlePage && battlePage.dataset.bossForm;
+    var light = options.quality === 'light';
+    var compact = bounds && bounds.width < 600;
     // All generated artwork is clipped to the real arena, including a compact
     // arena on a phone. Coordinates are still measured from the live fighters.
     if (bounds) {
@@ -146,6 +176,117 @@
       });
     }
     function size(n, value) { n.style.setProperty('--fx-size', Math.round(value) + 'px'); return n; }
+    function attackPose(sourceArt, origin, target, magic, bossAction, delay, bossAttack, openingHit) {
+      var dx = target.x - origin.x, dy = target.y - origin.y;
+      var distance = Math.max(1, Math.hypot(dx, dy));
+      var ranged = bossAttack === 'volley' || bossAttack === 'projectile';
+      var travel = magic || bossAttack === 'wave' ? 12 : ranged ? 28 : bossAction ? (compact ? 66 : 145) : (compact ? 24 : 43);
+      var reach = Math.min(distance * .52, light ? travel * .65 : openingHit ? travel * 1.18 : travel);
+      var x = dx / distance * reach, y = dy / distance * reach;
+      var lean = (dx >= 0 ? 1 : -1) * (bossAction ? 13 : 7);
+      var attackScale = openingHit && !light ? 1.18 : bossAction ? 1.12 : 1.07;
+      var translate = function (a, b) { return a.toFixed(2) + 'px ' + b.toFixed(2) + 'px'; };
+      var duration = bossAction ? 560 : 390;
+      return animate(sourceArt, [
+        { translate: '0px 0px', rotate: '0deg', scale: '1' },
+        { translate: translate(-x * .25, -y * .25 + 3), rotate: -lean * .55 + 'deg', scale: '.96 1.04', offset: .26 },
+        { translate: ranged ? translate(-x * .55, -y * .55 - 4) : translate(x, y - (magic ? 16 : 2)), rotate: (ranged ? -lean * .5 : lean) + 'deg', scale: attackScale + ' .96', offset: 210 / duration },
+        { translate: translate(x * .76, y * .76), rotate: lean * .6 + 'deg', scale: '1.04 1', offset: .61 },
+        { translate: '0px 0px', rotate: '0deg', scale: '1' }
+      ], duration, delay, 'linear');
+    }
+    function phaseOpeningEffect(sourceArt, origin, target, delay, impactAt, group) {
+      layer.dataset.phaseOpening = opening.bossId;
+      var color = openingStyle.color, motif = ' opening-' + openingStyle.motif;
+      var middle = bounds.left + bounds.width / 2;
+      var title = mark('phase-opening-title', { x: middle, y: bounds.top + Math.min(32, bounds.height * .15) }, color, opening.skillName);
+      var work = [animate(title, [
+        { opacity: 0 }, { opacity: 1, offset: .13 }, { opacity: 1, offset: .76 }, { opacity: 0 }
+      ], reduce ? 290 : 530, delay, 'linear')];
+      if (reduce) return work;
+
+      var charge = size(mark('phase-opening-charge' + motif, origin, color), Math.min(compact ? 95 : 166, origin.height * .85));
+      work.push(animate(charge, [
+        { opacity: 0, transform: 'translate(-50%,-50%) scale(1.32)' },
+        { opacity: .86, transform: 'translate(-50%,-50%) scale(.88)', offset: .37 },
+        { opacity: 1, transform: 'translate(-50%,-50%) scale(.63)', offset: .59 },
+        { opacity: 0, transform: 'translate(-50%,-50%) scale(1.57)' }
+      ], 354, delay, 'linear'));
+      if (light) return work;
+
+      var backdrop = mark('phase-opening-backdrop', { x: middle, y: bounds.top + bounds.height / 2 }, color);
+      work.push(animate(backdrop, [
+        { opacity: 0 }, { opacity: .9, offset: .3 }, { opacity: .8, offset: .57 }, { opacity: 0 }
+      ], 515, delay));
+      var impactPoint = group ? { x: middle, y: origin.y } : target;
+      var crest = size(mark('phase-opening-impact' + motif, impactPoint, color), Math.min(bounds.height * .92, group ? 208 : compact ? 80 : 124));
+      work.push(fade(crest, 310, impactAt, group ? 2.7 : 1.66));
+      if (opening.bossId === 'christina') {
+        Array.from(sourceArt.querySelectorAll?.('.boss-form-wing') || []).forEach(function (wing) {
+          work.push(animate(wing, [
+            { scale: '1 1' }, { scale: '.54 .82', offset: .42 },
+            { scale: '1.14 1.06', offset: .63 }, { scale: '1 1' }
+          ], 445, delay));
+        });
+      }
+      return work;
+    }
+    function bossStrike(origin, target, color, at, group) {
+      var wave = size(mark('boss-rush-wave', target, color), Math.min(compact ? 150 : 260, bounds.height * .93));
+      var angle = Math.atan2(target.y - origin.y, target.x - origin.x) * 180 / Math.PI;
+      wave.style.setProperty('--rush-angle', group ? '0deg' : angle + 'deg');
+      return animate(wave, [
+        { opacity: 0, transform: 'translate(-50%,-50%) scale(.45)' },
+        { opacity: .9, transform: 'translate(-50%,-50%) scale(1)', offset: .18 },
+        { opacity: 0, transform: 'translate(-50%,-50%) scale(1.65)' }
+      ], 380, Math.max(0, at - 65));
+    }
+    function bossTechnique(record, origin, p, delay, impactAt, first, group) {
+      var style = record.bossStyle, kind = record.bossAttack, color = style.color;
+      var subjectSize = Math.min(compact ? 110 : 190, origin.height * .78);
+      var work = [];
+      if (kind === 'guard' || kind === 'debuff') {
+        var defensive = kind === 'guard' && !record.ward ? 'rest' : kind;
+        var stance = size(mark('boss-technique boss-' + defensive + ' boss-' + style.motif, origin, color), subjectSize);
+        work.push(fade(stance, 500, delay, 1.3));
+      } else if (kind === 'wave') {
+        if (first) {
+          var shock = size(mark('boss-technique boss-wave boss-' + style.motif, origin, color), Math.min(235, bounds.height * .95));
+          work.push(animate(shock, [
+            { opacity: 0, transform: 'translate(-50%,-50%) scale(.18)' },
+            { opacity: .62, transform: 'translate(-50%,-50%) scale(.84)', offset: .28 },
+            { opacity: .78, transform: 'translate(-50%,-50%) scale(1.32)', offset: .49 },
+            { opacity: 0, transform: 'translate(-50%,-50%) scale(2.7)' }
+          ], 570, delay));
+        }
+        work.push(fade(size(mark('boss-technique boss-wave-hit boss-' + style.motif, p, color), compact ? 74 : 130), 360, impactAt, 1.45));
+      } else if (kind === 'volley' || kind === 'projectile') {
+        var dx = p.x - origin.x, dy = p.y - origin.y;
+        var flight = mark('boss-technique boss-shot boss-' + style.motif, origin, color);
+        flight.style.setProperty('--shot-angle', Math.atan2(dy, dx) + 'rad');
+        work.push(animate(flight, [
+          { opacity: 0, transform: 'translate(-50%,-50%) rotate(var(--shot-angle)) scale(.42)' },
+          { opacity: 1, offset: .2, transform: 'translate(-50%,-50%) rotate(var(--shot-angle))' },
+          { opacity: .95, transform: 'translate(calc(-50% + ' + dx + 'px),calc(-50% + ' + dy + 'px)) rotate(var(--shot-angle))' }
+        ], 136, Math.max(delay, impactAt - 136), 'ease-in').then(function () { flight.remove(); }));
+        work.push(fade(size(mark('boss-technique boss-shot-hit boss-' + style.motif, p, color), compact ? 62 : 98), 280, impactAt, 1.3));
+      } else if (kind === 'slash') {
+        work.push(arc(p, color, impactAt - 52, style.motif === 'ember' ? 61 : -35, true));
+        if (group) work.push(arc(p, '#fff3d2', impactAt - 4, 29, true));
+      }
+      return work;
+    }
+    function shakeStage(at, power) {
+      var frames = [
+        { transform: 'translate(0,0)' },
+        { transform: 'translate(' + -power + 'px,' + power * .42 + 'px)', offset: .12 },
+        { transform: 'translate(' + power * .65 + 'px,' + -power * .27 + 'px)', offset: .28 },
+        { transform: 'translate(' + -power * .38 + 'px,0)', offset: .45 },
+        { transform: 'translate(' + power * .19 + 'px,0)', offset: .64 },
+        { transform: 'translate(0,0)' }
+      ];
+      return [animate(arena, frames, 235, at, 'linear'), animate(layer, frames, 235, at, 'linear')];
+    }
     function ring(p, color, delay, big) {
       var n = size(mark('impact-ring', p, color), big ? 112 : 78);
       return fade(n, big ? 600 : 440, delay, big ? 1.65 : 1.35);
@@ -200,40 +341,91 @@
         { opacity: .8, offset: .22, transform: 'translate(-50%,-50%) scale(1)' },
         { opacity: .75, offset: .58 }, { opacity: 0, transform: 'translate(-50%,-50%) scale(1.15)' }], 1000, delay);
     }
-    var all = [], sourceTimes = new Map(), sourceMoved = new Set(), targetMoved = new Set(), lastSource = null, actionAt = 0;
+    var all = [], sourceMoved = new Set(), targetMoved = new Set(), lastHitAt = new Map();
+    var bossShots = 0;
+    var lastSource = null, actionAt = 0, stageShook = false, openingPlayed = false;
     records.forEach(function (e, i) {
       var targetEl = find(e.target), targetArt = art(targetEl), p = point(targetArt);
       if (!p) return;
+      if (e.type === 'intentChange') {
+        var intent = targetEl.querySelector('.intent');
+        var callout = point(intent) || p;
+        if (bounds) callout.x = Math.max(bounds.left + 44, Math.min(bounds.left + bounds.width - 44, callout.x));
+        var at = (lastHitAt.get(e.target) || 0) + (reduce ? 0 : 60);
+        var interrupted = mark('intent-break', callout, '#fce5b2', '突刺已打断');
+        all.push(animate(interrupted, [{ opacity: 0 }, { opacity: 1, offset: .12 }, { opacity: 1, offset: .75 }, { opacity: 0 }], 480, at));
+        all.push(impact(e, at));
+        return;
+      }
+      if (e.type === 'bossMove') {
+        if (!reduce && bounds) {
+          var braces = e.bossAttack === 'guard';
+          all.push(animate(targetArt, [
+            { scale: '1', translate: '0 0' },
+            { scale: braces ? '.94 1.02' : '1.06 1.04', translate: braces ? '0 4px' : '0 -8px', offset: .32 },
+            { scale: '1', translate: '0 0' }
+          ], 410));
+          var ward = Math.max(0, options.before?.enemies?.find(function (unit) { return unitId(unit) === e.source; })?.intent?.amount || 0);
+          all = all.concat(bossTechnique(Object.assign({}, e, { ward: ward }), p, p, 0, 120, true));
+        }
+        return;
+      }
       var sourceEl = find(e.source), sourceArt = art(sourceEl), origin = point(sourceArt) || p;
       var color = colors[e.source] || (targetEl.classList.contains('enemy') ? '#e6c38b' : '#ff9d9d');
-      if (e.source && e.source !== lastSource && sourceTimes.size) actionAt += 150;
-      lastSource = e.source;
-      var count = sourceTimes.get(e.source) || 0; sourceTimes.set(e.source, count + 1);
+      if (e.source && lastSource && e.source !== lastSource) actionAt += 150;
+      if (e.source) lastSource = e.source;
       // Group attacks remain simultaneous across targets; multiple hits on the
       // same target are staggered, so a sword combo reads as several strikes.
       var same = records.slice(0, i).filter(function (x) { return x.source === e.source && x.target === e.target && x.type === e.type; }).length;
-      var delay = reduce ? 0 : Math.min(800, actionAt + same * 105), impactAt = delay + (reduce ? 0 : 210);
-      all.push(impact(e, e.type === 'hit' ? impactAt : e.type === 'downed' ? delay + (reduce ? 0 : 350) : delay + 40));
+      // Number consecutive shots by the action, not the target. A shot that
+      // knocks a hero down can change targets without collapsing the cadence.
+      var volleyStep = e.bossAttack === 'volley' ? bossShots++ : same;
+      var delay = reduce ? 0 : Math.min(800, actionAt + volleyStep * 105), impactAt = delay + (reduce ? 0 : 210);
+      var downAt = reduce ? 0 : (lastHitAt.get(e.target) ?? impactAt) + 130;
+      var stripAt = delay + (reduce ? 0 : 165);
+      all.push(impact(e, e.type === 'hit' ? impactAt : e.type === 'downed' ? downAt : e.type === 'stripBlock' ? stripAt : delay + 40));
       if (e.type === 'downed') {
-        all.push(animate(targetArt, [{ opacity: 1, filter: 'grayscale(0)' }, { opacity: .4, filter: 'grayscale(1)' }], reduce ? 180 : 450, delay + (reduce ? 0 : 350)));
-        all.push(float(p, '#c6cbd8', '倒地', delay + (reduce ? 0 : 480)));
+        all.push(animate(targetArt, [{ opacity: 1, filter: 'grayscale(0)' }, { opacity: .4, filter: 'grayscale(1)' }], reduce ? 180 : 450, downAt));
+        all.push(float(p, '#c6cbd8', '倒地', downAt + (reduce ? 0 : 130)));
         return;
       }
       if (e.type === 'hit') {
+        lastHitAt.set(e.target, impactAt);
         var magic = e.visual === 'magic', enemyAttack = !targetEl.classList.contains('enemy');
+        var bossAction = e.sourceKind === 'enemy' && !!(sourceEl && (sourceEl.classList.contains('boss') || e.bossImpact));
+        var openingHit = !!(openingStyle && !openingPlayed && bossAction && bounds && sourceArt && e.source === opening.unitId);
+        var heavy = bossAction && (openingHit || e.bossImpact || (e.raw || e.amount) >= (phase ? 6 : 9));
+        var group = !!(bossAction && options.before && options.before.enemies && options.before.enemies.some(function (unit) {
+          return unitId(unit) === e.source && unit.intent && unit.intent.type === 'aoe';
+        }));
         color = e.bossImpact ? boss.accent : magic ? colors[e.source] || '#b4c4ff' : enemyAttack ? '#ffac9d' : colors[e.source] || '#ffe1a2';
-        if (canvas) canvas.cue(e, {origin:origin,target:p,color:color,delay:delay,impactAt:impactAt});
-        if (!reduce && sourceArt && !sourceMoved.has(e.source)) {
+        if (e.bossStyle) color = e.bossStyle.color;
+        if (openingHit) {
+          openingPlayed = true;
+          all = all.concat(phaseOpeningEffect(sourceArt, origin, p, delay, impactAt, group));
+        }
+        var technique = !reduce && bounds && e.bossAttack && !e.bossImpact;
+        if (technique) all = all.concat(bossTechnique(e, origin, p, delay, impactAt, !sourceMoved.has(e.source), group));
+        if (canvas) canvas.cue(e, {origin:origin,target:p,color:color,delay:delay,impactAt:impactAt,stageMotion:!!technique});
+        if (!reduce && sourceArt && e.source !== e.target && !sourceMoved.has(e.source) && !indirectHits.has(e.sourceKind)) {
           sourceMoved.add(e.source);
-          var direction = p.x >= origin.x ? 1 : -1;
-          all.push(animate(sourceArt, magic ? [{ filter: 'brightness(1)' }, { filter: 'brightness(1.35) drop-shadow(0 0 13px ' + color + ')', offset: .4 }, { filter: 'brightness(1)' }] :
-            [{ transform: 'translateX(0)' }, { transform: 'translateX(' + direction * 13 + 'px)', offset: .3 }, { transform: 'translateX(' + direction * 13 + 'px)', offset: .42 }, { transform: 'translateX(0)' }], 410, delay));
+          var profile = global.TowerVFX && global.TowerVFX.profiles && global.TowerVFX.profiles[e.source];
+          all.push(attackPose(sourceArt, origin, p, magic || group || profile && profile.family === 'arrow', bossAction, delay, e.bossAttack, openingHit));
+          if (heavy && bounds) {
+            var windup = size(mark('boss-windup', origin, color), Math.min(148, origin.height * .63));
+            all.push(fade(windup, 285, delay, 1.2));
+            if (!light && !stageShook) {
+              stageShook = true;
+              all = all.concat(shakeStage(impactAt, compact ? 3 : phase ? 9 : 6));
+            }
+          }
           if (magic && !canvas) {
             var charge = size(mark('cast-ring', origin, color), 72);
             all.push(fade(charge, 430, delay, 1.15));
           }
         }
-        if (magic && !reduce && !canvas) {
+        if (!reduce && heavy && bounds && same === 0 && (!technique || e.bossAttack === 'slash')) all.push(bossStrike(origin, p, color, impactAt, group));
+        if (magic && !reduce && !canvas && !technique) {
           var missile = mark('missile', origin, color), dx = p.x - origin.x, dy = p.y - origin.y;
           all.push(trail(origin, p, color, delay, true));
           all.push(animate(missile, [{ opacity: 0, transform: 'translate(-50%,-50%) scale(.3)' }, { opacity: 1, offset: .15 }, { opacity: 1, transform: 'translate(calc(-50% + ' + dx + 'px),calc(-50% + ' + dy + 'px)) scale(.9)' }], 230, delay, 'ease-in'));
@@ -243,7 +435,7 @@
             all.push(animate(echo, [{ opacity: 0, transform: 'translate(-50%,-50%) scale(.25)' }, { opacity: .65, offset: .2 },
               { opacity: 0, transform: 'translate(calc(-50% + ' + dx * (1 - .15 * ghost) + 'px),calc(-50% + ' + dy * (1 - .15 * ghost) + 'px)) scale(.5)' }], 290, delay + ghost * 30, 'ease-in'));
           }
-        } else if (!reduce && !canvas) {
+        } else if (!reduce && !canvas && !technique) {
           if (sourceArt) all.push(trail(origin, p, color, delay, false));
           all.push(arc(p, color, impactAt - 65, enemyAttack ? 30 : -25, e.burst));
           if (!enemyAttack) {
@@ -293,9 +485,9 @@
             all.push(animate(plus, [{ opacity: 0, transform: 'translate(-50%,0)' }, { opacity: 1, offset: .2 }, { opacity: 0, transform: 'translate(-50%,-85px)' }], 650, delay + j * 55));
           }
         }
-        var label = payment ? '付血 −' + e.amount : heal ? '+' + e.amount : block ? '护盾 +' + e.amount : e.type === 'cleanse' ? '净化' : e.type === 'debuff' ? '负面状态' : e.label || '支援';
+        var label = payment ? '付血 −' + e.amount : heal ? '+' + e.amount : block ? '护盾 +' + e.amount : e.type === 'stripBlock' ? '剥盾 −' + e.amount : e.type === 'cleanse' ? '净化' : e.type === 'debuff' ? '负面状态' : e.label || '支援';
         var numberPoint = { x: p.x, y: p.y + (heal ? -10 : block ? 28 : 19), height: 0 };
-        all.push(float(numberPoint, color, label, delay + 40, false, !heal));
+        all.push(float(numberPoint, color, label, e.type === 'stripBlock' ? stripAt : delay + 40, false, !heal));
       }
       if (typeof options.onCue === 'function') { try { options.onCue(e); } catch (_) {} }
     });

@@ -1,0 +1,324 @@
+.route-atlas {
+  --route-ink: #304d66;
+  --route-floor-height: clamp(72px, 10.5vh, 88px);
+  --route-emblem-size: 43px;
+  position: relative;
+  min-width: 0;
+  padding: 18px 18px 13px;
+  border: 1px solid #b9d7e9;
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 50% 3%, #fbefdbcf, transparent 55%),
+    linear-gradient(145deg, #fcfbfff2, #eaf6fff0 62%, #f7f1fce8),
+    url('assets/ui/map_bg.webp') center / cover;
+  box-shadow: var(--soft-shadow, 0 7px 22px #527fa014);
+  color: var(--route-ink);
+}
+
+.route-atlas__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+.route-atlas__head h3 {
+  margin: 0;
+  color: #3c627f;
+  font-size: 23px;
+  line-height: 1.25;
+}
+
+.route-atlas__hint {
+  margin: 0;
+  color: #4e667b;
+  font-size: 12px;
+}
+
+.route-atlas__legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px 13px;
+  margin-top: 9px;
+  padding: 8px 0;
+  border-block: 1px solid #bed9e694;
+}
+
+.route-atlas [data-route-type] {
+  --route-accent: #486179;
+  --route-tint: #eff7ff;
+  --route-border: #a2bbcd;
+  --route-shape: 50%;
+}
+
+.route-atlas [data-route-type='battle'] {
+  --route-accent: #275c80;
+  --route-tint: #e8f4ff;
+  --route-border: #80abc9;
+}
+
+.route-atlas [data-route-type='elite'] {
+  --route-accent: #6c388b;
+  --route-tint: #f4e9ff;
+  --route-border: #b096cc;
+  --route-shape: 25% 25% 45% 45% / 25% 25% 46% 46%;
+}
+
+.route-atlas [data-route-type='boss'] {
+  --route-accent: #963f64;
+  --route-tint: #ffebf2;
+  --route-border: #c68da6;
+  --route-shape: 35% 35% 28% 28%;
+}
+
+.route-atlas [data-route-type='event'] {
+  --route-accent: #805b26;
+  --route-tint: #fff2d7;
+  --route-border: #c59f61;
+  --route-shape: 38% 38% 38% 38%;
+}
+
+.route-atlas [data-route-type='camp'] {
+  --route-accent: #26684e;
+  --route-tint: #e3f7eb;
+  --route-border: #83ba9d;
+  --route-shape: 52% 52% 18% 18%;
+}
+
+.route-atlas [data-route-type='shop'] {
+  --route-accent: #88482e;
+  --route-tint: #ffede0;
+  --route-border: #cc9e81;
+  --route-shape: 20%;
+}
+
+.route-emblem {
+  display: grid;
+  place-items: center;
+  width: var(--emblem-size);
+  height: var(--emblem-size);
+  border: 1px solid var(--route-border);
+  border-radius: var(--route-shape);
+  background: var(--route-tint);
+  color: var(--route-accent);
+}
+
+.route-emblem svg {
+  width: 64%;
+  height: 64%;
+}
+
+.route-key {
+  --emblem-size: 23px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--route-accent);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.route-key .route-emblem svg {
+  width: 72%;
+  height: 72%;
+}
+
+.route-plot {
+  position: relative;
+  display: grid;
+  grid-template-rows: repeat(var(--route-count), var(--route-floor-height));
+  isolation: isolate;
+}
+
+.route-plot__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.route-edge {
+  fill: none;
+  stroke: #7798af;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.route-edge.is-closed {
+  stroke: #9faeba;
+  stroke-width: 1.25;
+  stroke-dasharray: 2 6;
+  opacity: .68;
+}
+
+.route-edge.is-reachable {
+  stroke: #24759b;
+  stroke-width: 3.5;
+}
+
+.route-edge.is-visited {
+  stroke: #b1783b;
+  stroke-width: 3.4;
+}
+
+.route-plot__floor {
+  position: relative;
+  grid-row: var(--route-row);
+  grid-column: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  min-width: 0;
+}
+
+.route-atlas .route-node {
+  --emblem-size: var(--route-emblem-size);
+  grid-column: var(--route-lane);
+  grid-row: 1;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(92px, 100%);
+  height: 58px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: none;
+  text-align: center;
+  color: var(--route-accent);
+}
+
+.route-node[data-route-type='boss'] {
+  --route-emblem-size: 49px;
+}
+
+.route-node .route-emblem {
+  box-shadow: 0 2px 5px #42678025;
+  transition: box-shadow .15s, background-color .15s;
+}
+
+.route-node__label {
+  position: absolute;
+  z-index: 1;
+  inset: calc(50% + var(--emblem-size) / 2 + 2px) auto auto;
+  max-width: min(100%, 90px);
+  overflow: hidden;
+  padding: 0 4px;
+  border-radius: 6px;
+  background: #f9fcff;
+  color: inherit;
+  font-size: 12px;
+  line-height: 1.25;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.route-node__status {
+  position: absolute;
+  top: calc(50% - var(--emblem-size) / 2 - 2px);
+  left: calc(50% + var(--emblem-size) / 2 - 5px);
+  min-width: 17px;
+  min-height: 17px;
+  padding: 0 3px;
+  border: 1px solid #fff;
+  border-radius: 9px;
+  background: #286f91;
+  color: #fff;
+  font-size: 11px;
+  line-height: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.route-node.is-closed {
+  --route-accent: #546779;
+  --route-tint: #eff3f6;
+  --route-border: #b4bfca;
+}
+
+.route-node.is-closed .route-emblem {
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.route-node.is-closed .route-node__label {
+  background: #f2f6f9;
+  font-weight: 550;
+}
+
+.route-node.is-current .route-emblem {
+  border: 2px solid #b1783b;
+  box-shadow: 0 0 0 2px #fff6df, 0 0 0 3px #d3ad75;
+}
+
+.route-node.is-current .route-node__status,
+.route-node.is-visited .route-node__status {
+  background: #865820;
+}
+
+.route-node.is-reachable .route-emblem {
+  border: 2px solid var(--route-accent);
+  box-shadow: 0 0 0 2px #faffff, 0 0 0 3px var(--route-border), 0 3px 7px #24759b36;
+}
+
+.route-atlas button.route-node:hover {
+  background: transparent;
+  transform: none;
+}
+
+.route-atlas button.route-node:hover .route-emblem,
+.route-atlas button.route-node:focus-visible .route-emblem {
+  border-color: var(--route-accent);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--route-accent);
+}
+
+.route-atlas button.route-node:focus-visible {
+  outline: none;
+  z-index: 2;
+}
+
+.route-atlas__entry {
+  width: fit-content;
+  margin: -2px auto 0;
+  padding: 3px 10px;
+  border: 1px solid #b8d1e3;
+  border-radius: 999px;
+  background: #fffefa;
+  color: #466782;
+  font-size: 12px;
+  font-weight: 750;
+  text-align: center;
+}
+
+.route-atlas__entry span {
+  color: #936331;
+}
+
+@media (max-width: 760px) {
+  .route-atlas {
+    --route-floor-height: 72px;
+    --route-emblem-size: 41px;
+    padding: 13px 10px 10px;
+    border-radius: 17px;
+  }
+
+  .route-atlas__head h3 { font-size: 21px; }
+  .route-atlas__legend {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 6px 13px;
+  }
+  .route-key { --emblem-size: 21px; }
+  .route-node[data-route-type='boss'] { --route-emblem-size: 46px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-node .route-emblem { transition: none; }
+}

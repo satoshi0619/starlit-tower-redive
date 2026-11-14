@@ -33,6 +33,7 @@
     return result;
   }
   function actDef(run) { return C.acts.find(function (act) { return act.id === run.act; }); }
+  function hasExpandedLayout(run) { return run && (run.layoutVersion === 1 || run.layoutVersion === 2); }
   function mapSteps(run) {
     var steps = [
       { key: 'battle', label: '遭遇敌人', icon: '⚔' },
@@ -41,15 +42,98 @@
       { key: 'service', label: '旅途整备', icon: '♧' },
       { key: 'boss', label: '封印之战', icon: '♜' }
     ];
-    if (run && run.layoutVersion === 1 && run.act === 2) steps.splice(2, 0, { key: 'commander', label: '突破据点', icon: '⚑' });
+    if (hasExpandedLayout(run) && run.act === 2) steps.splice(2, 0, { key: 'commander', label: '突破据点', icon: '⚑' });
     return steps;
   }
   function currentStep(run) { return mapSteps(run)[run.stage] || null; }
+  function battleGold(run, type, stepKey) {
+    if (hasExpandedLayout(run) && stepKey === 'commander') return 10;
+    var gold = type === 'boss' ? 50 : type === 'elite' ? 35 : 20;
+    if (hasExpandedLayout(run) && run.act === 2 && stepKey === 'challenge') return gold - 10;
+    return gold;
+  }
+  function battleChoice(id) {
+    var enc = C.encounters[id];
+    var boss = enc.type === 'boss';
+    return { id: boss ? 'chapter-boss' : 'battle:' + id, name: boss ? '幕末 Boss' : enc.name,
+      text: boss ? '进入封印之间，迎战本幕守关幻影。' : enc.description,
+      icon: boss ? '♛' : enc.type === 'elite' ? '⚔' : '⚑', type: enc.type, encounterId: id };
+  }
+  function routeMap(run) {
+    if (!run || run.layoutVersion !== 2) return null;
+    var act = actDef(run);
+    if (!act) return null;
+    // Derive the geometry and encounter choices independently of reward RNG.
+    // Enter records are the persistent path, including nodes resolved as passes.
+    var routeSeed = String(run.seed) + ':route:' + run.act;
+    var mirrored = hash(routeSeed + ':side') % 2 === 1;
+    var rows = [];
+    function laneNumber(lane) { return mirrored ? 2 - lane : lane; }
+    function nodeId(row, lane) { return 'route-' + run.act + '-' + row + '-' + laneNumber(lane); }
+    function node(lane, details, nextLanes) {
+      return Object.assign({}, details, {
+        id: nodeId(rows.length, lane), lane: laneNumber(lane),
+        next: nextLanes.map(function (nextLane) { return nodeId(rows.length + 1, nextLane); })
+      });
+    }
+    function row(nodes) {
+      rows.push({ index: rows.length, nodes: nodes.sort(function (a, b) { return a.lane - b.lane; }) });
+    }
+    function encounter(id, stepKey) {
+      var choice = battleChoice(id), gold = battleGold(run, choice.type, stepKey);
+      var short = stepKey === 'commander';
+      var reward = short ? ' · 只给金币' : choice.type === 'boss' ? ' · 遗物、升级、卡牌' : choice.type === 'elite' ? ' · 遗物、卡牌' : ' · 卡牌';
+      choice.rewardText = gold + ' 金币' + reward;
+      if (short) choice.shortEncounter = true;
+      return choice;
+    }
+    var event = { type: 'event', name: '沿途奇遇', text: '进入后遇见一次随机事件，可按队伍的处境选择。', icon: '✦', rewardText: '事件选项' };
+    var camp = { type: 'camp', name: '旅途营地', text: '为全队回复35%最大生命，或升级一张未升级卡。', icon: '♨', rewardText: '回复或升级' };
+    var earlyCamp = Object.assign({}, camp, { name: '战前营地', text: camp.text + ' 之后通往精英，奇遇在精英战后。' });
+    var lateCamp = run.campDebt && run.campDebt[run.act]
+      ? { type: 'pass', name: '继续前进', text: '泉眼已预支本幕免费营地，可保留金币并继续前进。', icon: '→', rewardText: '营地已预支' }
+      : camp;
+    var shop = { type: 'shop', name: '行商的帐篷', text: '用金币购买补给、卡牌与遗物，也可付费升级或删牌。', icon: '◈', rewardText: '商店补给' };
+    var openers = act.battles.slice();
+    if (run.act === 2) openers[0] = 'starlit_dual';
+    if (run.act === 3) openers[0] = 'starlit_core';
+    var normalId = act.battles[hash(routeSeed + ':normal') % act.battles.length];
+    var newEliteId = ['route_forest_elite', 'route_ruins_elite', 'route_summit_elite'][run.act - 1];
+    var eliteId = C.encounters[newEliteId] ? newEliteId : act.elites[0];
+    var elite = encounter(eliteId, 'challenge');
+    row([node(0, encounter(openers[0], 'battle'), [0]), node(2, encounter(openers[1], 'battle'), [0, 2])]);
+    row([node(0, event, run.act === 2 ? [0] : [0, 1]), node(2, earlyCamp, [2])]);
+    if (run.act === 2) {
+      var commander = encounter('starlit_commander', 'commander');
+      row([node(0, commander, [0, 1]), node(2, commander, [2])]);
+    }
+    row([node(0, encounter(normalId, 'challenge'), [0, 1]), node(1, elite, [0, 1]), node(2, elite, [2])]);
+    row([node(0, lateCamp, [1]), node(1, shop, [1]), node(2, event, [1])]);
+    row([node(1, encounter(publicBoss(run).id, 'boss'), [])]);
+
+    var nodes = rows.flatMap(function (item) { return item.nodes; });
+    var byId = new Map(nodes.map(function (item) { return [item.id, item]; }));
+    var visited = [];
+    (run.history || []).forEach(function (entry) {
+      if (entry.type !== 'enter' || entry.act !== run.act || !byId.has(entry.choiceId)) return;
+      visited.push(entry.choiceId);
+      if (!entry.eventId) return;
+      var resolved = C.events.find(function (item) { return item.id === entry.eventId; });
+      if (resolved) Object.assign(byId.get(entry.choiceId), { eventId: resolved.id, name: resolved.name, text: resolved.text });
+    });
+    var currentId = visited.length ? visited[visited.length - 1] : null;
+    var reachable = [];
+    if (run.screen === 'map' && !run.result && rows[run.stage]) {
+      var exits = currentId ? byId.get(currentId).next : [];
+      reachable = rows[run.stage].nodes.filter(function (item) { return run.stage === 0 || exits.includes(item.id); }).map(function (item) { return item.id; });
+    }
+    return { rows: rows, currentId: currentId, reachable: reachable, visited: visited };
+  }
   function normalize(run) {
     if (!run || !Array.isArray(run.heroIds)) throw new Error('远征存档无效。');
     run.bossByAct = run.bossByAct || {};
     // A v2 expedition keeps its original encounters and RNG. New expeditions
-    // choose one Boss only when that act becomes public.
+    // choose one Boss when the party reaches that act.
     if ((run.version || 2) < 3) C.acts.forEach(function (act) {
       var cached = run.mapChoices && run.mapChoices[act.id + ':4'];
       run.bossByAct[act.id] = run.bossByAct[act.id] || (cached && cached[0] && cached[0].encounterId) || act.legacyBoss || act.boss;
@@ -57,7 +141,6 @@
     run.version = 3;
     run.eventsSeen = run.eventsSeen || [];
     run.campDebt = run.campDebt || {};
-    run.swapsByAct = run.swapsByAct || {};
     return run;
   }
   function chooseActBoss(run) {
@@ -97,7 +180,7 @@
   function relicAvailability(run, id) {
     var special = ['shield_etching', 'blood_receipt', 'concert_ribbon', 'crooked_compass', 'spent_fuse', 'last_ember_locket'];
     if (special.indexOf(id) < 0) return { enabled: !!C.relics[id], reason: '' };
-    if (run.layoutVersion !== 1 && run.act === 3 && run.stage === 4 && run.battle && run.battle.status !== 'active') return { enabled: false, reason: '终幕战斗已经结束，没有后续战斗。' };
+    if (!hasExpandedLayout(run) && run.act === 3 && run.stage === 4 && run.battle && run.battle.status !== 'active') return { enabled: false, reason: '终幕战斗已经结束，没有后续战斗。' };
     var cards = run.deck.map(resolvedCard), enabled = true, reason = '';
     if (id === 'shield_etching') {
       enabled = cards.some(function (c) { return (c.effects || []).some(function (e) { return e.type === 'heavy' && (e.cap || e.maxSpend || 0) >= 4; }); });
@@ -134,10 +217,11 @@
       throw new Error('请选择三名不同的有效角色。');
     }
     var seed = options.seed === undefined ? Date.now() : options.seed;
-    var run = { version: 3, layoutVersion: 1, seed: seed, heroIds: ids.slice(), hp: {}, deck: [], relics: [], gold: 55,
+    var layoutVersion = options.layoutVersion === 2 ? 2 : 1;
+    var run = { version: 3, layoutVersion: layoutVersion, seed: seed, heroIds: ids.slice(), hp: {}, deck: [], relics: [], gold: 55,
       act: 1, stage: 0, screen: 'map', room: null, battle: null, reward: null,
       stats: { battles: 0, elites: 0, bosses: 0, rounds: 0 }, history: [],
-      rngState: hash(seed), nextCardUid: 1, mapChoices: {}, rewardQueue: [], bossByAct: {}, eventsSeen: [], campDebt: {}, swapsByAct: {} };
+      rngState: hash(seed), nextCardUid: 1, mapChoices: {}, rewardQueue: [], bossByAct: {}, eventsSeen: [], campDebt: {} };
     ids.forEach(function (id) {
       run.hp[id] = C.heroes[id].hp;
       Object.keys(C.cards).filter(function (key) { return C.cards[key].owner === id && C.cards[key].starter; }).forEach(function (key) {
@@ -150,16 +234,18 @@
   }
   function choices(run) {
     if (!run || run.screen !== 'map' || run.result) return [];
+    var route = routeMap(run);
+    if (route) return (route.rows[run.stage]?.nodes || []).filter(function (node) { return route.reachable.includes(node.id); });
     normalize(run); chooseActBoss(run);
     var key = run.act + ':' + run.stage;
-    if (run.mapChoices[key]) return clone(run.mapChoices[key]);
     var act = actDef(run), list = [], step = currentStep(run);
     if (!act) return list;
-    function battleChoice(id) {
-      var enc = C.encounters[id];
-      return { id: 'battle:' + id, name: enc.name, text: enc.description, icon: enc.type === 'boss' ? '♛' : enc.type === 'elite' ? '⚔' : '⚑', type: enc.type, encounterId: id };
-    }
     if (!step) return [];
+    if (step.key === 'boss') {
+      var cachedBoss = run.mapChoices[key]?.[0]?.encounterId;
+      return [battleChoice(C.encounters[cachedBoss]?.type === 'boss' ? cachedBoss : run.bossByAct[run.act])];
+    }
+    if (run.mapChoices[key]) return clone(run.mapChoices[key]);
     if (step.key === 'battle') {
       var firstBattles = act.battles;
       if (run.layoutVersion === 1 && run.act === 2) firstBattles = ['starlit_dual', act.battles[1]];
@@ -178,15 +264,15 @@
       list = [{ id: 'camp', name: '旅途营地', text: '免费为全队回复35%最大生命，或升级一张未升级卡。', icon: '♨', type: 'camp' },
         { id: 'shop', name: '行商的帐篷', text: '用金币购买补给、卡牌与遗物，也可付费升级或删牌。', icon: '◈', type: 'shop' }];
       if (run.campDebt[run.act] && run.campDebt[run.act].status === 'owed') list = [list[1], { id: 'skip-service', name: '继续前进', text: '泉眼已预支本幕免费营地；保留金币，直接迎战本幕Boss。', icon: '→', type: 'pass' }];
-    } else if (step.key === 'boss') list = [battleChoice(run.bossByAct[run.act])];
+    }
     run.mapChoices[key] = clone(list);
     return clone(list);
   }
   function enter(run, choiceId) {
     if (run.screen !== 'map' || run.result) return no('当前不能进入新节点。');
-    var choice = choices(run).find(function (item) { return item.id === choiceId; });
+    var choice = choices(run).find(function (item) { return item.id === choiceId || item.id === 'chapter-boss' && choiceId === 'battle:' + item.encounterId; });
     if (!choice) return no('这个节点当前不可选。');
-    var room = clone(choice);
+    var room = clone(choice), entry = { choiceId: choiceId, encounterId: choice.encounterId || null };
     if (choice.encounterId) {
       var combat = combatOverride || getCombat();
       if (!combat || typeof combat.createBattle !== 'function') return no('战斗系统尚未准备好。');
@@ -195,11 +281,20 @@
         battle = combat.createBattle({ heroIds: run.heroIds.slice(), deck: clone(run.deck), encounterId: choice.encounterId,
           relics: run.relics.slice(), hp: clone(run.hp), seed: String(run.seed) + ':' + run.act + ':' + run.stage + ':' + choice.encounterId });
       } catch (error) { return no('无法开始战斗：' + error.message); }
+      if (choice.type === 'boss') room.name = C.encounters[choice.encounterId].name;
       run.battle = battle;
       run.screen = 'battle';
     } else if (choice.type === 'event') {
-      room.event = clone(C.events.find(function (item) { return item.id === choice.eventId; }));
-      if (run.eventsSeen.indexOf(choice.eventId) < 0) run.eventsSeen.push(choice.eventId);
+      var event = choice.eventId ? C.events.find(function (item) { return item.id === choice.eventId; }) : sample(run, eligibleEvents(run), 1)[0];
+      if (!event) return no('当前没有可遇见的奇遇。');
+      room.event = clone(event);
+      room.eventId = event.id;
+      if (run.layoutVersion === 2) {
+        room.name = event.name;
+        room.text = event.text;
+        entry.eventId = event.id;
+      }
+      if (run.eventsSeen.indexOf(event.id) < 0) run.eventsSeen.push(event.id);
       run.screen = 'event';
     } else if (choice.type === 'shop') {
       room.stock = { relics: sample(run, relicPool(run), 2), cards: sample(run, cardPool(run), 3) };
@@ -208,11 +303,12 @@
       run.screen = 'shop';
     } else if (choice.type === 'pass') {
       if (run.campDebt[run.act]) run.campDebt[run.act].status = 'spent';
+      if (run.layoutVersion === 2) record(run, 'enter', entry);
       record(run, 'skipService', { reason: 'springAdvance' }); completeNode(run); return ok('本幕营地已预支，继续前进。');
     } else run.screen = 'camp';
     run.room = room;
-    record(run, 'enter', { choiceId: choiceId, encounterId: choice.encounterId || null });
-    return ok('进入' + choice.name + '。');
+    record(run, 'enter', entry);
+    return ok('进入' + room.name + '。');
   }
   function completeNode(run) {
     run.stage += 1;
@@ -277,10 +373,9 @@
     }
     if (type === 'elite') run.stats.elites += 1;
     if (type === 'boss') run.stats.bosses += 1;
-    var shortEncounter = run.layoutVersion === 1 && currentStep(run).key === 'commander';
-    var gold = type === 'boss' ? 50 : type === 'elite' ? 35 : 20;
-    if (shortEncounter) gold = 10;
-    else if (run.layoutVersion === 1 && run.act === 2 && currentStep(run).key === 'challenge') gold -= 10;
+    var stepKey = currentStep(run)?.key;
+    var shortEncounter = hasExpandedLayout(run) && stepKey === 'commander';
+    var gold = battleGold(run, type, stepKey);
     run.gold += gold;
     // Surviving members retain the existing +2 (and combat's separate holy_cup).
     // Downed members recover exactly 25%, not 25% followed by that survivor heal.
@@ -330,41 +425,8 @@
     advanceReward(run);
     return ok(id ? reward.type === 'upgrade' ? '升级为' + name + '。' : '获得' + (C.cards[id] || C.relics[id]).name + '。' : reward.type === 'card' ? '跳过卡牌奖励，获得8金币。' : reward.type === 'upgrade' ? '跳过升级。' : '跳过遗物奖励。');
   }
-  function swapOptions(run, index) {
-    var reason = '', cards = [], reward = run && run.reward;
-    if (!run || run.screen !== 'reward' || !reward || reward.type !== 'card') reason = '当前没有卡牌奖励可换招。';
-    else if (run.layoutVersion !== 1 || (run.act !== 1 && run.act !== 2)) reason = '换招只在新版远征的第一、二幕开放。';
-    else if ((run.swapsByAct || {})[run.act]) reason = '本幕已经换招；每幕最多一次。';
-    else if (!Number.isInteger(index) || index < 0 || index >= reward.options.length || !C.cards[reward.options[index]]) reason = '请选择当前展示的一张奖励牌。';
-    else {
-      var owner = C.cards[reward.options[index]].owner;
-      if (run.heroIds.indexOf(owner) < 0) reason = '这张奖励牌不属于当前队伍。';
-      else cards = run.deck.filter(function (card) {
-        var def = C.cards[card.defId];
-        return def && def.owner === owner && def.starter && !card.branch && run.deck.filter(function (other) { return other.defId === card.defId; }).length >= 2;
-      }).map(clone);
-      if (!reason && !cards.length) reason = '该角色没有可替换的未升级起手副本；每种起手至少保留一张。';
-      if (!reason && run.gold < 40) reason = '换招需要40金币。';
-    }
-    return { enabled: !reason, reason: reason, cost: 40, cards: cards };
-  }
-  function swapReward(run, index, cardUid) {
-    var offer = swapOptions(run, index);
-    if (!offer.enabled) return no(offer.reason);
-    var old = offer.cards.find(function (card) { return card.uid === cardUid; });
-    if (!old) return no('请选择该角色可替换的未升级起手副本。');
-    var next = clone(run), id = next.reward.options[index], act = next.act;
-    next.gold -= 40;
-    next.deck.splice(next.deck.findIndex(function (card) { return card.uid === cardUid; }), 1);
-    var gained = addCard(next, id);
-    next.swapsByAct = next.swapsByAct || {}; next.swapsByAct[act] = true;
-    record(next, 'swapReward', { fromUid: old.uid, fromDefId: old.defId, toUid: gained.uid, toDefId: id, cost: 40 });
-    advanceReward(next);
-    Object.assign(run, next);
-    return ok('支付40金币，将' + C.cards[old.defId].name + '换为' + C.cards[id].name + '，牌组张数不变。');
-  }
   function echoChoices(run) {
-    if (!run || run.layoutVersion !== 1 || run.result !== 'won' || run.screen !== 'result' || run.echo) return [];
+    if (!hasExpandedLayout(run) || run.result !== 'won' || run.screen !== 'result' || run.echo) return [];
     var encountered = (run.history || []).filter(function (entry) { return entry.type === 'battle'; }).map(function (entry) { return entry.encounterId; });
     return C.acts.filter(function (act) { return act.id < 3; }).reduce(function (pool, act) { return pool.concat(act.bosses || [act.boss]); }, []).filter(function (id) { return encountered.indexOf(id) < 0; }).map(function (sourceId) {
       var source = C.encounters[sourceId], enc = C.encounters['echo_' + source.bossId];
@@ -549,6 +611,6 @@
   return { create: create, choices: choices, enter: enter, finishBattle: finishBattle, takeReward: takeReward,
     eventChoice: eventChoice, camp: camp, buy: buy, leaveShop: leaveShop, setCombat: setCombat, prices: clone(PRICES),
     normalize: normalize, publicBoss: publicBoss, relicAvailability: relicAvailability, eventAvailability: eventAvailability, eligibleEvents: eligibleEvents,
-    mapSteps: mapSteps, currentStep: currentStep, swapOptions: swapOptions, swapReward: swapReward,
+    mapSteps: mapSteps, currentStep: currentStep, routeMap: routeMap,
     echoChoices: echoChoices, startEcho: startEcho, exitEcho: exitEcho };
 });

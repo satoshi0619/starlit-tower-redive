@@ -303,6 +303,7 @@
   relic("spent_fuse", "余火引线", "本战前两张真正消耗的普通牌，在卡牌及反伤后本人仍活、战斗未结束时，对当前最低生命存活敌人造成3魔法附伤；同分靠前。不是主动攻击，不吃主动加成。", "barrier_prism", ["magic","exhaust"]);
   relics.spent_fuse.requires = ["exhaustCard"];
   relic("last_ember_locket", "余烬命锁", "每战全队首次承受敌方主动致命伤害段时，留1生命并清空该人TP；不防自付生命、毒、反伤，不复活。连击后续段仍可击倒。", "regen_seed", ["guard","tp"]);
+  relic('held_tactic', '留招书签', '每战一次：标记一张手牌，结束回合时保留这张牌，占用下一轮一个抽牌名额。\n可改选或取消。标记牌被打出、调度换掉或牌主倒地时取消，保留机会留待之后使用。', 'training_stamp', ['draw']);
   relics.last_ember_locket.requires = [];
   events.push({"id":"travelling_smith","name":"幻影练习场","acts":[1,2,3],"text":"自己的幻影重演着刚才的失误。可以请引导者安全练习，也能由练习者亲自承受代价，只精进她自己的招式；或者将沿途记录换成路费。","choices":[{"label":"安全练习一招","effect":"upgrade","cost":28,"description":"支付28金币；选择一张未升级实体及A/B分支。"},{"label":"亲自承受训练","effect":"upgrade","cost":10,"hpCost":{"scope":"upgradeOwner","amount":4},"description":"支付10金币；升级牌本人支付4生命，支付后至少剩1；选择一张未升级实体及A/B分支。"},{"label":"出售沿途记录","effect":"gold","amount":8,"description":"获得8金币。"},{"label":"离开","effect":"gold","amount":0,"description":"本次离开。"}]});
   events.push({"id":"field_infirmary","name":"临时救护所","acts":[1,2,3],"text":"药包足够处理全队轻伤，但医师不会免费提供。","choices":[{"label":"购买全队包扎","effect":"heal","amount":6,"cost":22,"description":"支付22金币；所有存活队友各回复6生命。"},{"label":"离开","effect":"gold","amount":0,"description":"本次离开。"}]});
@@ -339,8 +340,15 @@
   Object.keys(readableHeroes).forEach(function(id) { var copy=readableHeroes[id], h=heroes[id]; h.summary=copy.summary; h.passive=copy.passive; h.burst.text=copy.burst; });
   var readableRelics = {"guard_badge":["每轮首次加盾，额外给那人2点。","每轮第一个获得护盾的队员，再多获得2点本轮护盾。\n全队每轮只触发一次。"],"opening_shield":["开战时，佩可或前排先得4点护盾。","开战时，佩可获得4点护盾；没有存活的佩可则给最前面的存活队员。\n每战一次。"],"star_book":["每战首次牵星，多加1层星痕。","每战第一次使用“牵星”时，目标额外获得1层星痕。\n星痕仍最多3层。"],"ember_prism":["流星引爆后，为一名敌人补2层星痕。","每轮第一次用流星引爆星痕后，给主目标补上2层星痕；它已被击败则给最靠前的存活敌人。\n星痕最多3层，战斗结束不再补星。"],"starlight_ward":["星痕扣到生命时，为伤者补2点护盾。","每轮第一次由星痕实际扣除敌人生命后，生命比例最低的队员获得2点本轮护盾。\n伤害全被护盾或魔法屏障挡住时不触发。"],"battle_horn":["开战时，全队各加1TP。","开战时，每名存活队员获得1TP（必杀能量）。\nTP最多6，每战一次。"],"healing_bell":["每战首次有效治疗，多回复2点生命。","每战首次通过卡牌或必杀恢复生命时，同一人多回复2点。\n群体治疗仅强化第一个真正回血的人；满血不消耗机会。"],"hex_crystal":["每战首次施咒，咒痕延长1轮。","每战第一次施加咒痕时，该敌人的咒痕延长1轮。\n群体施咒也只强化第一个目标。"],"wolf_fang":["攻击带减益的敌人，物理伤害加2。","每轮首次单体物理攻击命中带减益的敌人时，这次伤害加2。\n连击只强化一次，群攻不触发。"],"witch_grimoire":["每轮首次单体魔法攻击加1伤害。","每轮第一次单体魔法攻击多造成1点伤害。\n不强化群攻、星痕或其他附加伤害。"],"counter_medal":["佩可的护盾反击从3伤害提高到5。","佩可用护盾触发的反击，由3点物理伤害提高到5点。\n仍每轮只能反击一次。"],"tactical_notes":["每战首次查看牌顶，多看1张。","每战首次用卡牌查看抽牌堆顶时，多查看1张。\n仍只选1张加入手牌，其余按原顺序放到牌堆底。"],"warm_scarf":["开战时，为伤势最重的队员回复3点。","开战时，生命比例最低的存活队员回复3点生命。\n不能超过生命上限，每战一次。"],"silver_arrow":["每轮首次单体打后排，加1伤害。","每轮首次用卡牌或必杀单体攻击后排时，这次伤害加1。\n群攻不触发。"],"holy_cup":["战斗获胜时，存活队员各回复2点。","每次战斗获胜，仍存活的队员各回复2点生命。\n倒地队员不会因此复起。"],"shield_etching":["消耗护盾重击，为另一名伤者补盾。","攻击牌实际消耗至少4点自身护盾后，为另一名生命比例最低的队员补盾：消耗4点给2点，消耗6点以上给3点。\n全队每轮一次；出牌者撑过反伤且战斗未结束才生效。"],"blood_receipt":["用牌累计付出3点生命，自己获得4盾。","同一队员本轮通过卡牌合计支付至少3点生命后，获得4点本轮护盾。\n全队每轮一次；出牌者撑过反伤且战斗未结束才生效。敌人的伤害不算支付。"],"concert_ribbon":["三人都出过牌，下轮前排获得2盾。","本轮三人都打过卡牌后，下一轮开始时给最前面的存活队员2点护盾。\n每轮只预约一次，战斗结束即取消；必杀不算。"],"crooked_compass":["免费调度改为至多2张选1张。","免费调度时，从所选角色的牌库随机展示至多2张，选择1张替换手牌。\n未选牌留原处，换出的牌沉底。仍每战只能调度一次，两张可能同名。"],"spent_fuse":["消耗牌追加3点魔法伤害，每战至多两次。","消耗牌打出后，若出牌者撑过反伤且战斗未结束，对当前生命最低的敌人追加3点魔法伤害；生命相同选靠前者。\n每战最多触发2次，不受鼓舞强化，也不引发反伤。"],"last_ember_locket":["抵挡一次致命攻击，留1生命但清空TP。","每战一次：队员将被敌人攻击击倒时，改为剩1点生命，并失去全部TP。\n毒、反伤和主动付生命不受保护；连击的后续伤害仍可能击倒她。"]};
   Object.keys(readableRelics).forEach(function(id) { relics[id].summary=readableRelics[id][0]; relics[id].text=readableRelics[id][1]; });
+  relics.held_tactic.summary = '每战保留一张手牌，占下轮一个抽牌名额。';
   var readableEncounters = {"tutorial_gate":"先试用三人的专属卡，再让她们逐一释放必杀。练习不消耗远征生命、金币或卡牌。","forest_patrol":"枪兵隔轮架盾，幼兽会逐轮变强。魔法与远程物理能先打后排；也可以破甲后集中解决枪兵。","forest_swarm":"三名敌人生命不高，但活着的每一名都会增加压力。群攻能同时削血，单体攻击也可以先减少敌人数。","forest_mirror":"开场有6点魔法屏障。迎击轮第一次受到攻击会反伤4点：先给出牌者护盾，或利用攻击牌附带的盾接住反伤。","forest_boss":"克莉丝提娜独自迎战：后排4伤、前排7伤、全队各4伤、获得4护盾，按四轮循环。单体减攻适合防重斩；群攻轮给全队护盾。","ruins_curse":"后排施咒者会给队员留下破绽，使下一次受击更痛。先打掉它、净化破绽，或为被标记的人加盾，都能降低风险。","ruins_watch":"前排魔法屏障只能吸收有限伤害；群攻术士不受单体减攻影响。可先减少敌人数，别让后排幼兽持续变强。","ruins_elite":"两名敌人交替重击和群攻。减攻只减少下一次单体攻击的第一次命中；保护不同目标时，全队护盾更灵活。","ruins_boss":"似似花独自迎战：追击伤者6伤、全队各3伤、后排4伤连击2次、获得4护盾。开场6魔盾用完不会重补，准备轮可整理手牌。","summit_duel":"前排穿重甲，后排弓手专挑伤者。近战可先破甲，魔法与远程物理则能先处理弓手。","summit_stars":"三名敌人交替攻击、群攻和施咒。前排魔法屏障用完就不再补充，群攻适合同时压低多名敌人的生命。","summit_elite":"重击、群攻和补充魔法屏障轮换出现。按预告选择减攻、全队护盾或进攻，准备轮可整理手牌与能量。","summit_boss":"重击、群攻、准备轮和后排连击循环出现。第七轮开始每次命中加2伤害，此后每三轮再加2；别让准备变成无限拖延。","paper_fubuki":"布武机独自迎战：前排4伤、后排2伤连射2次、全队各2伤、获得4护盾，按四轮循环。\n减攻只减少连射的第一次命中；第三轮用全队护盾，第四轮可蓄势或整理手牌。","paper_yamato":"第二轮先削去受击者至多2点护盾，再打5伤害；没有盾不会额外扣血。\n第四轮攻击最前的两名存活队员，各3伤害。用单体减攻防重击，用全队护盾防横扫。","paper_ranpha":"兰法独自迎战。咏唱让下一轮第一张普通攻击牌的主伤少2，必杀、星痕与附加效果不变。\n之后依次全队各2伤、后排6伤并留下下轮腐毒2、获得4护盾。腐毒在下轮敌人行动前结算，可用护盾吸收或净化。","paper_misora":"美空独自迎战：后排2伤连射2次、获得4护盾、后排2伤连射3次、追击伤者6伤。\n减攻只减少连击的第一次命中；第二轮装填不攻击，可准备护盾、指路和TP。","paper_kaiser":"前排9伤害、全队各4、获得6护盾休整、后排4伤害连射2次，按四轮循环。\n第七轮开始每次命中加2伤害，此后每三轮再加2。抓住第三轮准备，别忽略后排保护。"};
   Object.keys(readableEncounters).forEach(function(id) { encounters[id].description=readableEncounters[id]; });
+  encounters.forest_patrol.description = '枪兵隔轮架盾，突刺可被打断一次。后排幼兽会逐轮变强，魔法与远程物理能先打后排。';
+  encounters.forest_patrol.enemies[0].intentReaction = {
+    title: '突刺可打断',
+    text: '预告突刺时，出牌或必杀单段扣除枪兵至少5点生命，枪兵若存活就改为本轮停手。每战一次。',
+    minHpLoss: 5
+  };
   var readableEvents = {"lost_lunch":"路边有一篮仍温热的食物。可以分给受伤的伙伴，也能按便条送回主人，换一笔路费。","training_stone":"石碑映出伙伴们练习过的招式。挑一张准备继续使用的牌精进，或记录见闻换取路费。","lighten_pack":"行囊越来越重，想要的牌却不容易抽到。舍弃一张不需要的牌，或保留现有工具再带些路费。","guild_teacher":"休息中的冒险者愿意分享实战经验。可以学习同行伙伴的新技巧，也能交换沿途消息领取路费。","broken_charm":"石缝里的护符还亮着微光。花钱修好它能得到一件遗物；不修复就短暂休息，处理一点轻伤。","moon_spring":"泉边足够停留一小会儿。用来治疗队伍伤势，还是练好一张卡牌，为下一场战斗做准备？","travelling_smith":"塔中的镜面重演着伙伴刚才的失误。可以花28金币安全练习，也能花10金币，让练习的那位伙伴承受4生命代价。\n只选一项：升级一张牌、出售记录获得8金币，或直接离开。","field_infirmary":"临时救护所愿意为三人包扎。花22金币，让每名存活队员回复最多6点生命；满血者不会额外得到补偿。","pack_broker":"整理师能帮你舍弃一张牌，减少它挤进手牌的机会。付15金币整理，或保留牌组、卖掉杂物领取10金币。","damaged_reliquary":"匣中的遗物需要修复。付40金币稳妥处理，或付15金币，再让一名存活队员承受4点生命损失。\n付款后才展示可选遗物，也可以不修复直接离开。","night_watch_job":"有人需要守住营火。三人各失去3点生命，可以换来28金币；必须每人都能承担，不能让一人代付。","old_travel_notes":"旅行札记着队伍专属的新技巧。花12金币，从展示的奖励牌中选一张；也可出售记述，领取6金币。\n付学费后若放弃选牌，只拿原有的8金币跳牌奖励，净损4金币。","side_path_spring":"支路里有一眼清泉，能让每名存活队员立即回复6点生命。\n绕路会用掉本幕那次免费营地机会，之后仍可自费进商店；不愿付这个代价就离开。"};
   var readableChoices = {"lost_lunch":["每名存活队员回复最多4点生命。","获得24金币。"],"training_stone":["选择一张未升级的牌，再选择A或B分支。","获得18金币。"],"lighten_pack":["选择并移除一张牌；同名的另一张仍保留，牌组最低12张。","获得16金币。"],"guild_teacher":["从当前三名队员的奖励牌中三选一。","获得22金币。"],"broken_charm":["支付25金币，再从遗物中三选一。","每名存活队员回复最多2点生命。"],"moon_spring":["每名存活队员回复最多5点生命。","选择一张未升级的牌，再选择A或B分支。"],"travelling_smith":["支付28金币，升级一张未升级的牌；选择A或B分支。","支付10金币；要升级的那张牌属于谁，就由谁失去4点生命。她必须至少剩1点，再选择A或B分支。","获得8金币，不进行升级。","不付出、不领取，直接离开。"],"field_infirmary":["支付22金币，每名存活队员回复最多6点生命。","不购买，直接离开。"],"pack_broker":["支付15金币，移除选定的一张牌；同名另一张保留，牌组最低12张。","不删牌，获得10金币。","不付出、不领取，直接离开。"],"damaged_reliquary":["支付40金币，修复后从遗物中三选一。","支付15金币，再选择一名存活队员失去4点生命；她必须至少剩1点。修复后从遗物中三选一。","不修复，直接离开。"],"night_watch_job":["三名队员各失去3点生命，获得28金币；每人都必须至少剩1点生命。","不值守，直接离开。"],"old_travel_notes":["支付12金币，从本队奖励牌中三选一；若放弃选牌，只得到8金币，不退学费。","获得6金币，不选新牌。","不付出、不领取，直接离开。"],"side_path_spring":["每名存活队员回复最多6点生命；用掉本幕免费营地机会，之后仍可自费购物。","不绕路，不消耗营地机会。"]};
   events.forEach(function(e) { e.text=readableEvents[e.id]; e.choices.forEach(function(c,i) { c.description=readableChoices[e.id][i]; }); });
@@ -367,6 +375,53 @@
   }
   encounters.starlit_commander = commanderEncounter('starlit_commander', 2, 22, 12);
   encounters.starlit_core = commanderEncounter('starlit_core', 3, 26, 14);
+
+  // Branching expeditions use these elite encounters. Earlier routes still
+  // resolve the original elite IDs and their original cycles.
+  encounter('route_forest_elite', '镜誓双卫', 1, 'elite', '双卫每轮交换迎击和进攻职责。优先打正在进攻的一位，或先给出牌者护盾，再破迎击。', [
+    enemy('route_moon_guard', '月镜卫', 22, 'front', '◈', '#739ebd', [
+      guard('迎击：首次有效攻击反伤3', { counter: 3 }),
+      attack('月镜盾击', 5, 'front')
+    ], { armor: 1, art: 'assets/enemies/priconne/blue-golem.png' }),
+    enemy('route_sun_guard', '日镜卫', 18, 'front', '◇', '#ae916f', [
+      attack('日镜射击', 4, 'back'),
+      guard('迎击：首次有效攻击反伤3', { counter: 3 })
+    ], { barrier: 4, art: 'assets/enemies/priconne/golem.png' })
+  ]);
+  encounters.route_forest_elite.tacticalRule = {
+    title: '轮流迎击',
+    text: '迎击者本轮首次受到有效的主动攻击后反伤3。可以改打另一位，或先给出牌者护盾。'
+  };
+
+  encounter('route_ruins_elite', '共鸣法阵', 2, 'elite', '共鸣魔像为术士放大群攻。近战也可拆除魔像，使术士的基础群攻从每人4点降至2点。击败术士即可获胜。', [
+    enemy('route_ward_scribe', '缚阵术士', 43, 'front', '◉', '#a580bb', [
+      aoe('法阵共鸣', 4, { amountWithoutDevice: 2 }),
+      attack('聚能射击', 7, 'back'),
+      guard('回收余能：获得3护盾', { amount: 3 })
+    ], { barrier: 4, art: 'assets/enemies/priconne/fire-mage.png' }),
+    enemy('route_ward_lens', '共鸣魔像', 12, 'back', '◈', '#7fadc0', [
+      guard('共鸣：放大术士群攻')
+    ], { device: true, art: 'assets/enemies/priconne/blue-golem.png' })
+  ]);
+  encounters.route_ruins_elite.victoryCoreId = 'route_ward_scribe';
+  encounters.route_ruins_elite.objective = '击败缚阵术士即可获胜。';
+  encounters.route_ruins_elite.tacticalRule = {
+    title: '拆除共鸣源',
+    text: '共鸣魔像可被近战选中。拆除后，术士本轮及后续的基础群攻由每人4点降为2点。'
+  };
+
+  encounter('route_summit_elite', '星锤守塔者', 3, 'elite', '护甲强化轮适合准备或用魔法进攻。下一轮先削后排护盾再连击，随后施放群攻。', [
+    enemy('route_star_hammer', '星锤守塔者', 56, 'front', '♞', '#b085a5', [
+      guard('星甲蓄力：本轮护甲增加2', { armor: 2 }),
+      attack('拆盾连击：首段先削2护盾', 4, 'back', { hits: 2, stripBlock: 2 }),
+      aoe('星光震荡', 3)
+    ], { armor: 1, barrier: 3, art: 'assets/enemies/priconne/orc-leader.png' })
+  ]);
+  encounters.route_summit_elite.tacticalRule = {
+    title: '拆盾连击',
+    text: '连击首段先削实际受击者至多2点护盾，再结算伤害。减攻只影响首段，后排需为两段都留出保护。'
+  };
+
   // Every Boss faces the trio alone. The revision also upgrades active saved Boss battles.
   Object.keys(encounters).forEach(function (id) {
     if (encounters[id].type === 'boss') encounters[id].soloRevision = 1;
@@ -390,296 +445,132 @@
     enc.description = '可选单场回响：使用登顶牌组、升级与遗物，全员满血开始。胜负不改变主线通关，不发成长奖励。敌方意图以战斗内数值为准。';
     encounters[enc.id] = enc;
   });
-  // Standard v3.7 Boss challenge: tested public rhythms are snapshotted only
-  // on battle creation. Historical cycles, active saves and echoes stay intact.
-  var standardBossRhythms = {
-    "paper_fubuki": {
-      "threshold": 0.5,
-      "phases": [
-        {
-          "id": "armaments",
-          "name": "武装轮转",
-          "summary": "前排6 → 后排3×2 → 全队4 → 整理不攻击。",
-          "cycle": [
-            {
-              "name": "精密射击：前排6",
-              "type": "attack",
-              "amount": 6,
-              "target": "front"
-            },
-            {
-              "name": "武装连射：后排3×2",
-              "type": "attack",
-              "amount": 3,
-              "target": "back",
-              "hits": 2
-            },
-            {
-              "name": "武装齐射：全队4",
-              "type": "aoe",
-              "amount": 4
-            },
-            {
-              "name": "过热整理：本轮不攻击",
-              "type": "guard",
-              "amount": 0
-            }
-          ]
-        }
-      ],
-      "revision": 2,
-      "challengeVersion": "candidate-2",
-      "description": "独自迎战。前排6 → 后排3×2 → 全队4 → 整理不攻击。已预告的本轮行动保持不变。第7轮起每次命中加2伤，此后每3轮再加2。",
-      "legacyDescription": "布武机独自迎战：前排4伤、后排2伤连射2次、全队各2伤、获得4护盾，按四轮循环。\n减攻只减少连射的第一次命中；第三轮用全队护盾，第四轮可蓄势或整理手牌。"
-    },
-    "paper_christina": {
-      "threshold": 0.5,
-      "phases": [
-        {
-          "id": "duel",
-          "name": "试探决斗",
-          "summary": "后排5 → 前排11 → 全队4 → 整顿2盾。",
-          "cycle": [
-            {
-              "name": "远击：后排5",
-              "type": "attack",
-              "amount": 5,
-              "target": "back"
-            },
-            {
-              "name": "不败重斩：前排11",
-              "type": "attack",
-              "amount": 11,
-              "target": "front"
-            },
-            {
-              "name": "封印解放：全队4",
-              "type": "aoe",
-              "amount": 4
-            },
-            {
-              "name": "整顿架势：2护盾",
-              "type": "guard",
-              "amount": 2
-            }
-          ]
-        },
-        {
-          "id": "assault",
-          "name": "决斗追击",
-          "summary": "前排12 → 全队5 → 后排6 → 收势不攻击。",
-          "cycle": [
-            {
-              "name": "决斗重斩：前排12",
-              "type": "attack",
-              "amount": 12,
-              "target": "front"
-            },
-            {
-              "name": "封印解放：全队5",
-              "type": "aoe",
-              "amount": 5
-            },
-            {
-              "name": "追击：后排6",
-              "type": "attack",
-              "amount": 6,
-              "target": "back"
-            },
-            {
-              "name": "决斗收势：本轮不攻击",
-              "type": "guard",
-              "amount": 0
-            }
-          ]
-        }
-      ],
-      "revision": 2,
-      "challengeVersion": "candidate-2",
-      "description": "独自迎战。后排5 → 前排11 → 全队4 → 整顿2盾。生命不高于25时，下一轮进入「决斗追击」：前排12 → 全队5 → 后排6 → 收势不攻击。已预告的本轮行动保持不变。第7轮起每次命中加2伤，此后每3轮再加2。",
-      "legacyDescription": "克莉丝提娜独自迎战。后排4伤、前排7伤、全队各4伤、获得4护盾，按四轮循环。重斩用减攻或护盾应对，第三轮准备全队保护。"
-    },
-    "paper_ranpha": {
-      "threshold": 0.5,
-      "phases": [
-        {
-          "id": "song",
-          "name": "幽声咏唱",
-          "summary": "咏唱减2 → 全队5 → 后排9并留腐毒2 → 间奏。",
-          "cycle": [
-            {
-              "name": "幽声咏唱：下轮首张普通攻击主伤减2",
-              "type": "chant",
-              "amount": 2
-            },
-            {
-              "name": "幽声共鸣：全队5",
-              "type": "aoe",
-              "amount": 5
-            },
-            {
-              "name": "回响魔弹：后排9并留腐毒2",
-              "type": "attack",
-              "amount": 9,
-              "target": "back",
-              "poison": 2
-            },
-            {
-              "name": "回响间奏：本轮不攻击",
-              "type": "guard",
-              "amount": 0
-            }
-          ]
-        },
-        {
-          "id": "requiem",
-          "name": "终曲回响",
-          "summary": "后排10并留腐毒2 → 全队6 → 咏唱减2 → 间奏。",
-          "cycle": [
-            {
-              "name": "终曲魔弹：后排10并留腐毒2",
-              "type": "attack",
-              "amount": 10,
-              "target": "back",
-              "poison": 2
-            },
-            {
-              "name": "终曲共鸣：全队6",
-              "type": "aoe",
-              "amount": 6
-            },
-            {
-              "name": "幽声咏唱：下轮首张普通攻击主伤减2",
-              "type": "chant",
-              "amount": 2
-            },
-            {
-              "name": "回响间奏：本轮不攻击",
-              "type": "guard",
-              "amount": 0
-            }
-          ]
-        }
-      ],
-      "revision": 2,
-      "challengeVersion": "candidate-2",
-      "description": "独自迎战。咏唱减2 → 全队5 → 后排9并留腐毒2 → 间奏。生命不高于29时，下一轮进入「终曲回响」：后排10并留腐毒2 → 全队6 → 咏唱减2 → 间奏。已预告的本轮行动保持不变。第7轮起每次命中加2伤，此后每3轮再加2。",
-      "legacyDescription": "兰法独自迎战。咏唱让下一轮第一张普通攻击牌的主伤少2，必杀、星痕与附加效果不变。\n之后依次全队各2伤、后排6伤并留下下轮腐毒2、获得4护盾。腐毒在下轮敌人行动前结算，可用护盾吸收或净化。"
-    },
-    "paper_misora": {
-      "threshold": 0.5,
-      "phases": [
-        {
-          "id": "barrage",
-          "name": "猎手弹幕",
-          "summary": "后排3×2 → 追击伤者8 → 后排3×3 → 装填不攻击。",
-          "cycle": [
-            {
-              "name": "试探弹幕：后排3×2",
-              "type": "attack",
-              "amount": 3,
-              "target": "back",
-              "hits": 2
-            },
-            {
-              "name": "瞄准伤者：8伤",
-              "type": "attack",
-              "amount": 8,
-              "target": "lowest"
-            },
-            {
-              "name": "加特林齐射：后排3×3",
-              "type": "attack",
-              "amount": 3,
-              "target": "back",
-              "hits": 3
-            },
-            {
-              "name": "弹仓装填：本轮不攻击",
-              "type": "guard",
-              "amount": 0
-            }
-          ]
-        }
-      ],
-      "revision": 2,
-      "challengeVersion": "candidate-2",
-      "description": "独自迎战。后排3×2 → 追击伤者8 → 后排3×3 → 装填不攻击。已预告的本轮行动保持不变。第7轮起每次命中加2伤，此后每3轮再加2。",
-      "legacyDescription": "美空独自迎战：后排2伤连射2次、获得4护盾、后排2伤连射3次、追击伤者6伤。\n减攻只减少连击的第一次命中；第二轮装填不攻击，可准备护盾、指路和TP。"
-    },
-    "paper_kaiser": {
-      "threshold": 0.5,
-      "phases": [
-        {
-          "id": "dominion",
-          "name": "王权压迫",
-          "summary": "前排13 → 后排5×2 → 全队7 → 俯瞰不攻击。",
-          "cycle": [
-            {
-              "name": "王权重斩：前排13",
-              "type": "attack",
-              "amount": 13,
-              "target": "front"
-            },
-            {
-              "name": "两重裁决：后排5×2",
-              "type": "attack",
-              "amount": 5,
-              "target": "back",
-              "hits": 2
-            },
-            {
-              "name": "王权震荡：全队7",
-              "type": "aoe",
-              "amount": 7
-            },
-            {
-              "name": "俯瞰高塔：本轮不攻击",
-              "type": "guard",
-              "amount": 0
-            }
-          ]
-        },
-        {
-          "id": "judgment",
-          "name": "终焉裁决",
-          "summary": "全队7 → 后排6×2 → 前排15 → 收势不攻击。",
-          "cycle": [
-            {
-              "name": "终焉震荡：全队7",
-              "type": "aoe",
-              "amount": 7
-            },
-            {
-              "name": "终焉裁决：后排6×2",
-              "type": "attack",
-              "amount": 6,
-              "target": "back",
-              "hits": 2
-            },
-            {
-              "name": "终焉重斩：前排15",
-              "type": "attack",
-              "amount": 15,
-              "target": "front"
-            },
-            {
-              "name": "王权收势：本轮不攻击",
-              "type": "guard",
-              "amount": 0
-            }
-          ]
-        }
-      ],
-      "revision": 2,
-      "challengeVersion": "candidate-2",
-      "description": "独自迎战。前排13 → 后排5×2 → 全队7 → 俯瞰不攻击。生命不高于34时，下一轮进入「终焉裁决」：全队7 → 后排6×2 → 前排15 → 收势不攻击。已预告的本轮行动保持不变。第7轮起每次命中加2伤，此后每3轮再加2。",
-      "legacyDescription": "前排9伤害、全队各4、获得6护盾休整、后排4伤害连射2次，按四轮循环。\n第七轮开始每次命中加2伤害，此后每三轮再加2。抓住第三轮准备，别忽略后排保护。"
-    }
+  // Battle creation snapshots these phases. The old unit cycles still serve legacy saves.
+  function bossMove(intent, presentation, signature) {
+    return Object.assign(intent, { presentation: presentation, signature: signature === true });
+  }
+  function bossPhase(id, name, summary, cycle) {
+    return { id: id, name: name, summary: summary, cycle: cycle };
+  }
+  var bossRhythms = {
+    fubuki: [
+      bossPhase('armaments', '武装轮转', '前排6 → 后排3×2 → 全队4 → 整理。', [
+        bossMove(attack('精密射击', 6, 'front'), 'projectile'),
+        bossMove(attack('武装连射', 3, 'back', { hits: 2 }), 'volley'),
+        bossMove(aoe('武装齐射', 4), 'wave', true),
+        bossMove(guard('过热整理'), 'guard')
+      ]),
+      bossPhase('overdrive', '过热武装', '前排先削2盾再打6 → 后排4×2 → 前两名各4 → 冷却。', [
+        bossMove(attack('破盾炮击', 6, 'front', { stripBlock: 2 }), 'projectile'),
+        bossMove(attack('过热双射', 4, 'back', { hits: 2 }), 'volley'),
+        bossMove(aoe('扇形轰击', 4, { frontCount: 2 }), 'wave'),
+        bossMove(guard('排热冷却'), 'guard')
+      ])
+    ],
+    christina: [
+      bossPhase('duel', '试探决斗', '后排5 → 前排11 → 全队4 → 整顿2盾。', [
+        bossMove(attack('远击', 5, 'back'), 'projectile'),
+        bossMove(attack('不败重斩', 11, 'front'), 'slash'),
+        bossMove(aoe('封印解放', 4), 'wave', true),
+        bossMove(guard('整顿架势', { amount: 2 }), 'guard')
+      ]),
+      bossPhase('assault', '决斗追击', '前排先削2盾再打10 → 全队5 → 后排3×2 → 收势。', [
+        bossMove(attack('决斗重斩', 10, 'front', { stripBlock: 2 }), 'slash'),
+        bossMove(aoe('刃翼横扫', 5), 'wave'),
+        bossMove(attack('双刃追击', 3, 'back', { hits: 2 }), 'volley'),
+        bossMove(guard('决斗收势'), 'guard')
+      ])
+    ],
+    ranpha: [
+      bossPhase('song', '幽声咏唱', '咏唱让下轮首张普通攻击主伤减2 → 全队5 → 后排9并留腐毒2 → 间奏。', [
+        bossMove({ name: '幽声咏唱', type: 'chant', amount: 2 }, 'debuff'),
+        bossMove(aoe('幽声共鸣', 5), 'wave'),
+        bossMove(attack('回响魔弹', 9, 'back', { poison: 2 }), 'projectile'),
+        bossMove(guard('回响间奏'), 'guard')
+      ]),
+      bossPhase('requiem', '终曲回响', '生命比例最低者受10并留腐毒2 → 全队6 → 咏唱减2 → 间奏。', [
+        bossMove(attack('终曲蚀音', 10, 'lowest', { poison: 2 }), 'projectile'),
+        bossMove(aoe('终曲共鸣', 6), 'wave', true),
+        bossMove({ name: '幽声咏唱', type: 'chant', amount: 2 }, 'debuff'),
+        bossMove(guard('回响间奏'), 'guard')
+      ])
+    ],
+    misora: [
+      bossPhase('barrage', '猎手弹幕', '后排3×2 → 生命比例最低者受8 → 后排3×3 → 装填。', [
+        bossMove(attack('试探弹幕', 3, 'back', { hits: 2 }), 'volley'),
+        bossMove(attack('瞄准伤者', 8, 'lowest'), 'projectile'),
+        bossMove(attack('加特林齐射', 3, 'back', { hits: 3 }), 'volley', true),
+        bossMove(guard('弹仓装填'), 'guard')
+      ]),
+      bossPhase('lockdown', '猎手封锁', '生命比例最低者受4×2 → 前两名各4 → 后排7 → 装填。', [
+        bossMove(attack('锁定连发', 4, 'lowest', { hits: 2 }), 'volley'),
+        bossMove(aoe('扇面扫射', 4, { frontCount: 2 }), 'wave'),
+        bossMove(attack('穿隙追射', 7, 'back'), 'projectile'),
+        bossMove(guard('弹仓装填'), 'guard')
+      ])
+    ],
+    kaiser: [
+      bossPhase('dominion', '王权压迫', '前排13 → 后排5×2 → 全队7 → 俯瞰。', [
+        bossMove(attack('王权重斩', 13, 'front'), 'slash'),
+        bossMove(attack('两重裁决', 5, 'back', { hits: 2 }), 'volley'),
+        bossMove(aoe('王权震荡', 7), 'wave'),
+        bossMove(guard('俯瞰高塔'), 'guard')
+      ]),
+      bossPhase('judgment', '终焉裁决', '全队7 → 后排6×2 → 前排先削2盾再打13 → 收势。', [
+        bossMove(aoe('终焉震荡', 7), 'wave'),
+        bossMove(attack('终焉裁决', 6, 'back', { hits: 2 }), 'volley', true),
+        bossMove(attack('终焉重斩', 13, 'front', { stripBlock: 2 }), 'slash'),
+        bossMove(guard('王权收势'), 'guard')
+      ])
+    ]
   };
-  Object.keys(standardBossRhythms).forEach(function (id) {
-    encounters[id].bossRhythm = standardBossRhythms[id];
-    encounters[id].description = standardBossRhythms[id].description;
+  // Echoes keep their opening cycles and actual trial HP. Ranpha's second
+  // phase uses lighter amounts to match her echo opening damage budget.
+  var echoOpenings = {
+    fubuki: bossPhase('armaments', '武装轮转', '前排5 → 后排3×2 → 全队3 → 整理4盾。', [
+      bossMove(attack('精密射击', 5, 'front'), 'projectile'),
+      bossMove(attack('武装连射', 3, 'back', { hits: 2 }), 'volley'),
+      bossMove(aoe('武装齐射', 3), 'wave', true),
+      bossMove(guard('过热整理', { amount: 4 }), 'guard')
+    ]),
+    christina: bossPhase('duel', '试探决斗', '后排5 → 前排8 → 全队5 → 整顿4盾。', [
+      bossMove(attack('远击', 5, 'back'), 'projectile'),
+      bossMove(attack('不败重斩', 8, 'front'), 'slash'),
+      bossMove(aoe('封印解放', 5), 'wave', true),
+      bossMove(guard('整顿架势', { amount: 4 }), 'guard')
+    ]),
+    ranpha: bossPhase('song', '幽声咏唱', '咏唱让下轮首张普通攻击主伤减2 → 全队3 → 后排7并留腐毒2 → 间奏4盾。', [
+      bossMove({ name: '幽声咏唱', type: 'chant', amount: 2 }, 'debuff'),
+      bossMove(aoe('幽声共鸣', 3), 'wave'),
+      bossMove(attack('回响魔弹', 7, 'back', { poison: 2 }), 'projectile'),
+      bossMove(guard('回响间奏', { amount: 4 }), 'guard')
+    ]),
+    misora: bossPhase('barrage', '猎手弹幕', '后排3×2 → 装填4盾 → 后排3×3 → 生命比例最低者受7。', [
+      bossMove(attack('试探弹幕', 3, 'back', { hits: 2 }), 'volley'),
+      bossMove(guard('弹仓装填', { amount: 4 }), 'guard'),
+      bossMove(attack('加特林齐射', 3, 'back', { hits: 3 }), 'volley', true),
+      bossMove(attack('瞄准伤者', 7, 'lowest'), 'projectile')
+    ])
+  };
+  var ranphaEchoSecond = bossPhase('requiem', '终曲回响', '生命比例最低者受8并留腐毒2 → 全队4 → 咏唱减2 → 间奏。', [
+    bossMove(attack('终曲蚀音', 8, 'lowest', { poison: 2 }), 'projectile'),
+    bossMove(aoe('终曲共鸣', 4), 'wave', true),
+    bossMove({ name: '幽声咏唱', type: 'chant', amount: 2 }, 'debuff'),
+    bossMove(guard('回响间奏'), 'guard')
+  ]);
+  function setBossRhythm(enc, phases) {
+    var threshold = 0.5, thresholdHp = Math.floor(enc.enemies[0].hp * threshold);
+    var description = phases[0].summary + '生命不高于' + thresholdHp + '时，下轮进入「' + phases[1].name + '」。' +
+      phases[1].summary + '已预告的本轮行动保持不变。';
+    enc.bossRhythm = { revision: 3, threshold: threshold, phases: phases, description: description, legacyDescription: enc.description };
+    if (!enc.echo) enc.description = description;
+  }
+  Object.keys(bossRhythms).forEach(function (bossId) {
+    var phases = bossRhythms[bossId];
+    setBossRhythm(encounters['paper_' + bossId], phases);
+    if (echoOpenings[bossId]) setBossRhythm(encounters['echo_' + bossId], [
+      echoOpenings[bossId], bossId === 'ranpha' ? ranphaEchoSecond : phases[1]
+    ]);
   });
   return { version: 'local-2026-10-23-v3.7', heroes: heroes, cards: cards, relics: relics, encounters: encounters, events: events, acts: acts, teams: teams, release: release };
 });

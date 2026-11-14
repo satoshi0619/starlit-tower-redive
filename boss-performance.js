@@ -16,6 +16,49 @@
     misora: { color: '#8c486e', accent: '#ffb8dc', motif: 'mirrors' },
     kaiser: { color: '#8d243c', accent: '#f6c4b2', motif: 'throne' }
   };
+  function isCoreHit(event, coreUid) {
+    return event.type === 'hit' && event.source === coreUid && event.sourceKind === 'enemy';
+  }
+  function isShowcaseMove(intent) {
+    return intent && (intent.type === 'aoe' || (intent.type === 'attack' && intent.hits > 1));
+  }
+  function phaseOpening(before, events) {
+    var rhythm = before?.bossRhythm;
+    if (before?.status !== 'active' || rhythm?.phaseIndex !== 1 || !before.bossCoreUid) return null;
+    var unitId = before.bossCoreUid;
+    var core = before.enemies.find(function (unit) { return unit.uid === unitId; });
+    var bossId = core?.id;
+    if (!core || core.hp <= 0 || !Object.hasOwn(profiles, bossId)) return null;
+    if (!events.some(function (event) { return isCoreHit(event, unitId); })) return null;
+
+    // Read the saved combat history so refreshes, previews, and a new move
+    // after an old save cannot repeat the opening attack of this phase.
+    var history = before.events || [];
+    for (var i = history.length - 1; i >= 0; i--) {
+      var event = history[i];
+      if (isCoreHit(event, unitId)) return null;
+      if (event.type === 'bossPhase' && event.source === unitId && event.amount === 1) {
+        return { bossId: bossId, unitId: unitId, skillName: core.intent.name.split(/[：:]/)[0] };
+      }
+    }
+    return null;
+  }
+  function hadCutin(b, core) {
+    // Old saves describe each round in their own snapshotted cycles. Use the
+    // cycle only for old hit records that do not carry a Boss move marker.
+    var phase = 0, started = 1, round = 1, recordedMove = false;
+    return (b.events || []).some(function (event) {
+      if (event.type === 'bossPhase') { phase = event.amount; started = event.round; }
+      if (event.type === 'round') { round = event.amount; recordedMove = false; }
+      if (event.type === 'bossMove' && event.source === core.uid) {
+        recordedMove = true;
+        return event.signature === true;
+      }
+      if (recordedMove || !isCoreHit(event, core.uid)) return false;
+      var cycle = b.bossRhythm?.phases?.[phase]?.cycle || core.cycle;
+      return !!cycle?.length && isShowcaseMove(cycle[(round - started) % cycle.length]);
+    });
+  }
   function plan(options) {
     options = options || {};
     var b = options.before, events = options.events || [], cast = options.cast || global.TowerEncounterCast || {};
@@ -23,19 +66,22 @@
     var core = (b.enemies || []).find(function (e) { return e.uid === b.bossCoreUid; });
     if (!core || !(core.hp > 0)) return null;
     var intent = core.intent || {}, multi = intent.type === 'attack' && Number(intent.hits || 1) > 1;
-    if (intent.type !== 'aoe' && !multi) return null;
+    var move = events.find(function (e) { return e.type === 'bossMove' && e.source === core.uid; });
+    if (move ? move.signature !== true : !isShowcaseMove(intent)) return null;
+    if (hadCutin(b, core)) return null;
     var friends = new Set((b.party || []).filter(function (u) { return u.hp > 0; }).map(function (u) { return u.uid || u.id; }));
-    var hits = events.filter(function (e) { return e.type === 'hit' && e.source === core.uid && e.sourceKind === 'enemy' && friends.has(e.target); });
+    var hits = events.filter(function (e) { return isCoreHit(e, core.uid) && friends.has(e.target); });
     // An intent is only a forecast. A genuine core-enemy hit must exist after
     // resolution; stars, reflect damage, guards and a dead core cannot invent it.
     if (!hits.length) return null;
-    var entry = cast.bosses && cast.bosses[b.encounterId] || cast.enemies && cast.enemies[core.id] || cast;
+    var encounterId = String(b.encounterId || '').replace(/^echo_/, 'paper_');
+    var entry = cast.bosses && cast.bosses[encounterId] || cast.enemies && cast.enemies[core.id] || cast;
     var profile = profiles[entry.id];
     if (!profile || typeof entry.art !== 'string' || !entry.art) return null;
     return {
       key: [b.encounterId, b.round, core.uid, intent.type, intent.name].join(':'),
       bossId: entry.id, unitId: core.uid, round: b.round, encounterId: b.encounterId,
-      name: entry.displayName || core.name, art: entry.art, skillName: (entry.ub && intent.name ? intent.name.split(/[：:]/)[0] : intent.name) || (multi ? '连续攻击' : '群体攻击'),
+      name: entry.displayName || core.name, art: entry.art, skillName: (intent.name || '').split(/[：:]/)[0] || (multi ? '连续攻击' : '群体攻击'),
       intentType: intent.type, hitCount: hits.length, firstHitIndex: events.indexOf(hits[0]), targetIds: Array.from(new Set(hits.map(function (e) { return e.target; }))),
       intendedHits: multi ? Number(intent.hits) : null, color: profile.color, accent: profile.accent, motif: profile.motif,
       durationMs: 1400, presentationKind: entry.ub && entry.ub.video ? 'source-short-cutin' : 'original-code-cutin', ub: entry.ub || null
@@ -192,5 +238,5 @@
     else begin();
     return result;
   }
-  return { plan: plan, play: play };
+  return { plan: plan, play: play, phaseOpening: phaseOpening };
 });

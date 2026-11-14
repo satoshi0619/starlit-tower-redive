@@ -170,6 +170,7 @@
           b.downedPile.push(card); removed.push(card.uid); return false;
         });
       });
+      if (removed.includes(b.heldCardUid)) delete b.heldCardUid;
       if (b.pending && b.pending.type === 'guide') {
         b.pending.cards = b.pending.cards.filter(function (card) {
           if (definition(card).owner !== h.id) return true;
@@ -192,12 +193,12 @@
     if (b.status !== 'active') return true;
     suspendDowned(b);
     if (!b.party.some(alive)) {
-      b.status = 'lost'; b.pending = null;
+      b.status = 'lost'; b.pending = null; delete b.heldCardUid;
       log(b, '全队倒地，本次远征失败。'); event(b, 'lost'); return true;
     }
     refreshIntents(b);
     if (!b.enemies.some(alive) || (b.bossCoreUid && !alive(enemy(b, b.bossCoreUid)))) {
-      b.status = 'won'; b.pending = null;
+      b.status = 'won'; b.pending = null; delete b.heldCardUid;
       if (relic(b, 'holy_cup') && !b.battleFlags.holyCup) {
         b.battleFlags.holyCup = true; b.party.forEach(function (h) { heal(b, h, 2, 'holy_cup', false); });
       }
@@ -226,6 +227,20 @@
     });
   }
   function negative(e) { return !!(e.breakAmount || e.weak || e.curseExpires > 0 || e.stars > 0); }
+  function intentReactionView(e) {
+    var trait = e.intentReaction;
+    if (!trait) return null;
+    var state = e.intent?.interrupted ? 'changed' : e.intentInterrupted ? 'used' : e.intent?.type === 'attack' ? 'ready' : 'waiting';
+    return { title: trait.title, text: trait.text, state: state };
+  }
+  function interruptIntent(b, e, dealt) {
+    if (!alive(e) || !e.intentReaction || e.intentInterrupted || e.intent?.type !== 'attack' || dealt < e.intentReaction.minHpLoss) return;
+    var from = e.intent.name, to = '踉跄：本轮停手';
+    e.intentInterrupted = true;
+    e.intent = { name: to, type: 'guard', amount: 0, baseAmount: 0, lockedTargetUid: null, interrupted: true };
+    event(b, 'intentChange', e.uid, null, 0, { from: from, to: to });
+    log(b, e.name + '的「' + from + '」被打断，本轮停手。');
+  }
   function hit(b, owner, e, amount, damageType, ctx, opts) {
     if (!alive(e) || b.status !== 'active') return 0;
     opts = opts || {}; var n = amount, active = ctx.active === true, armorIgnored = 0;
@@ -261,6 +276,7 @@
       e.flags.reflected = true;
       if (!ctx.reactions.some(function (x) { return x.enemy === e.uid; })) ctx.reactions.push({ enemy: e.uid, target: owner, amount: e.intent.reflect });
     }
+    if (active) interruptIntent(b, e, dealt);
     if (dealt > 0 && ctx.kind === 'star' && relic(b, 'starlight_ward') && !b.flags.starlightWard) {
       b.flags.starlightWard = true; block(b, lowest(b), 2, 'starlight_ward');
     }
@@ -508,6 +524,7 @@
     var previous = b.previousPaidOwner;
     var ctx = { active: true, all: d.target === 'allEnemies', kind: 'card', defId: card.defId, cardUid: card.uid, reactions: [], buffUsed: false, cost: d.cost, tags: d.tags, previousPaidOwner: previous, nozomiBuff: d.nozomiBuff || 2, paidHp: 0, spentBlock: 0 };
     b.hand.splice(index, 1); b.energy -= d.cost;
+    if (b.heldCardUid === cardUid) delete b.heldCardUid;
     if (d.cost > 0) {
       tp(b, h, 1);
       if (b.party.some(function (friend) { return friend.id === 'monika' && alive(friend); }) && previous && previous !== h.uid && !b.flags.monika) { b.flags.monika = true; block(b, h, 3, 'monika'); }
@@ -567,6 +584,7 @@
     }
     var pick = pool[Math.floor(rand(b) * pool.length)], old = b.hand[index];
     b.drawPile.splice(pick.index, 1); b.hand[index] = pick.card; b.drawPile.push(old); b.redrawUsed = true;
+    if (b.heldCardUid === cardUid) delete b.heldCardUid;
     event(b, 'redraw', heroId, null, 1); log(b, '调度：取得' + definition(pick.card).name + '，原牌置底。'); return result(true, '调度完成。');
   }
   function chooseRedraw(b, cardUid) {
@@ -577,6 +595,7 @@
     if (hi < 0 || di < 0 || !alive(hero(b, pending.owner))) return result(false, '调度候选已不可用。');
     var chosen = b.drawPile[di], old = b.hand[hi];
     b.drawPile.splice(di, 1); b.hand[hi] = chosen; b.drawPile.push(old); b.pending = null;
+    if (b.heldCardUid === old.uid) delete b.heldCardUid;
     event(b, 'redraw', pending.owner, null, 1, { card: chosen.uid, oldUid: old.uid, shown: pending.cardUids.slice(), relicId: 'crooked_compass' });
     return result(true, '调度完成，其余候选留在原牌库位置。');
   }
@@ -627,7 +646,19 @@
     }
     return next;
   }
+  function snapshotBossRhythm(b, rhythm) {
+    b.bossRhythm = Object.assign(clone(rhythm), { phaseIndex: 0, startedRound: 1 });
+  }
   function advanceBossRhythm(b) {
+    // Finish the already announced turn before upgrading an ongoing echo.
+    if (!b.bossRhythm && b.bossSoloRevision) {
+      var encounter = C.encounters[b.encounterId];
+      var echoCore = b.enemies[0];
+      if (encounter?.echo && encounter.bossRhythm && b.enemies.length === 1 &&
+          echoCore.uid === b.bossCoreUid && echoCore.id === encounter.enemies[0].id) {
+        snapshotBossRhythm(b, encounter.bossRhythm);
+      }
+    }
     var state = b.bossRhythm, core = state && enemy(b, b.bossCoreUid);
     if (!state || state.phaseIndex !== 0 || !state.phases || !state.phases[1] || !alive(core) || core.hp > core.maxHp * state.threshold) return;
     state.phaseIndex = 1; state.startedRound = b.round;
@@ -680,7 +711,26 @@
       b.nextConcertRound = 0; var front = b.party.find(alive);
       if (front) { block(b, front, 2, 'concert_ribbon'); relicEvent(b, 'concert_ribbon', front.uid, 2, { delivered: true }); }
     }
-    draw(b, 5 - Math.min(2, clog)); advanceBossRhythm(b); prepare(b); event(b, 'round', null, null, b.round); log(b, '第' + b.round + '轮，' + b.energy + '行动点。');
+    draw(b, 5 - Math.min(2, clog) - b.hand.length); advanceBossRhythm(b); prepare(b); event(b, 'round', null, null, b.round); log(b, '第' + b.round + '轮，' + b.energy + '行动点。');
+  }
+  function holdView(b) {
+    if (!b?.relics?.includes('held_tactic')) return null;
+    var marked = b.hand.find(function (card) { return card.uid === b.heldCardUid && alive(hero(b, definition(card).owner)); });
+    var state = b.battleFlags?.heldCardUsed ? 'used' : marked ? 'marked' : 'ready';
+    return { state: state, cardUid: marked?.uid || null, cardName: marked ? definition(marked).name : null,
+      disabled: state === 'used' || b.status !== 'active' || !!b.pending || !b.hand.length };
+  }
+  function holdCard(b, cardUid) {
+    var view = holdView(b);
+    if (!view || view.disabled) return result(false, '当前无法留招。');
+    if ((cardUid === null || view.cardUid === cardUid) && view.state === 'marked') {
+      delete b.heldCardUid;
+      return result(true, '已取消留招。');
+    }
+    var card = b.hand.find(function (item) { return item.uid === cardUid; });
+    if (!card || !alive(hero(b, definition(card).owner))) return result(false, '请选择存活队员的一张手牌。');
+    b.heldCardUid = cardUid;
+    return result(true, '已标记「' + definition(card).name + '」，下轮保留。');
   }
   function hasReserveDamage(b) {
     if (!b) return false;
@@ -737,6 +787,14 @@
     for (var i = 0; i < acting.length && b.status === 'active'; i++) {
       var e = acting[i]; if (!alive(e)) continue;
       var intent = e.intent;
+      if (e.uid === b.bossCoreUid && intent.presentation) {
+        var target = intent.type === 'attack' || intent.type === 'curse' ? resolveIntentTarget(b, e) : null;
+        event(b, 'bossMove', e.uid, e.uid, 0, {
+          name: intent.name, moveType: intent.type, hits: intent.hits || 1,
+          signature: intent.signature === true, presentation: intent.presentation, round: b.round,
+          targetUid: target ? target.uid : null
+        });
+      }
       if (intent.type === 'attack') {
         refreshIntents(b);
         for (var k = 0; k < (intent.hits || 1) && b.status === 'active' && alive(e); k++) {
@@ -767,7 +825,15 @@
       if (e.breakLayers) { e.breakLayers = e.breakLayers.filter(function (layer) { return layer.expires > b.round; }); e.breakAmount = 0; e.breakExpires = 0; syncBreak(e, b.round + 1); }
       if (e.curseExpires <= b.round) { e.curseExpires = 0; e.curseUsedRound = 0; }
     });
-    b.discardPile.push.apply(b.discardPile, b.hand.splice(0)); b.round++; beginTurn(b, false);
+    var hold = holdView(b), kept = hold?.state === 'marked' ? b.hand.splice(b.hand.findIndex(function (card) { return card.uid === hold.cardUid; }), 1)[0] : null;
+    b.discardPile.push.apply(b.discardPile, b.hand.splice(0));
+    delete b.heldCardUid;
+    if (kept) {
+      b.hand.push(kept); b.battleFlags.heldCardUsed = true;
+      relicEvent(b, 'held_tactic', definition(kept).owner, 1, { card: kept.uid });
+      log(b, '留招书签保留了「' + hold.cardName + '」。');
+    }
+    b.round++; beginTurn(b, false);
     return result(true, '下一轮。');
   }
   function createBattle(options) {
@@ -791,9 +857,7 @@
       b.bossCoreUid = core.uid;
     } else if (encounter.type === 'boss') b.bossCoreUid = b.enemies[0].uid;
     if (encounter.type === 'boss' && encounter.soloRevision > 0 && encounter.enemies.length === 1) b.bossSoloRevision = encounter.soloRevision;
-    // Opt in only at creation. A legacy active battle must not acquire a new
-    // phase, re-lock its current intent, or replay any turn-start effects.
-    if (encounter.bossRhythm) b.bossRhythm = Object.assign(clone(encounter.bossRhythm), { phaseIndex: 0, startedRound: 1 });
+    if (encounter.bossRhythm) snapshotBossRhythm(b, encounter.bossRhythm);
     if (options.shuffle !== false) shuffle(b, b.drawPile);
     if (!checkEnd(b)) beginTurn(b, true);
     return b;
@@ -844,6 +908,7 @@
     };
   }
   return { createBattle: createBattle, play: play, chooseGuide: chooseGuide, burst: burst, endTurn: endTurn, redraw: redraw, reserveEnergy: reserveEnergy, hasReserveDamage: hasReserveDamage,
+    holdCard: holdCard, holdView: holdView, intentReactionView: intentReactionView,
     chooseRedraw: chooseRedraw, chooseRecoverTop: chooseRecoverTop, chooseRecovery: chooseRecoverTop,
     previewRedraw: function (b, uid) { return previewKnownChoice(b, uid, chooseRedraw); },
     previewRecoverTop: function (b, uid) { return previewKnownChoice(b, uid, chooseRecoverTop); }, normalizeBattle: normalizeBattle,

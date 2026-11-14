@@ -82,9 +82,6 @@ input,select,.seed-field input,.target-panel select,select#redraw-hero{color:var
 .merchant-dialogue h3{color:#9b6178}.merchant-dialogue p,.merchant-line{color:#5d7189}.merchant-dialogue .eyebrow{color:#7e704e}
 .reward-mark,.result .result-icon{color:#c18d43;text-shadow:0 3px 0 #fff4d5}
 .relic-card p,.relic-reward .rule-copy{color:#5d7187}.result-stats strong{color:#987244}
-.reward-take-note,.swap-reason,.swap-budget,.swap-comparison>div>p{color:#637b90}
-.swap-button{background:#fff6e7;border-color:#ddc399;color:#8b602e}.swap-budget,.swap-preview{background:#fffdf6;border-color:#e2cfaa;border-radius:12px}
-.swap-preview strong,.swap-budget strong,.swap-comparison>span{color:#8f672f}
 .echo-section,.echo-result{background:linear-gradient(135deg,#f8efff,#f5fbff);border-color:#d6c6e8;border-radius:22px}
 .echo-choice{background:#ffffffd9;border-color:#d0c4e5;border-radius:16px}.echo-choice strong{color:#6c5986}.echo-choice small{color:#716288}.echo-choice>span>span{color:#926533}.echo-result p{color:#61718a}
 

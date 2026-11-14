@@ -1,7 +1,7 @@
 # Original Princess Connect BGM
 
-This directory contains nine original game BGM recordings in AAC/M4A, mapped to
-sixteen scene keys. The existing generic MP3 music in the parent audio directory
+This directory contains eleven original game BGM recordings in AAC/M4A, mapped to
+nineteen scene keys. The existing generic MP3 music in the parent audio directory
 has not been overwritten.
 
 Load `manifest.js` as a normal script, then read:
@@ -23,18 +23,19 @@ track.verified;
 
 The available keys are `title`, `map`, `battle`, `elite`, `boss_act1`, `boss_act2`,
 `boss_act3`, `boss`, `camp`, `rest`, `shop`, `event`, `chest`, `reward`, `victory`,
-and `defeat`. `recordings` lists the nine unique files without repeated modes.
+and `defeat`, plus `boss_phase_christina`, `boss_phase_ranpha` and `boss_phase_kaiser`.
+`recordings` lists the eleven unique files without repeated modes.
 
 ## Loop behavior
 
 The files contain the original source waveform once, including its intro; loops
-are not baked into several repetitions. The eight looping tracks have native HCA
+are not baked into several repetitions. The ten looping tracks have native HCA
 loop points measured in samples. Keep the first playback at time 0, then jump from
 the native loop end to native loop start for subsequent repeats. A plain HTML
 `audio.loop=true` instead repeats the intro too. Browser `timeupdate` callbacks are
 not sample-accurate, so native points are metadata for the player and do not alone
 prove seamless audible looping. The victory jingle has `loop:false` and null
-start/end points.
+start/end points. Phase-two cues start at the native loop entry at normal speed.
 
 ## Provenance
 
