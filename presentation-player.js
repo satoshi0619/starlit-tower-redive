@@ -16,6 +16,7 @@
     var video = options.video || null;
     if (video && owners.has(video)) owners.get(video).cancel();
     var paths = Array.isArray(options.audioPaths) ? options.audioPaths.slice() : options.audioPaths ? [options.audioPaths] : [];
+    var lease = root?.TowerMediaPreload?.reserve([options.fullVideo ? options.videoSrc : null].concat(paths));
     var tracks = [], audioTracks = [], audioIndex = -1, videoDone = !options.fullVideo, audioDone = paths.length === 0;
     var videoNotified = false;
     var complete = false, reason = null, errors = [], phase = 'loading';
@@ -59,6 +60,7 @@
       tracks.forEach(detach);
       if (why === 'skipped' || why === 'cancelled') tracks.forEach(function (track) { if (!track.done) pause(track); track.done = true; });
       if (video && owners.get(video) === controller) owners.delete(video);
+      lease?.release();
       state('complete', null, why === 'error' ? '部分演出资源播放失败。' : '');
       callback('onComplete', why);
     }
@@ -118,7 +120,7 @@
       }
       try {
         configure(track);
-        if (!track.prepared) track.media.src = track.path;
+        if (!track.prepared) track.media.src = lease?.resolve(track.path) || track.path;
         if (complete || track.done) return;
         var request = track.media.play();
         if (request && typeof request.then === 'function') {
@@ -149,7 +151,7 @@
       // the serial nextAudio() gate remains the only place that starts a voice.
       if (media && typeof path === 'string' && path.trim()) {
         try {
-          media.preload = 'auto'; configure(track); media.src = path;
+          media.preload = 'auto'; configure(track); media.src = lease?.resolve(path) || path;
           if (typeof media.load === 'function') media.load();
           track.prepared = true;
         } catch (error) { track.prepareError = error; }

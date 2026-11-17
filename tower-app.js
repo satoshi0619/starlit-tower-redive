@@ -19,7 +19,7 @@
   if (!C || !E || !R) { $('app').innerHTML='<div class="page"><h2>游戏文件尚未加载完整</h2><p>请确认 content.js、combat-engine.js、tower-run.js 与入口放在同一文件夹。</p></div>'; return; }
   const heroes = Object.values(C.heroes), definitions = Object.values(C.cards);
   const heroArt = h => h.art || h.portrait;
-  const heroIcon = h => window.TowerEncounterCast?.avatars?.[h.id]?.icon || heroArt(h);
+  const heroIcon = h => window.TowerRosterArt?.[h.id]?.icon || window.TowerEncounterCast?.avatars?.[h.id]?.icon || heroArt(h);
   const clone = value => JSON.parse(JSON.stringify(value));
   const visibleHand = () => window.TowerHandOrder.sort(battle()?.hand||[],run?.heroIds||[],C.cards);
   const teaching = () => T?.active(run);
@@ -28,7 +28,7 @@
   const enemyNames={ 'Goblin Guard':'哥布林护卫','Kobold':'狗头人','Gellatina':'软泥怪','Wood Soul':'木灵','Golem':'魔像','Blue Golem':'蓝魔像','Fire Mage':'火焰法师','Werewolf':'狼人','Flaming Skulls':'火焰骷髅','Lizardman':'蜥蜴人','Sea Drake':'希德雷克','Orc Leader':'兽人首领' };
   function applyEnemyArt(unit){const cast=window.TowerEncounterCast?.enemies?.[unit.id];if(cast){unit.art=cast.art;unit.name=cast.displayName;unit.originalName=cast.originalName||cast.displayName;unit.isBoss=true;unit.castColor=cast.accent||cast.color;return unit;}const m=window.TowerEnemyMedia?.enemies?.[unit.id];if(m){unit.art=m.art;unit.combatRoleName??=unit.name;unit.name=unit.device?'封印魔像':enemyNames[m.originalName]||m.indexName||m.originalName;unit.originalName=m.originalName;}return unit;}
   // Keep changed standing art fresh for returning online players.
-  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.17.0';});
+  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.19.0';});
   Object.values(C.encounters).forEach(enc=>enc.enemies.forEach(applyEnemyArt));
   const battle = () => run?.battle;
   const inEcho = () => run?.echo?.status==='active';
@@ -92,6 +92,77 @@
     if(!controller.getState().completed)voiceController=controller;return controller;
   }
   function hpBar(hp,max,id=null){return `<div class="hp-track ${hp/max<.35?'low':''}" ${id?`data-hp-unit="${esc(id)}"`:''}><i style="width:${Math.max(0,Math.min(100,hp/max*100))}%"></i>${id?'<span class="hp-forecast" aria-hidden="true"></span>':''}</div>`;}
+
+  const preload = window.TowerAssetPreload;
+  const connection = window.navigator?.connection;
+  const savesData = () => connection?.saveData || ['slow-2g','2g'].includes(connection?.effectiveType);
+  let prep = null, waitingForRoster = false, mediaTimer, requestedMedia = '', preparedScene = '';
+  function paintPreload(){
+    const panel=$('asset-loading');if(!panel?.querySelector||!prep)return;
+    const {total,settled,failed}=prep;
+    const ready=settled===total, percent=total?Math.floor(100*settled/total):100;
+    panel.hidden=false;
+    panel.querySelector('progress').value=percent;
+    panel.querySelector('output').value=`${percent}%`;
+    const caption=panel.querySelector('.asset-loading-caption');
+    const label=ready
+      ? (failed?'可以进入，剩余素材会按需加载':'角色与开场场景已就绪')
+      : (waitingForRoster?'素材就绪后将进入选人':'正在准备角色与开场场景');
+    if(caption.textContent!==label)caption.textContent=label;
+    panel.querySelector('[data-action="skip-preload"]').hidden=!waitingForRoster||ready;
+  }
+  function encounterArt(enc){
+    if(!enc)return [];
+    const act=C.acts.find(a=>a.id===enc.act);
+    return [...enc.enemies.map(enemy=>enemy.art),enc.type==='boss'?act?.background:'assets/ui/battle_stage.webp'];
+  }
+  function primeEntry(){
+    if(!preload||prep)return;
+    const savedArt=encounterArt(C.encounters[saved?.battle?.encounterId]);
+    const firstIds=saved?.heroIds||chosen;
+    const firstHeroes=firstIds.map(id=>C.heroes[id]).filter(Boolean);
+    const artwork=unit=>[heroArt(unit),heroIcon(unit)];
+    const queue=['assets/ui/map_bg.webp',...savedArt,...firstHeroes.flatMap(artwork),
+      ...encounterArt(C.encounters.tutorial_gate),...encounterArt(C.encounters.forest_patrol),...heroes.flatMap(artwork)];
+    preload.prepare(queue,{priority:true,onProgress:state=>{
+      prep=state;paintPreload();
+      if(state.settled===state.total){
+        if(waitingForRoster&&screen==='home')enterSetup(true);
+        else queueMedia();
+      }
+    }});
+  }
+  function enterSetup(skip=false){
+    if(!skip&&screen==='home'&&preload&&(!prep||prep.settled<prep.total)){
+      waitingForRoster=true;primeEntry();paintPreload();return;
+    }
+    waitingForRoster=false;stopBossPerformance();stopVoice();closeModal();if(run)save();run=null;screen='setup';render();window.scrollTo(0,0);
+  }
+  function queueMedia(){
+    const cache=window.TowerMediaPreload;
+    if(!cache||savesData()||screen==='home'&&(!prep||prep.settled<prep.total))return;
+    const team=run?.heroIds||(screen==='home'?saved?.heroIds:null)||chosen;
+    const boss=screen==='battle'?bossCast():null;
+    const media=team.map(id=>window.TowerMedia?.characters[id]?.ub);
+    if(boss?.ub)media.unshift(boss.ub);
+    const paths=media.filter(Boolean).flatMap(ub=>[
+      settings.audio?ub.voice:null,settings.audio&&settings.fullBurst?ub.cutinVoice:null,settings.fullBurst?ub.video:null
+    ]);
+    if(settings.audio&&boss?.voice?.path) paths.unshift(boss.voice.path);
+    const signature=paths.filter(Boolean).sort().join('|');
+    if(signature===requestedMedia)return;
+    requestedMedia=signature;clearTimeout(mediaTimer);
+    mediaTimer=setTimeout(()=>cache.warm(paths.filter(Boolean)),380);
+  }
+  function warmCurrentScene(){
+    if(!preload||savesData()||!run||!['map','battle'].includes(screen))return;
+    const key=[screen,run.seed,run.act,run.stage,battle()?.encounterId].join('|');
+    if(key===preparedScene)return;
+    preparedScene=key;
+    const encounters=screen==='map'?R.choices(run).map(choice=>C.encounters[choice.encounterId]):[C.encounters[battle()?.encounterId]];
+    const paths=encounters.flatMap(encounterArt);
+    if(paths.length)preload.prepare(paths,{priority:true});
+  }
   function previewSpec(choice,target){return choice.kind==='burst'?{kind:'burst',heroId:choice.heroId,target,options:{consumeCurse}}:{kind:'card',uid:choice.uid,target,options:{spendBlock,consumeCurse}};}
   function previewPlans(choice){
     if(!choice||!battle()||!window.TowerCombatPreview)return [];
@@ -228,9 +299,13 @@
     if(screen==='battle'&&!teaching()&&!busy&&C.encounters[battle().encounterId]?.type==='boss'&&run.room&&!run.room.introSeen)showBossEntry();
     updateTutorialPointer();
     refreshBattlePreview();showContextHint();
+    paintPreload();warmCurrentScene();queueMedia();
+  }
+  function preloadPanel(){
+    return preload?`<div id="asset-loading" class="asset-loading" hidden><div class="asset-loading-detail"><span id="asset-loading-caption" class="asset-loading-caption" aria-live="polite"></span><output aria-hidden="true">0%</output></div><progress max="100" value="0" aria-labelledby="asset-loading-caption"></progress>${bText('先进入选人','skip-preload','hidden','small asset-loading-skip')}</div>`:'';
   }
   function renderHome(){
-    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div><div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.17 公开试玩版 · 三幕十战 · 分岔登塔路线<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
+    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div>${preloadPanel()}<div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.19 公开试玩版 · 三幕十战 · 分岔登塔路线<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
   }
   function recommendedTeams(){
     const labels=[['初次登塔推荐','护盾承伤 → 破甲 → 剑锋收尾','物理爆发 · 稳住前排'],['喜欢魔法与群攻','咒痕点杀 → 星痕清场 → 指路调牌','魔法输出 · 处理后排'],['喜欢治疗与容错','佩可掩护 → 凯露突破 → 优衣修复','物魔搭配 · 治疗容错']];
@@ -632,8 +707,8 @@
     if(a==='tutorial-finish'){finishTutorial(false);return;}
     if(a==='close-modal'){if(battle()?.pending)toast('请先完成已经揭示的卡牌选择。');else closeModal();return;}
     if(a==='home'||a==='return-title'){stopBossPerformance();stopVoice();closeModal();if(run)save();run=null;screen='home';render();return;}
-    if(a==='new-run'){stopBossPerformance();stopVoice();closeModal();if(run)save();run=null;screen='setup';render();window.scrollTo(0,0);return;}
-    if(a==='continue'){if(saved&&[2,3].includes(saved.version)){try{run=R.normalize(clone(saved));if(run.battle)E.normalizeBattle(run.battle);save();render();}catch(_){toast('存档暂时无法恢复，原记录仍保留。');}}else toast('没有可恢复的远征存档。');return;}
+    if(a==='new-run'||a==='skip-preload'){enterSetup(a==='skip-preload');return;}
+    if(a==='continue'){waitingForRoster=false;paintPreload();if(saved&&[2,3].includes(saved.version)){try{run=R.normalize(clone(saved));if(run.battle)E.normalizeBattle(run.battle);save();render();}catch(_){toast('存档暂时无法恢复，原记录仍保留。');}}else toast('没有可恢复的远征存档。');return;}
     if(a==='toggle-hero'){const i=chosen.indexOf(id);if(i>=0)chosen.splice(i,1);else if(chosen.length<3)chosen.push(id);else{toast('先取消一名伙伴，再选择新的同行者。');return;}render();return;}
     if(a==='preset'){chosen=[...C.teams[index].ids];render();toast(C.teams[index].text);return;}
     if(a==='move-hero'){[chosen[index-1],chosen[index]]=[chosen[index],chosen[index-1]];render();return;}
@@ -693,7 +768,7 @@
   document.addEventListener('focusin',hoverPreview);
   document.addEventListener('pointerout',leavePreview);
   document.addEventListener('focusout',leavePreview);
-  document.addEventListener('input',event=>{const el=event.target;if(el.id==='tutorial-enabled')tutorialEnabled=el.checked;if(el.id==='spend-block'){spendBlock=Number(el.value);el.nextElementSibling.textContent=spendBlock;el.closest('.combat-choice').querySelector('summary').textContent='耗盾 '+spendBlock;refreshBattlePreview();}if(el.id==='consume-curse'){consumeCurse=el.checked;el.closest('.combat-choice').querySelector('summary').textContent=consumeCurse?'引爆咒痕':'保留咒痕';refreshBattlePreview();}if(el.id.startsWith('setting-')){if(el.id==='setting-audio')settings.audio=el.checked;if(el.id==='setting-burst')settings.fullBurst=el.checked;if(el.id==='setting-volume')settings.volume=Number(el.value);if(el.id==='setting-hints')settings.hints=el.checked;if(el.id==='setting-effects'&&['auto','rich','light'].includes(el.value)){settings.effectsQuality=el.value;const page=$('app').querySelector('.battle-page');if(page){page.dataset.fxQuality=el.value;const arena=page.querySelector('.arena.has-depth');if(arena)window.TowerBattleDepth?.bind(arena,el.value);}}if(bgm){refreshBgmVolume();settings.audio?bgm.play().catch(()=>{}):bgm.pause();}refreshBossAudio();if(voiceController)voiceController.setVolume(Math.min(1,settings.volume*2));if(voice&&!settings.audio)stopVoice();try{localStorage.setItem(SETTINGS,JSON.stringify(settings));}catch(_){}}});
+  document.addEventListener('input',event=>{const el=event.target;if(el.id==='tutorial-enabled')tutorialEnabled=el.checked;if(el.id==='spend-block'){spendBlock=Number(el.value);el.nextElementSibling.textContent=spendBlock;el.closest('.combat-choice').querySelector('summary').textContent='耗盾 '+spendBlock;refreshBattlePreview();}if(el.id==='consume-curse'){consumeCurse=el.checked;el.closest('.combat-choice').querySelector('summary').textContent=consumeCurse?'引爆咒痕':'保留咒痕';refreshBattlePreview();}if(el.id.startsWith('setting-')){if(el.id==='setting-audio')settings.audio=el.checked;if(el.id==='setting-burst')settings.fullBurst=el.checked;if(el.id==='setting-volume')settings.volume=Number(el.value);if(el.id==='setting-hints')settings.hints=el.checked;if(el.id==='setting-effects'&&['auto','rich','light'].includes(el.value)){settings.effectsQuality=el.value;const page=$('app').querySelector('.battle-page');if(page){page.dataset.fxQuality=el.value;const arena=page.querySelector('.arena.has-depth');if(arena)window.TowerBattleDepth?.bind(arena,el.value);}}if(bgm){refreshBgmVolume();settings.audio?bgm.play().catch(()=>{}):bgm.pause();}refreshBossAudio();if(voiceController)voiceController.setVolume(Math.min(1,settings.volume*2));if(voice&&!settings.audio)stopVoice();if(el.id==='setting-audio'||el.id==='setting-burst')queueMedia();try{localStorage.setItem(SETTINGS,JSON.stringify(settings));}catch(_){}}});
   document.addEventListener('keydown',event=>{
     const target=event.target.closest('[data-action="target"]');
     if(target&&['Enter',' '].includes(event.key)&&selectedTargets().includes(target.dataset.id)){event.preventDefault();playTarget(target.dataset.id);return;}
@@ -712,5 +787,6 @@
   window.addEventListener('pagehide',()=>{stopBossPerformance();window.TowerBattleDepth?.clear($('app').querySelector('.arena.has-depth'));window.TowerTutorialPointer?.destroy();});
   window.addEventListener('pageshow',updateTutorialPointer);
   window.TowerApp = {getRun:()=>run,getScreen:()=>screen,startRun,render,save};
+  if(!savesData())primeEntry();
   render();
 })();
