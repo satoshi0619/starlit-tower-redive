@@ -6,7 +6,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  function create(host, { limit = 4, timeout = 12000 } = {}) {
+  function create(host, { limit = 4, timeout = 45000 } = {}) {
     const jobs = new Map();
     const pending = [];
     let active = 0;
