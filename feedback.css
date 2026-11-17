@@ -324,3 +324,43 @@
 .reduced-motion .fx-slash,.reduced-motion .fx-claw{width:70px;height:5px;rotate:0deg}
 @media(max-width:600px){.fx-slash{width:100px}.fx-blast{width:80px;height:80px}.fx-shield{width:84px;height:120px}.fx-heal{width:80px;height:125px}.fx-aura{width:85px;height:85px}.fx-number{font-size:22px}.fx-number.big{font-size:33px}.fx-cross-cut{width:125px}.fx-meteor{height:76px}.fx-arc{max-width:175px}}
 @media(prefers-reduced-motion:reduce){.burst-overlay.visual-out{transition:none}.combat-fx{filter:none!important}}
+/* Bare standing portraits move around the planted feet. Phase-two Boss art
+ * supplies its own idle layers so wings and weapons can move independently. */
+.arena.has-depth .fighter {
+  --idle-cycle: 3.8s;
+  --idle-delay: -.45s;
+  --idle-lift: -2px;
+  --idle-stretch: 1.027;
+}
+.arena.has-depth .fighter:nth-child(2) { --idle-cycle: 3.4s; --idle-delay: -1.35s; --idle-lift: -2.5px; }
+.arena.has-depth .fighter:nth-child(3) { --idle-cycle: 4.25s; --idle-delay: -2.5s; }
+.arena.has-depth .fighter.boss { --idle-cycle: 4.45s; --idle-delay: -1.9s; --idle-lift: -1px; --idle-stretch: 1.032; }
+.battle-page:not([data-fx-quality='light']) .arena.has-depth .fighter:not(.dead, .down) .fighter-art > img,
+.battle-page:not([data-fx-quality='light']) .arena.has-depth .fighter.enemy:not(.dead, .down, .boss) .enemy-art > img,
+.battle-page[data-boss-form='']:not([data-fx-quality='light']) .arena.has-depth .fighter.boss .enemy-art > img {
+  transform-origin: 50% 94%;
+  animation: portrait-breathing var(--idle-cycle) ease-in-out var(--idle-delay) infinite;
+}
+
+@keyframes portrait-breathing {
+  0%, 100% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(var(--idle-lift)) scale(.99, var(--idle-stretch)); }
+  67% { transform: translateY(-1px) scale(1.006, 1.008); }
+}
+
+.fx-depth-step {
+  width: var(--fx-size, 88px);
+  height: calc(var(--fx-size, 88px) * .18);
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 22% 26%, #fff8db 0 1px, transparent 3px),
+    radial-gradient(ellipse at 41% 53%, #fff8db 0 1px, transparent 3px),
+    radial-gradient(ellipse at 58% 32%, #fff8db 0 1px, transparent 3px),
+    radial-gradient(ellipse, color-mix(in srgb, var(--fx-color) 72%, transparent), transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .battle-page:not([data-fx-quality='light']) .arena.has-depth .fighter:not(.dead, .down) .fighter-art > img,
+  .battle-page:not([data-fx-quality='light']) .arena.has-depth .fighter.enemy:not(.dead, .down, .boss) .enemy-art > img,
+  .battle-page[data-boss-form='']:not([data-fx-quality='light']) .arena.has-depth .fighter.boss .enemy-art > img { animation: none; }
+}

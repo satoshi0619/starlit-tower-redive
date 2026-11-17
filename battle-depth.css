@@ -1,0 +1,199 @@
+.battle-page .arena.has-depth {
+  --depth-ink: #102536;
+  --depth-light: #a1e7ee;
+  --depth-ornament: #ffdb98;
+  --depth-position: 52%;
+  background-image: none;
+  background-color: var(--depth-ink);
+}
+
+.battle-page .boss-arena.has-depth {
+  --depth-ink: #1c1531;
+  --depth-light: #ba98fb;
+  --depth-ornament: #f4cb93;
+  --depth-position: 57%;
+}
+
+.battle-page .boss-arena.has-depth[data-depth-act='2'] {
+  --depth-ink: #1c1b3c;
+  --depth-light: #a9cfff;
+  --depth-ornament: #f5a4ee;
+}
+
+.battle-page .boss-arena.has-depth[data-depth-act='3'] {
+  --depth-ink: #2a1530;
+  --depth-light: #ffbda2;
+  --depth-ornament: #ffe0a9;
+  --depth-position: 68%;
+}
+
+.battle-page[data-boss-form]:not([data-boss-form='']) .arena.has-depth {
+  --depth-light: var(--boss-phase-light);
+  --depth-ornament: var(--boss-phase-color);
+}
+
+.battle-depth {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.battle-depth > i {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  transition: transform 240ms cubic-bezier(.16, .65, .31, 1), opacity 240ms ease-out;
+}
+
+.arena[data-depth-action] .battle-depth > i { transition-duration: 90ms; }
+
+.depth-backdrop {
+  inset: -22px -32px;
+  background:
+    linear-gradient(165deg, #15274422, transparent 55%, #060d2226),
+    var(--arena-art, url('assets/ui/battle_stage.webp')) center var(--depth-position) / max(116%, 105dvh) auto no-repeat;
+  transform:
+    translate(calc(var(--depth-x, 0px) * -.47 + var(--depth-focus-x, 0px) * -.64), calc(var(--depth-y, 0px) * -.36 + var(--depth-focus-y, 0px) * -.42))
+    scale(calc(1 + var(--depth-push, 0) * .032));
+}
+
+.depth-ground {
+  left: -27%;
+  width: 154%;
+  bottom: -5px;
+  height: 118%;
+  transform-origin: center bottom;
+  transform:
+    translate(calc(var(--depth-x, 0px) * 1.06 + var(--depth-focus-x, 0px) * 1.28), calc(var(--depth-y, 0px) * .65 + var(--depth-focus-y, 0px) * .78))
+    perspective(440px) rotateX(57deg) scale(calc(1 + var(--depth-push, 0) * .075));
+  --depth-inlay: color-mix(in srgb, var(--depth-ornament) 24%, transparent);
+  background:
+    radial-gradient(ellipse 25% 55% at 50% 59%, transparent 63%, #f9f1e348 65%, transparent 66% 77%, #fffae643 78%, transparent 79%),
+    linear-gradient(103deg, transparent 30%, #f4ecc61a 42% 43%, transparent 54%, #ffefca28 61%, transparent 73%),
+    radial-gradient(ellipse at 50% 33%, color-mix(in srgb, var(--depth-light) 36%, transparent), transparent 59%),
+    repeating-linear-gradient(90deg, transparent 0 96px, var(--depth-inlay) 96px 97px, #0b132431 97px 98px, transparent 98px 104px),
+    repeating-linear-gradient(0deg, transparent 0 71px, var(--depth-inlay) 71px 72px, #0b13241c 72px 74px, transparent 74px 76px),
+    linear-gradient(180deg, transparent, color-mix(in srgb, var(--depth-ink) 36%, transparent));
+  mask-image: linear-gradient(180deg, transparent 0%, #000 39%);
+  opacity: .86;
+}
+
+.depth-haze {
+  inset: -24px -36px;
+  transform: translate(calc(var(--depth-x, 0px) * .42 + var(--depth-focus-x, 0px) * .5), calc(var(--depth-y, 0px) * .30));
+  background:
+    radial-gradient(ellipse at 48% 58%, color-mix(in srgb, var(--depth-light) 32%, transparent), transparent 46%),
+    radial-gradient(ellipse at 21% 72%, color-mix(in srgb, var(--depth-light) 16%, transparent), transparent 40%),
+    radial-gradient(ellipse at 83% 76%, color-mix(in srgb, var(--depth-ornament) 21%, transparent), transparent 37%);
+  opacity: calc(.68 + var(--depth-push, 0) * .26);
+}
+
+.depth-haze::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 21% 36%, #fff8dbe0 0 1px, transparent 4px),
+    radial-gradient(circle at 41% 65%, #fff9e7b5 0 1px, transparent 4px),
+    radial-gradient(circle at 67% 18%, var(--depth-light) 0 1px, transparent 3px),
+    radial-gradient(circle at 82% 47%, var(--depth-ornament) 0 1px, transparent 5px),
+    radial-gradient(circle at 91% 83%, var(--depth-light) 0 2px, transparent 7px);
+  animation: depth-drift 11s ease-in-out infinite alternate;
+}
+
+@keyframes depth-drift {
+  from { transform: translate(-8px, 6px); opacity: .48; }
+  to { transform: translate(12px, -11px); opacity: .93; }
+}
+
+.depth-foreground {
+  inset: -28px -54px -20px;
+  transform:
+    translate(calc(var(--depth-x, 0px) * 2.25 + var(--depth-focus-x, 0px) * 2.20), calc(var(--depth-y, 0px) * 1.60 + var(--depth-focus-y, 0px) * 1.54))
+    scale(calc(1 + var(--depth-push, 0) * .103));
+  background:
+    radial-gradient(ellipse at 6% 100%, color-mix(in srgb, var(--depth-light) 41%, transparent), transparent 18%),
+    radial-gradient(ellipse at 94% 100%, color-mix(in srgb, var(--depth-ornament) 43%, transparent), transparent 22%),
+    linear-gradient(0deg, color-mix(in srgb, var(--depth-ink) 65%, transparent), transparent 25%);
+}
+
+.depth-foreground::before,
+.depth-foreground::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  width: clamp(31px, 7%, 108px);
+  height: 59%;
+  opacity: .72;
+  clip-path: polygon(0 100%, 0 44%, 19% 47%, 30% 18%, 45% 0, 59% 27%, 60% 50%, 74% 58%, 85% 70%, 100% 100%);
+  background:
+    linear-gradient(65deg, #071126a8 0 39%, transparent 41% 55%, #d6effb5f 56% 58%, transparent 60%),
+    linear-gradient(135deg, var(--depth-light) 2%, var(--depth-ink) 66%, #091021 97%);
+}
+
+.depth-foreground::before { left: 34px; }
+.depth-foreground::after { right: 34px; transform: scaleX(-1); height: 72%; }
+
+/* The shadow lives on the art wrapper so it follows its existing attack motion. */
+.battle-page .arena.has-depth .fighter-art,
+.battle-page .arena.has-depth .enemy-art {
+  background-image:
+    radial-gradient(ellipse min(45%, 69px) 14% at 50% 98%, #060a1866 4%, #0f162f46 42%, transparent 100%),
+    radial-gradient(ellipse min(36%, 59px) 11% at 49% 99%, color-mix(in srgb, var(--depth-light) 47%, transparent), transparent 100%);
+}
+
+.battle-page .arena.has-depth .fighter.boss .enemy-art {
+  --depth-foot-x: var(--boss-form-x, 50%);
+  background-image:
+    radial-gradient(ellipse min(34%, 100px) 13% at var(--depth-foot-x) 98%, #050613aa 0 13%, #0c10235f 42%, transparent 100%),
+    radial-gradient(ellipse min(33%, 81px) 10% at var(--depth-foot-x) 99%, color-mix(in srgb, var(--depth-light) 56%, transparent), transparent 100%);
+}
+
+.battle-page .final-arena.has-depth .fighter.boss .enemy-art {
+  --depth-foot-x: var(--boss-form-x, 60%);
+}
+
+.battle-page .arena.has-depth .fighter.dead :is(.fighter-art, .enemy-art) { background-image: none; }
+
+@media (max-width: 760px) and (min-height: 501px) {
+  .depth-ground {
+    transform:
+      translate(calc(var(--depth-focus-x, 0px) * .5), calc(var(--depth-focus-y, 0px) * .48))
+      perspective(330px) rotateX(52deg) scale(calc(1 + var(--depth-push, 0) * .03));
+  }
+
+  .depth-foreground::before,
+  .depth-foreground::after { height: 43%; opacity: .52; }
+
+  .battle-page .final-arena.has-depth .fighter.boss .enemy-art { background-image: none; }
+}
+
+.battle-page[data-fx-quality='light'] .arena.has-depth .battle-depth,
+.arena.has-depth[data-depth-quality='light'] .battle-depth {
+  --depth-x: 0px;
+  --depth-y: 0px;
+  --depth-focus-x: 0px;
+  --depth-focus-y: 0px;
+  --depth-push: 0;
+}
+
+.battle-page[data-fx-quality='light'] .arena.has-depth .depth-haze::after,
+.arena.has-depth[data-depth-quality='light'] .depth-haze::after { animation: none; }
+
+.battle-page[data-fx-quality='light'] .arena.has-depth .battle-depth > i,
+.arena.has-depth[data-depth-quality='light'] .battle-depth > i { transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .arena.has-depth .battle-depth {
+    --depth-x: 0px;
+    --depth-y: 0px;
+    --depth-focus-x: 0px;
+    --depth-focus-y: 0px;
+    --depth-push: 0;
+  }
+
+  .arena.has-depth .depth-haze::after { animation: none; }
+  .arena.has-depth .battle-depth > i { transition: none; }
+}

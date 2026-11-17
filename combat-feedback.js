@@ -87,6 +87,10 @@
     var battlePage = arena && arena.closest && arena.closest('.battle-page');
     var phase = battlePage && battlePage.dataset.bossForm;
     var light = options.quality === 'light';
+    var depth = !!arena?.classList?.contains('has-depth') && !light;
+    var supportActor = depth && !reduce && options.owner && !records.some(function (record) {
+      return record.type === 'hit' && record.source === options.owner;
+    }) ? options.owner : null;
     var compact = bounds && bounds.width < 600;
     // All generated artwork is clipped to the real arena, including a compact
     // arena on a phone. Coordinates are still measured from the live fighters.
@@ -176,24 +180,40 @@
       });
     }
     function size(n, value) { n.style.setProperty('--fx-size', Math.round(value) + 'px'); return n; }
-    function attackPose(sourceArt, origin, target, magic, bossAction, delay, bossAttack, openingHit) {
+    function attackPose(sourceArt, origin, target, posture, bossAction, delay, openingHit) {
       var dx = target.x - origin.x, dy = target.y - origin.y;
       var distance = Math.max(1, Math.hypot(dx, dy));
-      var ranged = bossAttack === 'volley' || bossAttack === 'projectile';
-      var travel = magic || bossAttack === 'wave' ? 12 : ranged ? 28 : bossAction ? (compact ? 66 : 145) : (compact ? 24 : 43);
+      var ranged = posture === 'ranged', cast = posture === 'cast';
+      var travel = cast ? 14 : ranged ? 28 : bossAction ? (compact ? 66 : 145) : (compact ? 29 : 54);
       var reach = Math.min(distance * .52, light ? travel * .65 : openingHit ? travel * 1.18 : travel);
       var x = dx / distance * reach, y = dy / distance * reach;
-      var lean = (dx >= 0 ? 1 : -1) * (bossAction ? 13 : 7);
-      var attackScale = openingHit && !light ? 1.18 : bossAction ? 1.12 : 1.07;
+      var lean = (dx >= 0 ? 1 : -1) * (bossAction ? 16 : 10);
+      var attackScale = openingHit && !light ? 1.18 : bossAction ? 1.12 : 1.09;
       var translate = function (a, b) { return a.toFixed(2) + 'px ' + b.toFixed(2) + 'px'; };
+      var turn = function (angle) { return (depth ? '.12 .8 1 ' : '') + angle + 'deg'; };
       var duration = bossAction ? 560 : 390;
+      var windup = cast ? translate(-x * .35, 7) : translate(-x * .25, -y * .25 + 3);
+      var release = ranged ? translate(-x * .55, -y * .55 - 4) : translate(x, y - (cast ? 15 : 2));
+      // Projectile users absorb their recoil at the firing position. Casters
+      // rise out of a compressed stance; only a melee strike carries forward.
+      var recovery = ranged ? translate(-x * .18, -y * .18) : cast ? translate(x * .22, -6) : translate(x * .76, y * .76);
       return animate(sourceArt, [
-        { translate: '0px 0px', rotate: '0deg', scale: '1' },
-        { translate: translate(-x * .25, -y * .25 + 3), rotate: -lean * .55 + 'deg', scale: '.96 1.04', offset: .26 },
-        { translate: ranged ? translate(-x * .55, -y * .55 - 4) : translate(x, y - (magic ? 16 : 2)), rotate: (ranged ? -lean * .5 : lean) + 'deg', scale: attackScale + ' .96', offset: 210 / duration },
-        { translate: translate(x * .76, y * .76), rotate: lean * .6 + 'deg', scale: '1.04 1', offset: .61 },
-        { translate: '0px 0px', rotate: '0deg', scale: '1' }
+        { translate: '0px 0px', rotate: turn(0), scale: '1' },
+        { translate: windup, rotate: turn(-lean * .55), scale: cast ? '1.08 .91' : '.96 1.04', offset: .26 },
+        { translate: release, rotate: turn((ranged ? -.5 : cast ? .28 : 1) * lean), scale: cast ? '.97 1.11' : attackScale + ' .96', offset: 210 / duration },
+        { translate: recovery, rotate: turn(lean * (ranged ? -.18 : .6)), scale: '1.04 1', offset: .68 },
+        { translate: '0px 0px', rotate: turn(0), scale: '1' }
       ], duration, delay, 'linear');
+    }
+    function departure(origin, target, color, delay) {
+      var foot = { x: origin.x, y: Math.min(bounds.top + bounds.height - 11, origin.y + origin.height * .47) };
+      var scuff = size(mark('depth-step', foot, color), Math.min(130, origin.width * .9));
+      var direction = target.x >= origin.x ? -1 : 1;
+      return animate(scuff, [
+        { opacity: 0, transform: 'translate(-50%,-50%) scale(.45,.66)' },
+        { opacity: .82, transform: 'translate(-50%,-50%) scale(.8,1)', offset: .22 },
+        { opacity: 0, transform: 'translate(calc(-50% + ' + direction * 25 + 'px),-88%) scale(1.45,1.3)' }
+      ], 360, delay + 94);
     }
     function phaseOpeningEffect(sourceArt, origin, target, delay, impactAt, group) {
       layer.dataset.phaseOpening = opening.bossId;
@@ -410,7 +430,10 @@
         if (!reduce && sourceArt && e.source !== e.target && !sourceMoved.has(e.source) && !indirectHits.has(e.sourceKind)) {
           sourceMoved.add(e.source);
           var profile = global.TowerVFX && global.TowerVFX.profiles && global.TowerVFX.profiles[e.source];
-          all.push(attackPose(sourceArt, origin, p, magic || group || profile && profile.family === 'arrow', bossAction, delay, e.bossAttack, openingHit));
+          var rangedAttack = e.bossAttack === 'projectile' || e.bossAttack === 'volley' || profile?.family === 'arrow';
+          var posture = group || e.bossAttack === 'wave' ? 'cast' : rangedAttack ? 'ranged' : magic ? 'cast' : 'melee';
+          all.push(attackPose(sourceArt, origin, p, posture, bossAction, delay, openingHit));
+          if (depth && bounds && posture === 'melee') all.push(departure(origin, p, color, delay));
           if (heavy && bounds) {
             var windup = size(mark('boss-windup', origin, color), Math.min(148, origin.height * .63));
             all.push(fade(windup, 285, delay, 1.2));
@@ -456,10 +479,11 @@
           }
           if (!targetMoved.has(e.target)) {
             targetMoved.add(e.target);
-            all.push(animate(targetArt, [{ filter: 'brightness(1)', transform: 'translateX(0)' },
-              { filter: 'brightness(1.6)', transform: 'translateX(-5px)', offset: .15 },
-              { filter: 'brightness(1.6)', transform: 'translateX(-5px)', offset: .28 },
-              { transform: 'translateX(4px)', offset: .48 }, { filter: 'brightness(1)', transform: 'translateX(0)' }], e.burst ? 390 : 310, impactAt));
+            var push = (p.x >= origin.x ? 1 : -1) * (depth ? (compact ? 7 : heavy ? 17 : 11) : 5);
+            all.push(animate(targetArt, [{ filter: 'brightness(1)', transform: 'none' },
+              { filter: 'brightness(1.6)', transform: 'translate(' + push + 'px,2px) scale(.96,1.025)', offset: .15 },
+              { filter: 'brightness(1.35)', transform: 'translateX(' + push + 'px) scale(.98,1)', offset: .28 },
+              { transform: 'translateX(' + (-push * .25) + 'px)', offset: .58 }, { filter: 'brightness(1)', transform: 'none' }], e.burst ? 390 : 310, impactAt));
           }
         }
         all.push(float(p, e.amount > 0 ? '#fff0db' : '#bbe1ff', e.amount > 0 ? '−' + e.amount : '格挡', impactAt + 20, e.burst));
@@ -467,6 +491,16 @@
       } else {
         var heal = e.type === 'heal', block = e.type === 'block', payment = e.type === 'payHp', negative = e.type === 'debuff' || ['breakAmount', 'weak', 'curseExpires', 'stars'].includes(e.status);
         color = payment ? '#ff91ac' : heal ? '#9cf4c4' : block ? '#a6dcff' : negative ? '#d6b0ff' : colors[e.source] || '#d9f6cf';
+        if (supportActor && sourceArt && supportActor === e.source && !sourceMoved.has(e.source) &&
+            (heal || block || e.type === 'cleanse' || e.type === 'support' || e.type === 'status')) {
+          sourceMoved.add(e.source);
+          all.push(animate(sourceArt, [
+            { translate: '0 0', scale: '1' },
+            { translate: '0 -5px', scale: '.98 1.06', offset: .15 },
+            { translate: '0 -3px', scale: '1 1.025', offset: .48 },
+            { translate: '0 0', scale: '1' }
+          ], 270, delay));
+        }
         if (canvas && !payment) canvas.cue(e, {origin:origin,target:p,color:color,delay:delay,impactAt:delay+40});
         var glow = mark(heal ? 'heal' : block ? 'shield' : 'aura', p, color);
         all.push(fade(glow, reduce ? 250 : 600, delay, 1.3));
