@@ -28,7 +28,7 @@
   const enemyNames={ 'Goblin Guard':'哥布林护卫','Kobold':'狗头人','Gellatina':'软泥怪','Wood Soul':'木灵','Golem':'魔像','Blue Golem':'蓝魔像','Fire Mage':'火焰法师','Werewolf':'狼人','Flaming Skulls':'火焰骷髅','Lizardman':'蜥蜴人','Sea Drake':'希德雷克','Orc Leader':'兽人首领' };
   function applyEnemyArt(unit){const cast=window.TowerEncounterCast?.enemies?.[unit.id];if(cast){unit.art=cast.art;unit.name=cast.displayName;unit.originalName=cast.originalName||cast.displayName;unit.isBoss=true;unit.castColor=cast.accent||cast.color;return unit;}const m=window.TowerEnemyMedia?.enemies?.[unit.id];if(m){unit.art=m.art;unit.combatRoleName??=unit.name;unit.name=unit.device?'封印魔像':enemyNames[m.originalName]||m.indexName||m.originalName;unit.originalName=m.originalName;}return unit;}
   // Keep changed standing art fresh for returning online players.
-  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.19.1';});
+  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.20.0';});
   Object.values(C.encounters).forEach(enc=>enc.enemies.forEach(applyEnemyArt));
   const battle = () => run?.battle;
   const inEcho = () => run?.echo?.status==='active';
@@ -106,8 +106,8 @@
     panel.querySelector('output').value=`${percent}%`;
     const caption=panel.querySelector('.asset-loading-caption');
     const label=ready
-      ? (failed?'可以进入，剩余素材会按需加载':'角色与开场场景已就绪')
-      : (waitingForRoster?'素材就绪后将进入选人':'正在准备角色与开场场景');
+      ? (failed?'可以进入，剩余素材会按需加载':'角色、战斗与探索图片已就绪')
+      : (waitingForRoster?'图片就绪后将进入选人':'正在准备角色、敌人和探索图片');
     if(caption.textContent!==label)caption.textContent=label;
     panel.querySelector('[data-action="skip-preload"]').hidden=!waitingForRoster||ready;
   }
@@ -123,7 +123,8 @@
     const firstHeroes=firstIds.map(id=>C.heroes[id]).filter(Boolean);
     const artwork=unit=>[heroArt(unit),heroIcon(unit)];
     const queue=['assets/ui/map_bg.webp',...savedArt,...firstHeroes.flatMap(artwork),
-      ...encounterArt(C.encounters.tutorial_gate),...encounterArt(C.encounters.forest_patrol),...heroes.flatMap(artwork)];
+      ...encounterArt(C.encounters.tutorial_gate),...encounterArt(C.encounters.forest_patrol),...heroes.flatMap(artwork),
+      ...preload.campaignImages(C,window.TowerEncounterCast)];
     preload.prepare(queue,{priority:true,onProgress:state=>{
       prep=state;paintPreload();
       if(state.settled===state.total){
@@ -305,7 +306,7 @@
     return preload?`<div id="asset-loading" class="asset-loading" hidden><div class="asset-loading-detail"><span id="asset-loading-caption" class="asset-loading-caption" aria-live="polite"></span><output aria-hidden="true">0%</output></div><progress max="100" value="0" aria-labelledby="asset-loading-caption"></progress>${bText('先进入选人','skip-preload','hidden','small asset-loading-skip')}</div>`:'';
   }
   function renderHome(){
-    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div>${preloadPanel()}<div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.19 公开试玩版 · 三幕十战 · 分岔登塔路线<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
+    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div>${preloadPanel()}<div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.20 公开试玩版 · 三幕十战 · 分岔登塔路线<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
   }
   function recommendedTeams(){
     const labels=[['初次登塔推荐','护盾承伤 → 破甲 → 剑锋收尾','物理爆发 · 稳住前排'],['喜欢魔法与群攻','咒痕点杀 → 星痕清场 → 指路调牌','魔法输出 · 处理后排'],['喜欢治疗与容错','佩可掩护 → 凯露突破 → 优衣修复','物魔搭配 · 治疗容错']];
@@ -458,8 +459,32 @@
   function renderShop(){
     const stock=shopStock(),relicIds=stock.relics||[],cardIds=stock.cards||[],m=window.TowerEncounterCast?.merchant;
     const line=merchantLine||m?.entryLine||'欢迎，旅人。先看看下一场战斗需要什么吧。';
-    const arrival=m?`<section class="merchant-scene ${merchantEntering?'merchant-arrival':''}"><div class="merchant-portrait"><img src="${esc(m.art)}" alt="${esc(m.displayName)}"></div><div class="merchant-dialogue"><span class="eyebrow">THE TRAVELING SHOP</span><h3>${esc(m.displayName)}的补给时间</h3><p class="merchant-line" role="status">${esc(line)}</p><p class="muted">各项服务与商品，本次到访各限购一次。${m.voice?bText('角色原声','merchant-voice','','small'):''}</p></div></section>`:'';
-    return `<section class="page"><div class="page-head"><div><p class="eyebrow">A BREAK IN THE JOURNEY</p><h2>旅人的小铺</h2><p class="muted">把路费花在下一场真正需要的地方。</p></div><div class="actions"><span class="pill gold">${run.gold} 金币</span>${bText('继续前进 →','leave-shop','','primary')}</div></div>${arrival}<div class="shop-grid">${[['heal','旅途补给','全队各恢复6生命。',35],['upgrade','招式练习','选择一张卡，升级为A或B分支。',45],['remove','整理行囊','移除一张卡，牌组至少保留12张。',40]].map(([id,name,text,cost])=>`<article class="shop-item"><p class="eyebrow">SERVICE</p><h3>${name}</h3><p class="muted">${text}</p><p class="price">${cost} 金币</p>${bText('购买','buy',`data-id="${id}" ${run.gold<cost?'disabled':''}`)}</article>`).join('')}${relicIds.map(id=>{const r=C.relics[id],eligibility=R.relicAvailability(run,id);return r?`<article class="shop-item relic-shop"><span class="relic-art-box"><img src="${esc(r.art)}" alt=""></span><h3>${esc(r.name)}</h3><p class="muted rule-copy">${esc(r.text)}</p><p class="price">75 金币</p>${!eligibility.enabled?`<p class="danger-note">${esc(eligibility.reason)}</p>`:''}${bText(run.relics.includes(id)?'已持有':!eligibility.enabled?'当前构筑不适用':'购买遗物','buy',`data-id="relic:${id}" ${run.gold<75||run.relics.includes(id)||!eligibility.enabled?'disabled':''}`)}</article>`:'';}).join('')}${cardIds.map(id=>{const c=C.cards[id];return c?`<article class="shop-item"><p class="eyebrow">${esc(C.heroes[c.owner].name)} · CARD</p><h3>${esc(c.name)}</h3><p class="muted">${esc(c.text)}</p><p class="price">40 金币</p>${bText('购买卡牌','buy',`data-id="card:${id}" ${run.gold<40?'disabled':''}`)}</article>`:'';}).join('')}</div></section>`;
+    const arrival=m?`<section class="merchant-scene ${merchantEntering?'merchant-arrival':''}"><div class="merchant-portrait"><img src="${esc(m.art)}" alt="${esc(m.displayName)}"></div><div class="merchant-dialogue"><h3>${esc(m.displayName)}的补给时间</h3><p class="merchant-line" role="status">${esc(line)}</p>${m.voice?bText('角色原声','merchant-voice','','small'):''}</div></section>`:'';
+    const services=[
+      ['heal','旅途补给','全队各恢复6生命。','<path d="M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2M4 8h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2Zm8 3v6m-3-3h6"/>'],
+      ['upgrade','招式练习','选一张卡，升级为A或B分支。','<path d="m14 16 6-6 1-7-7 1-6 6m-1 1 6 6M3 21l6-6m-7 3 4 4"/>'],
+      ['remove','整理行囊','移除一张卡，至少保留12张。','<path d="M8 6V5a4 4 0 0 1 8 0v1M5 20V10a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1Zm3-6h8v4H8Zm2-5h4"/>']
+    ];
+    function offer(id,name,label,unavailable=false){
+      const cost=R.prices[id.split(':')[0]],sold=run.room.purchased.includes(id);
+      return `<div class="shop-offer"><span class="price">${cost} 金币</span>${bText(sold?'本次已购买':label,'buy',`data-id="${esc(id)}" aria-label="${esc((sold?'本次已购买 ':label+' ')+name)}" ${sold||unavailable||run.gold<cost?'disabled':''}`,'shop-buy')}</div>`;
+    }
+    const serviceCards=services.map(([id,name,text,icon])=>`<article class="shop-item shop-service" data-service="${id}"><header class="shop-item-heading"><span class="shop-service-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${icon}</svg></span><h4>${name}</h4></header><p class="muted">${text}</p>${offer(id,name,'购买')}</article>`).join('');
+    const cardGroups=run.heroIds.map(heroId=>{
+      const hero=C.heroes[heroId],inventory=cardIds.filter(id=>C.cards[id]?.owner===heroId);
+      if(!hero||!inventory.length)return '';
+      const cards=inventory.map(id=>{
+        const card=C.cards[id];
+        return `<article class="shop-item shop-card" data-owner="${esc(heroId)}"><header class="shop-item-heading"><img class="shop-card-avatar" src="${esc(heroIcon(hero))}" alt="${esc(hero.name)}"><div><h5>${esc(card.name)}</h5><span class="shop-card-cost">${card.cost} 行动</span></div></header><p class="muted rule-copy">${esc(card.text)}</p>${offer('card:'+id,card.name,'购买卡牌')}</article>`;
+      }).join('');
+      return `<section class="shop-card-group" style="--shop-hero:${esc(hero.color)}"><h4>${esc(hero.name)}</h4><div class="shop-card-pair">${cards}</div></section>`;
+    }).join('');
+    const relicCards=relicIds.map(id=>{
+      const relic=C.relics[id];if(!relic)return '';
+      const held=run.relics.includes(id),eligibility=R.relicAvailability(run,id);
+      return `<article class="shop-item relic-shop"><header class="shop-item-heading"><span class="relic-art-box"><img src="${esc(relic.art)}" alt=""></span><h4>${esc(relic.name)}</h4></header><p class="muted rule-copy">${esc(relic.text)}</p>${!eligibility.enabled?`<p class="danger-note">${esc(eligibility.reason)}</p>`:''}${offer('relic:'+id,relic.name,held?'已持有':!eligibility.enabled?'当前构筑不适用':'购买遗物',held||!eligibility.enabled)}</article>`;
+    }).join('');
+    return `<section class="page merchant-shop"><div class="page-head"><h2>旅人的小铺</h2><div class="actions"><span class="pill gold">${run.gold} 金币</span>${bText('继续前进 →','leave-shop','','primary')}</div></div>${arrival}<section class="shop-section" aria-labelledby="shop-services"><h3 id="shop-services">旅途服务</h3><div class="shop-services">${serviceCards}</div></section><div class="shop-inventory"><section class="shop-section" aria-labelledby="shop-cards"><h3 id="shop-cards">伙伴卡牌</h3><div class="shop-card-groups">${cardGroups}</div></section>${relicCards?`<section class="shop-section" aria-labelledby="shop-relics"><h3 id="shop-relics">遗物</h3><div class="shop-relics">${relicCards}</div></section>`:''}</div></section>`;
   }
 
   function renderReward(){

@@ -141,6 +141,9 @@
     run.version = 3;
     run.eventsSeen = run.eventsSeen || [];
     run.campDebt = run.campDebt || {};
+    if (run.screen === 'shop' && Array.isArray(run.room?.stock?.cards)) {
+      run.room.stock.cards = completeShopCards(run, run.room.stock.cards);
+    }
     return run;
   }
   function chooseActBoss(run) {
@@ -165,6 +168,15 @@
   }
   function cardPool(run) {
     return Object.keys(C.cards).filter(function (id) { return run.heroIds.indexOf(C.cards[id].owner) !== -1 && !C.cards[id].starter; });
+  }
+  function completeShopCards(run, previous) {
+    var pool = cardPool(run), saved = Array.from(new Set(previous));
+    return run.heroIds.flatMap(function (owner) {
+      var eligible = pool.filter(function (id) { return C.cards[id].owner === owner; });
+      var existing = saved.filter(function (id) { return eligible.indexOf(id) !== -1; });
+      var missing = eligible.filter(function (id) { return existing.indexOf(id) === -1; });
+      return existing.concat(missing.slice(0, Math.max(0, 2 - existing.length)));
+    });
   }
   function relicPool(run) {
     // These effects require a specific hero/card. All unlisted relics are generic.
@@ -297,7 +309,8 @@
       if (run.eventsSeen.indexOf(event.id) < 0) run.eventsSeen.push(event.id);
       run.screen = 'event';
     } else if (choice.type === 'shop') {
-      room.stock = { relics: sample(run, relicPool(run), 2), cards: sample(run, cardPool(run), 3) };
+      // Keep the original draw cadence so revisiting a seed preserves later reward rolls.
+      room.stock = { relics: sample(run, relicPool(run), 2), cards: completeShopCards(run, sample(run, cardPool(run), 3)) };
       room.purchased = [];
       room.prices = clone(PRICES);
       run.screen = 'shop';

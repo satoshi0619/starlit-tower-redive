@@ -6,6 +6,18 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
+  function campaignImages(content, cast) {
+    const images = [
+      ...Object.values(content.relics).map(relic => relic.art),
+      cast?.merchant?.art,
+      ...Object.values(content.encounters).flatMap(encounter => encounter.enemies.map(enemy => enemy.art)),
+      ...Object.values(cast?.bosses || {}).map(boss => boss.art),
+      ...content.acts.map(act => act.background),
+      'assets/story/tower_appears.webp'
+    ];
+    return [...new Set(images.filter(Boolean))];
+  }
+
   function create(host, { limit = 4, timeout = 45000 } = {}) {
     const jobs = new Map();
     const pending = [];
@@ -68,8 +80,8 @@
       return done;
     }
 
-    return { prepare };
+    return { prepare, campaignImages };
   }
 
-  return { create };
+  return { create, campaignImages };
 });
