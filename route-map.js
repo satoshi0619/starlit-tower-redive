@@ -21,8 +21,12 @@
     })[char]);
   }
 
-  function icon(type) {
-    return `<span class="route-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" focusable="false">${roomTypes[type].icon}</svg></span>`;
+  const eliteMarks = {
+    sentinel: { label: '重甲', icon: '<path d="m12 2 8 4v5c0 5-4 8.5-8 11-4-2.5-8-6-8-11V6l8-4Z"/><path d="M12 5v13m-5-9 5 2 5-2"/>' },
+    volley: { label: '齐射', icon: '<path d="m3 7 4 1m-5 4 4 1m9-11 3 1"/> <path d="M8 8c1-2 5-2 6 0l-1 2H8l-1-1Zm0 2c0 3 2 5 3 6 2-1 3-3 3-6m1 3c2-2 5-1 6 1l-1 2-6-1Zm0 3c0 2 1 5 2 6 3-1 4-3 4-6"/>' }
+  };
+  function icon(type, mark) {
+    return `<span class="route-emblem" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" focusable="false">${mark?.icon || roomTypes[type].icon}</svg></span>`;
   }
 
   function nodeState(id, view, reachable, visited, future) {
@@ -43,8 +47,9 @@
     const title = escapeHtml(`${stateLabels[state]} · ${type === 'boss' ? name : `${kind} · ${name}`}${description}${rewards}`);
     const attrs = `class="route-node is-${state}" style="--route-lane:${lane + 1}" data-node-id="${escapeHtml(node.id)}" data-route-state="${state}" data-route-type="${type}" title="${title}"`;
     const status = state === 'current' ? '当前' : state === 'visited' ? '✓' : state === 'reachable' ? '↑' : '';
-    const caption = type === 'boss' ? '幕末 Boss' : kind;
-    const body = `${icon(type)}<span class="route-node__label">${escapeHtml(caption)}</span>${status ? `<span class="route-node__status" aria-hidden="true">${status}</span>` : ''}`;
+    const mark = eliteMarks[node.routeMark];
+    const caption = mark ? kind + '·' + mark.label : type === 'boss' ? '幕末 Boss' : kind;
+    const body = `${icon(type, mark)}<span class="route-node__label">${escapeHtml(caption)}</span>${status ? `<span class="route-node__status" aria-hidden="true">${status}</span>` : ''}`;
 
     if (state === 'reachable' || state === 'future') {
       const action = state === 'reachable' ? 'enter-room' : 'route-info';

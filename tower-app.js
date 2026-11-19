@@ -28,7 +28,7 @@
   const enemyNames={ 'Goblin Guard':'哥布林护卫','Kobold':'狗头人','Gellatina':'软泥怪','Wood Soul':'木灵','Golem':'魔像','Blue Golem':'蓝魔像','Fire Mage':'火焰法师','Werewolf':'狼人','Flaming Skulls':'火焰骷髅','Lizardman':'蜥蜴人','Sea Drake':'希德雷克','Orc Leader':'兽人首领' };
   function applyEnemyArt(unit){const cast=window.TowerEncounterCast?.enemies?.[unit.id];if(cast){unit.art=cast.art;unit.name=cast.displayName;unit.originalName=cast.originalName||cast.displayName;unit.isBoss=true;unit.castColor=cast.accent||cast.color;return unit;}const m=window.TowerEnemyMedia?.enemies?.[unit.id];if(m){unit.art=m.art;unit.combatRoleName??=unit.name;unit.name=unit.device?'封印魔像':enemyNames[m.originalName]||m.indexName||m.originalName;unit.originalName=m.originalName;}return unit;}
   // Keep changed standing art fresh for returning online players.
-  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.20.0';});
+  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.21.0';});
   Object.values(C.encounters).forEach(enc=>enc.enemies.forEach(applyEnemyArt));
   const battle = () => run?.battle;
   const inEcho = () => run?.echo?.status==='active';
@@ -192,7 +192,7 @@
     function paint(unit){
       if(!unit.changed)return;
       const label=Array.from(app.querySelectorAll('[data-preview-unit]')).find(el=>el.dataset.previewUnit===unit.uid);
-      if(label){label.textContent=unit.intentChange?'预计打断':unit.hp.delta?(unit.hp.after<=0?'预计击倒':`预计 ${unit.hp.delta>0?'+':'−'}${Math.abs(unit.hp.delta)}生命`):unit.block.delta?`护盾 ${unit.block.before}→${unit.block.after}`:unit.statuses[0]?`${unit.statuses[0].label} ${unit.statuses[0].before}→${unit.statuses[0].after}`:'';label.title=previewUnitText(unit);label.hidden=!label.textContent;}
+      if(label){label.textContent=unit.intentChange?.kind==='soloShot'?'预计改为单发':unit.intentChange?'预计打断':unit.hp.delta?(unit.hp.after<=0?'预计击倒':`预计 ${unit.hp.delta>0?'+':'−'}${Math.abs(unit.hp.delta)}生命`):unit.block.delta?`护盾 ${unit.block.before}→${unit.block.after}`:unit.statuses[0]?`${unit.statuses[0].label} ${unit.statuses[0].before}→${unit.statuses[0].after}`:'';label.title=previewUnitText(unit);label.hidden=!label.textContent;}
       if(unit.hp.delta){const real=b.party.concat(b.enemies).find(u=>uidOf(u)===unit.uid),bar=Array.from(app.querySelectorAll('[data-hp-unit]')).find(el=>el.dataset.hpUnit===unit.uid),ghost=bar?.querySelector('.hp-forecast');if(real&&ghost){ghost.style.left=(Math.min(unit.hp.before,unit.hp.after)/real.maxHp*100)+'%';ghost.style.width=(Math.abs(unit.hp.delta)/real.maxHp*100)+'%';ghost.classList.toggle('is-heal',unit.hp.delta>0);}}
     }
     if(busy||b.pending){host.innerHTML='<span>完成当前演出或选牌后继续</span>';return;}
@@ -306,7 +306,7 @@
     return preload?`<div id="asset-loading" class="asset-loading" hidden><div class="asset-loading-detail"><span id="asset-loading-caption" class="asset-loading-caption" aria-live="polite"></span><output aria-hidden="true">0%</output></div><progress max="100" value="0" aria-labelledby="asset-loading-caption"></progress>${bText('先进入选人','skip-preload','hidden','small asset-loading-skip')}</div>`:'';
   }
   function renderHome(){
-    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div>${preloadPanel()}<div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.20 公开试玩版 · 三幕十战 · 分岔登塔路线<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
+    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div>${preloadPanel()}<div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.21 公开试玩版 · 三幕十战 · 分岔登塔路线<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
   }
   function recommendedTeams(){
     const labels=[['初次登塔推荐','护盾承伤 → 破甲 → 剑锋收尾','物理爆发 · 稳住前排'],['喜欢魔法与群攻','咒痕点杀 → 星痕清场 → 指路调牌','魔法输出 · 处理后排'],['喜欢治疗与容错','佩可掩护 → 凯露突破 → 优衣修复','物魔搭配 · 治疗容错']];
@@ -349,7 +349,12 @@
     if((u.curseExpires??0)>=battle().round&&u.curseExpires>0)s.push('<span class="status curse" title="重复施咒刷新时长；每轮首次主动命中附伤2，不增加附伤次数">咒痕</span>');
     if(u.breakAmount&&(u.breakExpires??0)>=battle().round){const layers=(u.breakLayers||[]).map(l=>l.amount+'点／剩'+(l.expires-battle().round+1)+'轮').join('；');s.push(`<span class="status mark" title="${esc(layers||'后续每段物理伤害增加该数值')}" >破甲 +${u.breakAmount}</span>`);}
     if(u.weak)s.push(`<span class="status mark" title="可累加；只减少下一次单体攻击的第一段，随后消耗">减攻 ${typeof u.weak==='number'?u.weak:u.weak.amount||''}</span>`);
-    if(u.buff)s.push(`<span class="status star" title="可累加；本轮下一次单体攻击首段加伤，使用后消耗">鼓舞 +${typeof u.buff==='number'?u.buff:u.buff.amount||''}</span>`);
+    if(u.buff){
+      const sources=Object.entries(u.flags?.buffSources||{});
+      const hero=sources.length===1&&sources[0][1]===u.buff?C.heroes[sources[0][0]]:null;
+      const icon=hero?`<img src="${esc(heroIcon(hero))}" alt="${esc(hero.name)}">`:'';
+      s.push(`<span class="status star" data-status="buff" title="可累加；本轮下一次单体攻击首段加伤，使用后消耗">${icon}鼓舞 +${typeof u.buff==='number'?u.buff:u.buff.amount||''}</span>`);
+    }
     const debuffs={};(u.debuffs||[]).filter(d=>d.expires>=battle().round).forEach(d=>{const group=debuffs[d.type]||(debuffs[d.type]={amount:0,layers:[]});group.amount+=d.amount;group.layers.push(d.amount+'点／剩'+(d.expires-battle().round+1)+'轮');});
     Object.entries(debuffs).forEach(([type,group])=>s.push(`<span class="status mark" title="${esc(group.layers.join('；'))}">${esc({vulnerable:'破绽',slow:'迟缓',clog:'阻滞',poison:'毒'}[type]||type)} ${group.amount}</span>`));
     if(u.coverFrom)s.push(`<span class="status shield">${esc(C.heroes[u.coverFrom]?.name||'队友')}掩护</span>`);
@@ -554,7 +559,7 @@
     const initial=options.before||battle(), shown=new Map((initial?.party||[]).concat(initial?.enemies||[]).map(u=>[uidOf(u),{...u}]));
     const arena=$('app').querySelector('.arena.has-depth');
     let lastSound=-Infinity, soundCount=0;
-    return window.TowerFeedback.play({...options,root:$('app'),quality:settings.effectsQuality,onImpact:e=>{
+    return window.TowerFeedback.play({...options,root:$('app'),quality:settings.effectsQuality,sourceIcon:id=>C.heroes[id]?heroIcon(C.heroes[id]):null,onImpact:e=>{
       if(arena)window.TowerBattleDepth?.impact(arena,e);
       // Only the presentation copy changes here. Rules and saving continue to
       // use the already resolved combat state, including every combo hit.

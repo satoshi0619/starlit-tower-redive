@@ -1,0 +1,72 @@
+{
+  "game": "Princess Connect! Re:Dive",
+  "modelId": "203700",
+  "indexName": "堅果射手",
+  "indexSource": "https://wthee.xyz/spine/classMapEnemy.json",
+  "source": "https://wthee.xyz/spine/index.html?enemy=203700",
+  "sourceType": "community mirror of original game Spine data; not an official distribution endpoint",
+  "rights": "Original character art, texture and animation: © Cygames, Inc.; no reuse license inferred from public availability.",
+  "renderer": "Existing offline Spine 3.6 renderer; complete source poses with transparent margins",
+  "sources": [
+    {
+      "kind": "base",
+      "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/203700_CHARA_BASE.cysp",
+      "bytes": 2035,
+      "sha256": "b0336e3c1ee2c8b76b95e777e8e1b674de68b591fcca8ba0d2493cc9ab6e608f",
+      "local": "assets/enemies/priconne/sources/203700/base.cysp"
+    },
+    {
+      "kind": "battle",
+      "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/203700_BATTLE.cysp",
+      "bytes": 25709,
+      "sha256": "33040c8e258fa4ebb840f0ef86d4c59ad08f3c02a1503574bd68b8b7074f21af",
+      "local": "assets/enemies/priconne/sources/203700/battle.cysp"
+    },
+    {
+      "kind": "atlas",
+      "url": "https://wthee.xyz/redive/jp/resource/spine/cysp/203700.atlas",
+      "bytes": 1927,
+      "sha256": "b5bcfe9cbd9edd4c03926a614a64281982349020d2c97de1849c10b5b80e2e8a",
+      "local": "assets/enemies/priconne/sources/203700/model.atlas"
+    },
+    {
+      "kind": "texture",
+      "url": "https://wthee.xyz/redive/jp/resource/spine/png/203700.png",
+      "bytes": 47721,
+      "sha256": "19b65385d838d40a85c2fca19a7a5377a473518d7905ad3eb1b5cbe9258e0416",
+      "local": "assets/enemies/priconne/sources/203700/texture.png"
+    }
+  ],
+  "poses": [
+    {
+      "file": "nut-shooter.png",
+      "animation": "203700_idle",
+      "seconds": 0.08,
+      "sha256": "96543674c9d57eb5809f09b23210829177e00c8dd6e952405a1ad045c65d3e9f",
+      "bytes": 271544,
+      "width": 617,
+      "height": 632,
+      "alphaBounds": {
+        "left": 16,
+        "top": 16,
+        "right": 592,
+        "bottom": 615
+      }
+    },
+    {
+      "file": "nut-shooter-ready.png",
+      "animation": "203700_attack",
+      "seconds": 0.36,
+      "sha256": "bb3e2343ba9791f98bc67f22025c7cf1232143a8797e638ce03fdb3cad07b326",
+      "bytes": 261994,
+      "width": 632,
+      "height": 621,
+      "alphaBounds": {
+        "left": 16,
+        "top": 63,
+        "right": 605,
+        "bottom": 594
+      }
+    }
+  ]
+}

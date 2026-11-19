@@ -161,13 +161,43 @@
       return animate(n, reduce ? [{ opacity: 0 }, { opacity: 1, offset: .25 }, { opacity: 0 }] :
         [{ opacity: 0, transform: 'translate(-50%,-50%) scale(.25)' }, { opacity: 1, offset: .2, transform: 'translate(-50%,-50%) scale(.9)' }, { opacity: 0, transform: 'translate(-50%,-50%) scale(' + (scale || 1.5) + ')' }], duration, delay);
     }
-    function float(p, color, text, delay, big, label) {
+    function float(p, color, text, delay, big, label, encouragement) {
       var anchor = { x: p.x, y: p.y - Math.min(35, p.height * .18) };
       if (bounds) {
         anchor.x = Math.max(bounds.left + 34, Math.min(bounds.left + bounds.width - 34, anchor.x));
         anchor.y = Math.max(bounds.top + Math.min(58, bounds.height * .32), anchor.y);
       }
       var n = mark('number' + (big ? ' big' : '') + (label ? ' label' : ''), anchor, color, text);
+      if (encouragement && !light && !reduce) {
+        var badge = doc.createElement('span');
+        badge.className = 'fx-encouragement';
+        var sources = Object.entries(encouragement.sources || {});
+        // On an old save the total may include points awarded before source
+        // tracking. Keep the total, but never credit those points to a hero.
+        if (sources.reduce(function (sum, pair) { return sum + pair[1]; }, 0) === encouragement.amount) {
+          sources.forEach(function (pair) {
+            var source = pair[0], url = options.sourceIcon?.(source);
+            if (!url) return;
+            var image = doc.createElement('img');
+            image.dataset.source = source;
+            image.alt = ''; image.src = url;
+            badge.appendChild(image);
+          });
+        }
+        var caption = doc.createElement('span');
+        caption.textContent = '鼓舞 +' + encouragement.amount;
+        badge.appendChild(caption);
+        n.appendChild(badge);
+        n.className += ' empowered';
+        // Beside the target, with room for the ordinary combo numbers to
+        // continue rising in their original lane.
+        if (bounds) {
+          var half = Math.ceil(n.offsetWidth / 2) || 55;
+          var direction = anchor.x < bounds.left + bounds.width / 2 ? 1 : -1;
+          var beside = anchor.x + direction * (half + 12);
+          n.style.left = Math.max(half + 3, Math.min(bounds.width - half - 3, beside - bounds.left)) + 'px';
+        }
+      }
       return animate(n, reduce ? [{ opacity: 0 }, { opacity: 1, offset: .2 }, { opacity: 0 }] :
         [{ opacity: 0, transform: 'translate(-50%,10px) scale(.75)' }, { opacity: 1, transform: 'translate(-50%,-8px) scale(1.12)', offset: .22 }, { opacity: 1, offset: .6 }, { opacity: 0, transform: 'translate(-50%,-65px) scale(1)' }], reduce ? 350 : 720, delay);
     }
@@ -486,7 +516,11 @@
               { transform: 'translateX(' + (-push * .25) + 'px)', offset: .58 }, { filter: 'brightness(1)', transform: 'none' }], e.burst ? 390 : 310, impactAt));
           }
         }
-        all.push(float(p, e.amount > 0 ? '#fff0db' : '#bbe1ff', e.amount > 0 ? '−' + e.amount : '格挡', impactAt + 20, e.burst));
+        if (e.encouragement) {
+          var status = sourceEl?.querySelector('[data-status="buff"]');
+          if (status) all.push(animate(status, [{}, { backgroundColor: '#c1ffe5', color: '#184b36', boxShadow: '0 0 0 2px #87e6b5', offset: .24 }, {}], 280, impactAt));
+        }
+        all.push(float(p, e.amount > 0 ? '#fff0db' : '#bbe1ff', e.amount > 0 ? '−' + e.amount : '格挡', impactAt + 20, e.burst, false, e.encouragement));
         if (e.absorbed > 0 && e.amount > 0) all.push(float({ x: p.x, y: p.y + 32, height: 0 }, '#b1dcff', '护盾吸收 ' + e.absorbed, impactAt + 90));
       } else {
         var heal = e.type === 'heal', block = e.type === 'block', payment = e.type === 'payHp', negative = e.type === 'debuff' || ['breakAmount', 'weak', 'curseExpires', 'stars'].includes(e.status);

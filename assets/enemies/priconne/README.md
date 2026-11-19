@@ -1,6 +1,8 @@
 # 原作魔物与Boss素材
 
-此目录使用《Princess Connect! Re:Dive》原作Spine模型，来源为wthee公开社区镜像，非Cygames官方分发端点。原美术、贴图及动画归Cygames所有。游戏只加载离线导出的12张完整透明PNG，不加载转换器或第三方运行时代码。
+此目录使用《Princess Connect! Re:Dive》原作 Spine 模型，来源为 wthee 公开社区镜像。原美术、贴图及动画归 Cygames 所有。游戏读取离线导出的透明 PNG。
+
+第一幕双射手使用原作「堅果射手」（203700）的待机姿势和投掷前一帧。同一模型的两张图分别对应两名敌人，原始组件来源、文件校验值与取帧时间见 [坚果射手素材记录](nut-shooter-source.json)。
 
 模型、战斗动画、atlas、贴图URL与SHA-256、原作ID、输出尺寸及透明像素检查记录在manifest.json；manifest.js提供TowerEnemyMedia.enemies，对应现有25个玩法敌人ID。玩法机制是本作设计，不声称复刻原作怪物数值。
 

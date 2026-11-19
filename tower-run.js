@@ -81,6 +81,8 @@
     }
     function encounter(id, stepKey) {
       var choice = battleChoice(id), gold = battleGold(run, choice.type, stepKey);
+      var mark = C.encounters[id].routeMark;
+      if (mark) { choice.routeMark = mark; choice.icon = mark === 'sentinel' ? '⬟' : '➶'; }
       var short = stepKey === 'commander';
       var reward = short ? ' · 只给金币' : choice.type === 'boss' ? ' · 遗物、升级、卡牌' : choice.type === 'elite' ? ' · 遗物、卡牌' : ' · 卡牌';
       choice.rewardText = gold + ' 金币' + reward;
@@ -89,7 +91,8 @@
     }
     var event = { type: 'event', name: '沿途奇遇', text: '进入后遇见一次随机事件，可按队伍的处境选择。', icon: '✦', rewardText: '事件选项' };
     var camp = { type: 'camp', name: '旅途营地', text: '为全队回复35%最大生命，或升级一张未升级卡。', icon: '♨', rewardText: '回复或升级' };
-    var earlyCamp = Object.assign({}, camp, { name: '战前营地', text: camp.text + ' 之后通往精英，奇遇在精英战后。' });
+    var eliteFork = run.act === 1 && run.eliteForkVersion === 1;
+    var earlyCamp = Object.assign({}, camp, { name: '战前营地', text: camp.text + (eliteFork ? ' 之后可从两场精英战中选一场。' : ' 之后通往精英，奇遇在精英战后。') });
     var lateCamp = run.campDebt && run.campDebt[run.act]
       ? { type: 'pass', name: '继续前进', text: '泉眼已预支本幕免费营地，可保留金币并继续前进。', icon: '→', rewardText: '营地已预支' }
       : camp;
@@ -102,12 +105,18 @@
     var eliteId = C.encounters[newEliteId] ? newEliteId : act.elites[0];
     var elite = encounter(eliteId, 'challenge');
     row([node(0, encounter(openers[0], 'battle'), [0]), node(2, encounter(openers[1], 'battle'), [0, 2])]);
-    row([node(0, event, run.act === 2 ? [0] : [0, 1]), node(2, earlyCamp, [2])]);
+    row([node(0, event, eliteFork ? [0, 1, 2] : run.act === 2 ? [0] : [0, 1]), node(2, earlyCamp, eliteFork ? [1, 2] : [2])]);
     if (run.act === 2) {
       var commander = encounter('starlit_commander', 'commander');
       row([node(0, commander, [0, 1]), node(2, commander, [2])]);
     }
-    row([node(0, encounter(normalId, 'challenge'), [0, 1]), node(1, elite, [0, 1]), node(2, elite, [2])]);
+    if (eliteFork) {
+      var sentinel = encounter('route_forest_sentinel', 'challenge');
+      var shooters = encounter('route_forest_volley', 'challenge');
+      row([node(0, encounter(normalId, 'challenge'), [0, 1]), node(1, sentinel, [1, 2]), node(2, shooters, [1, 2])]);
+    } else {
+      row([node(0, encounter(normalId, 'challenge'), [0, 1]), node(1, elite, [0, 1]), node(2, elite, [2])]);
+    }
     row([node(0, lateCamp, [1]), node(1, shop, [1]), node(2, event, [1])]);
     row([node(1, encounter(publicBoss(run).id, 'boss'), [])]);
 
@@ -234,6 +243,8 @@
       act: 1, stage: 0, screen: 'map', room: null, battle: null, reward: null,
       stats: { battles: 0, elites: 0, bosses: 0, rounds: 0 }, history: [],
       rngState: hash(seed), nextCardUid: 1, mapChoices: {}, rewardQueue: [], bossByAct: {}, eventsSeen: [], campDebt: {} };
+    // New branched expeditions opt in. A previously saved route keeps its original encounters.
+    if (layoutVersion === 2) run.eliteForkVersion = 1;
     ids.forEach(function (id) {
       run.hp[id] = C.heroes[id].hp;
       Object.keys(C.cards).filter(function (key) { return C.cards[key].owner === id && C.cards[key].starter; }).forEach(function (key) {

@@ -29,6 +29,9 @@
         Object.keys(old).forEach(function(key){if(old[key]!==current[key])statuses.push({key:key,label:labels[key],before:old[key],after:current[key]});});
         var hp=change(unit.hp,target.hp),block=change(unit.block,target.block),tp=change(unit.tp,target.tp);
         var intentChange=target.intent?.interrupted&&!unit.intent?.interrupted?{before:unit.intent.name,after:target.intent.name}:null;
+        if(target.hp>0 && unit.intent?.partnerShot && unit.intent.name!==target.intent?.name) {
+          intentChange={before:unit.intent.name,after:target.intent.name,kind:'soloShot'};
+        }
         var view={uid:String(uid(unit)),name:String(C.heroes[unit.id]?.name||unit.name||unit.id),side:(before.party||[]).some(function(h){return uid(h)===uid(unit);})?'party':'enemy',hp:hp,block:block,tp:tp,statuses:statuses,changed:!!(hp.delta||block.delta||tp.delta||statuses.length||intentChange)};
         if(intentChange)view.intentChange=intentChange;
         return view;
@@ -62,7 +65,7 @@
       units.forEach(function(unit){if(unit.block.delta)parts.push(unit.name+(unit.block.delta<0?' −':' +')+Math.abs(unit.block.delta)+'盾');});
       if(parts.length>3)parts=parts.slice(0,3).concat(['其他变化见目标详情']);
       if(!parts.length)parts.push(turn?'三人本轮不会掉血':pendingKind?'出牌后需完成选牌':'生命与护盾不变');
-      units.forEach(function(unit){if(unit.intentChange)parts.push(unit.name+'的'+unit.intentChange.before+'将被打断');});
+      units.forEach(function(unit){if(unit.intentChange)parts.push(unit.name+'的'+unit.intentChange.before+(unit.intentChange.kind==='soloShot'?'将改为'+unit.intentChange.after:'将被打断'));});
       if(!turn&&energy.spent>0)parts.push('支付'+energy.spent+'行动');
       return parts.join('；');
     }

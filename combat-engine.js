@@ -134,6 +134,11 @@
     var before = h.tp; h.tp = Math.max(0, Math.min(6, h.tp + n));
     if (h.tp !== before) event(b, 'tp', null, h.uid, h.tp - before);
   }
+  function addEncouragement(h, source, amount) {
+    if (!h.buff || !h.flags.buffSources) h.flags.buffSources = {};
+    h.flags.buffSources[source] = (h.flags.buffSources[source] || 0) + amount;
+    h.buff = (h.buff || 0) + amount;
+  }
   function block(b, h, n, source, ctx) {
     if (!alive(h) || n <= 0) return;
     var giver = hero(b, source), ordinary = ctx && ctx.kind === 'card';
@@ -142,7 +147,7 @@
     if (relic(b, 'guard_badge') && !b.flags.guardBadge) { n += 2; b.flags.guardBadge = true; }
     h.block += n; event(b, 'block', source, h.uid, n);
     if (ordinary && source === 'nozomi' && alive(giver) && ctx.cost > 0 && ctx.tags.includes('support') && h.uid !== source && !giver.flags.nozomi) {
-      giver.flags.nozomi = true; giver.buff = (giver.buff || 0) + (ctx.nozomiBuff || 2);
+      giver.flags.nozomi = true; addEncouragement(giver, source, ctx.nozomiBuff || 2);
       event(b, 'passive', source, source, ctx.nozomiBuff || 2, { passive: 'nozomi', recipient: h.uid });
     }
   }
@@ -210,6 +215,10 @@
     b.enemies.forEach(function (e) {
       if (!e.intent) return;
       var intent = e.intent, n = intent.baseAmount === undefined ? intent.amount || 0 : intent.baseAmount;
+      if (intent.partnerShot && !b.enemies.some(function (foe) { return foe.id === intent.partnerShot.partnerId && alive(foe); })) {
+        intent.name = intent.partnerShot.soloName;
+        n = intent.partnerShot.soloAmount + (intent.increase || 0);
+      }
       var hasDevice = b.enemies.some(function (foe) { return alive(foe) && foe.device; });
       if (!hasDevice && intent.amountWithoutDevice !== undefined) n = intent.amountWithoutDevice + (intent.increase || 0);
       if (intent.hitsWithDevice !== undefined) intent.hits = hasDevice ? intent.hitsWithDevice : intent.hitsWithoutDevice || 1;
@@ -243,7 +252,7 @@
   }
   function hit(b, owner, e, amount, damageType, ctx, opts) {
     if (!alive(e) || b.status !== 'active') return 0;
-    opts = opts || {}; var n = amount, active = ctx.active === true, armorIgnored = 0;
+    opts = opts || {}; var n = amount, active = ctx.active === true, armorIgnored = 0, encouragement;
     ctx.primaryTargets = ctx.primaryTargets || {};
     var first = active && !ctx.primaryTargets[e.uid];
     if (active) ctx.primaryTargets[e.uid] = true;
@@ -257,7 +266,12 @@
       if (e.curseExpires >= b.round && e.curseExpires > 0 && e.curseUsedRound !== b.round) {
         n += 2; e.curseUsedRound = b.round;
       }
-      if (!ctx.all && !ctx.buffUsed && h.buff) { n += h.buff; h.buff = 0; ctx.buffUsed = true; }
+      if (!ctx.all && !ctx.buffUsed && h.buff) {
+        // Previously saved buffs have an amount but no known contributor.
+        encouragement = { amount: h.buff, sources: h.flags.buffSources || {} };
+        n += h.buff;
+        h.buff = 0; delete h.flags.buffSources; ctx.buffUsed = true;
+      }
       if (!ctx.all && damageType === 'physical' && negative(e) && relic(b, 'wolf_fang') && !b.flags.wolfFang) { n += 2; b.flags.wolfFang = true; }
       if (!ctx.all && damageType === 'magic' && relic(b, 'witch_grimoire') && !b.flags.witchGrimoire) { n += 1; b.flags.witchGrimoire = true; }
       if (!ctx.all && e.position === 'back' && relic(b, 'silver_arrow') && !b.flags.silverArrow) { n += 1; b.flags.silverArrow = true; }
@@ -270,7 +284,9 @@
     n -= barrierAbsorbed;
     var shieldAbsorbed = Math.min(e.block || 0, n); e.block -= shieldAbsorbed; n -= shieldAbsorbed;
     var dealt = Math.min(e.hp, n); e.hp -= dealt;
-    event(b, 'hit', owner, e.uid, dealt, { damageType: damageType, absorbed: barrierAbsorbed + shieldAbsorbed, sourceKind: ctx.kind, raw: amount });
+    var hitDetails = { damageType: damageType, absorbed: barrierAbsorbed + shieldAbsorbed, sourceKind: ctx.kind, raw: amount };
+    if (encouragement) hitDetails.encouragement = encouragement;
+    event(b, 'hit', owner, e.uid, dealt, hitDetails);
     log(b, (hero(b, owner) || { name: owner }).name + ' → ' + e.name + '：' + dealt + (barrierAbsorbed + shieldAbsorbed ? '（吸收' + (barrierAbsorbed + shieldAbsorbed) + '）' : ''));
     if (active && dealt + shieldAbsorbed + barrierAbsorbed > 0 && e.intent && e.intent.reflect && !e.flags.reflected) {
       e.flags.reflected = true;
@@ -394,7 +410,7 @@
       } else if (fx.type === 'cover') {
         var friend = hero(b, target); if (friend && friend.uid !== owner) friend.coverFrom = owner;
       } else if (fx.type === 'buff') {
-        effectFriends(b, fx, owner, target).forEach(function (recipient) { recipient.buff = (recipient.buff || 0) + fx.amount; });
+        effectFriends(b, fx, owner, target).forEach(function (recipient) { addEncouragement(recipient, owner, fx.amount); });
       } else if (fx.type === 'guide') {
         var count = fx.count || 3;
         if (relic(b, 'tactical_notes') && !b.battleFlags.tacticalNotes) { count++; b.battleFlags.tacticalNotes = true; }

@@ -393,6 +393,37 @@
     text: '迎击者本轮首次受到有效的主动攻击后反伤3。可以改打另一位，或先给出牌者护盾。'
   };
 
+  encounter('route_forest_sentinel', '重甲卫士', 1, 'elite', '举斧蓄力后重斩前排，随后卸甲休息。蓄力和重斩轮有2护甲，卸甲轮可以集中反攻。', [
+    enemy('forest_axe_sentinel', '重甲卫士', 46, 'front', '⬟', '#a07556', [
+      guard('举斧蓄力 · 下轮重斩', { armor: 2 }),
+      attack('前排重斩', 12, 'front', { armor: 2 }),
+      guard('卸甲收势 · 本轮不攻击')
+    ], { art: 'assets/enemies/priconne/orc-leader.png' })
+  ]);
+  encounters.route_forest_sentinel.routeMark = 'sentinel';
+  encounters.route_forest_sentinel.tacticalRule = {
+    title: '卸甲空当',
+    text: '先蓄力，下轮重斩前排12点。第三轮停手，护甲由2降至0，之后重复。'
+  };
+
+  // Both occupy the front line so melee decks can break the volley on either side.
+  function pairedShot(partnerId, target) {
+    return attack('坚果齐射', 5, target, { partnerShot: { partnerId: partnerId, soloName: '单发投射', soloAmount: 3 } });
+  }
+  encounter('route_forest_volley', '坚果伏击', 1, 'elite', '两名射手都在近战范围内。首轮一发瞄准最前方，另一发优先瞄准其身后生命比例最低的伙伴。击倒一名即可拆散齐射。', [
+    enemy('forest_nut_vanguard', '压阵射手', 20, 'front', '➶', '#b97a54', [
+      pairedShot('forest_nut_flanker', 'front'), attack('迎面投掷', 4, 'front'), guard('拾取坚果 · 本轮不攻击')
+    ], { art: 'assets/enemies/priconne/nut-shooter.png' }),
+    enemy('forest_nut_flanker', '穿林射手', 18, 'front', '➶', '#668b87', [
+      pairedShot('forest_nut_vanguard', 'back'), guard('拾取坚果 · 本轮不攻击'), attack('穿林投掷', 4, 'back')
+    ], { art: 'assets/enemies/priconne/nut-shooter-ready.png' })
+  ]);
+  encounters.route_forest_volley.routeMark = 'volley';
+  encounters.route_forest_volley.tacticalRule = {
+    title: '双人齐射',
+    text: '首轮两发各5点，一发打前排，一发优先打身后血量比例最低的伙伴。击倒任一射手，另一发立即降为3点。'
+  };
+
   encounter('route_ruins_elite', '共鸣法阵', 2, 'elite', '共鸣魔像为术士放大群攻。近战也可拆除魔像，使术士的基础群攻从每人4点降至2点。击败术士即可获胜。', [
     enemy('route_ward_scribe', '缚阵术士', 43, 'front', '◉', '#a580bb', [
       aoe('法阵共鸣', 4, { amountWithoutDevice: 2 }),
