@@ -1,0 +1,151 @@
+/* The title scene owns only the opening screen. */
+.topbar .title-brand{display:none}
+body[data-screen=home]{min-width:0;min-height:100svh;display:flex;flex-direction:column;background:#f9f4ea}
+body[data-screen=home] #app{min-height:0;flex:1;display:flex;flex-direction:column}
+body[data-screen=home] .topbar{
+  position:absolute;inset:0 0 auto;z-index:3;height:70px;min-height:0;padding:0 4.5%;
+  background:linear-gradient(#0a1d39b3,transparent);border:0;box-shadow:none
+}
+body[data-screen=home] .brand{gap:9px;color:#fff5d6;background:transparent}
+body[data-screen=home] .brand-star{font-size:27px;text-shadow:none;color:#f7d58e}
+body[data-screen=home] .brand>span:not(.brand-star):not(.title-brand){display:none}
+body[data-screen=home] .brand .title-brand{display:inline-flex;align-items:baseline;gap:10px;font:650 17px/1.4 "Microsoft YaHei UI",sans-serif;letter-spacing:.025em}
+body[data-screen=home] .title-brand small{display:inline;margin:0;font:500 12px/1.4 "Microsoft YaHei UI",sans-serif;letter-spacing:.07em;color:#f1e8d5}
+body[data-screen=home] .topbar nav{width:auto;gap:5px}
+body[data-screen=home] .topbar nav>button{min-height:42px;padding:6px 12px;color:#fff6e7;font-size:14px;background:#13274366;border:1px solid #fcf1d153;border-radius:22px}
+body[data-screen=home] .topbar nav>button:hover{background:#234262}
+body[data-screen=home] .topbar nav [data-action=deck],body[data-screen=home] #run-meta,
+body[data-screen=home] footer .footer-edition{display:none}
+body[data-screen=home] footer{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 4.5%;color:#515970;background:#f8f3e9;border:0;line-height:1.5}
+.title-screen{
+  position:relative;isolation:isolate;overflow:hidden;box-sizing:border-box;flex:1;
+  display:grid;grid-template-rows:1fr auto;min-height:610px;
+  padding:clamp(100px,14vh,160px) 0 29px;background:#233753;color:#fff8e6
+}
+.title-screen::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#e5c38b,#fff0c9,#bc8a60);pointer-events:none}
+.title-picture,.title-haze,.title-stars{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.title-picture{z-index:-3;display:block;object-fit:cover;object-position:58% 45%}
+.title-haze{z-index:-2;background:linear-gradient(90deg,#0c2039ab 0%,#19294684 34%,#202f4512 58%,transparent 73%),linear-gradient(0deg,#0b1b32ef 0%,#13283e61 21%,transparent 54%)}
+.title-stars{z-index:-1}
+.title-stars i{position:absolute;width:9px;height:9px;background:#fff4d8;clip-path:polygon(50% 0,59% 40%,100% 50%,59% 60%,50% 100%,41% 60%,0 50%,41% 40%);animation:title-starlight 5s ease-in-out infinite}
+.title-stars i:nth-child(1){left:63%;top:14%}.title-stars i:nth-child(2){left:76%;top:21%;width:6px;height:6px;animation-delay:-2s}.title-stars i:nth-child(3){left:51%;top:34%;animation-delay:-3.6s}
+@keyframes title-starlight{0%,100%{opacity:.12;transform:scale(.5)}50%{opacity:.85;transform:scale(1.1)}}
+.title-content,.title-status{width:min(1280px,88%);margin-inline:auto}
+.title-content{display:grid;grid-template-columns:1.08fr 1fr;align-items:center;gap:3%;padding-bottom:clamp(36px,7vh,80px)}
+.title-copy{position:relative;z-index:1}
+.title-copy h1{position:relative;display:inline-block;margin:0;color:#fff9e8;font-family:"STZhongsong","Yu Mincho","Songti SC","SimSun",serif;font-weight:800;letter-spacing:.035em;font-size:clamp(69px,7.45vw,118px);line-height:1.18;text-shadow:0 3px 0 #734c4aa1,0 5px 17px #18264288}
+.title-copy h1 span{color:#ffe0a0}
+.title-subtitle{display:flex;align-items:center;gap:15px;margin:7px 0 34px;color:#fff1d6;letter-spacing:.3em;font:650 clamp(19px,1.7vw,27px)/1.35 "Yu Mincho","Songti SC","SimSun",serif;text-shadow:0 1px 6px #27374b}
+.title-subtitle i{display:block;position:relative;width:54px;height:1px;background:linear-gradient(90deg,#e8c88950,#ffe2a3)}
+.title-subtitle i:first-child::after,.title-subtitle i:last-child::before{content:"";position:absolute;right:0;top:-2px;width:5px;height:5px;background:#ffe2a3;transform:rotate(45deg)}
+.title-subtitle i:last-child{transform:scaleX(-1)}
+.title-legend,.title-gameplay{max-width:32em;font-family:"Microsoft YaHei UI",sans-serif;text-shadow:0 1px 3px #12243c,0 2px 10px #14284088}
+.title-legend{font-weight:600;font-size:clamp(17px,1.48vw,22px);line-height:1.75;margin:0 0 7px}
+.title-gameplay{margin:0 0 27px;color:#f5f0e7;font-size:clamp(14px,1.17vw,17px);line-height:1.7}
+.title-save-summary{margin:0 0 8px;color:#fff3cf;font-size:14px;font-weight:650;text-shadow:0 1px 4px #1d263a}
+.title-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.title-screen .title-start,.title-screen .title-secondary{display:inline-flex;align-items:center;justify-content:center;gap:20px;min-height:51px;min-width:153px;padding:0 22px;font-size:17px;font-weight:750;border-radius:8px}
+.title-screen .title-start{color:#563a2f;background:linear-gradient(180deg,#fff4ca,#f3cc85);border:1px solid #fff0bb;box-shadow:inset 0 0 0 3px #fff3d060,0 5px 13px #0d1a344d}
+.title-screen .title-start:hover{color:#3a2a26;background:#fff1bc;transform:translateY(-2px)}
+.title-screen .title-secondary{min-width:105px;font-size:15px;color:#fff6e5;background:#172c48cd;border:1px solid #e8d8bb9c}
+.title-screen .title-secondary:hover{background:#324a64;color:#fff}
+.title-screen button:focus-visible,body[data-screen=home] .topbar button:focus-visible{outline:3px solid #ffe78b;outline-offset:4px}
+.title-hand{position:relative;width:100%;max-width:550px;min-width:0;justify-self:center;align-self:end;height:clamp(201px,25vw,310px);margin-bottom:1.2%}
+.title-hand::before{content:"";position:absolute;inset:74% 6% -16%;background:radial-gradient(ellipse,#13213ba3,transparent 68%);pointer-events:none}
+.title-screen .title-card{
+  --angle:0deg;--offset:0%;--rise:0px;position:absolute;bottom:2%;left:50%;width:36%;max-width:192px;aspect-ratio: .66;
+  display:grid;grid-template-rows:minmax(0,1fr) auto auto;justify-items:center;isolation:isolate;overflow:hidden;
+  margin:0;padding:4px 4px clamp(9px,1.05vw,16px);color:#28394e;
+  border:2px solid #ffedc7;border-radius:12px;background:#f7efdd;
+  box-shadow:0 0 0 1px #947857,0 5px 13px #0b203658,inset 0 0 0 3px #c19f72;
+  transform-origin:50% 87%;transform:translateX(calc(-50% + var(--offset))) translateY(var(--rise)) rotate(var(--angle));
+  transition:transform .22s ease-out,box-shadow .22s ease-out
+}
+.title-card:nth-child(1){--angle:-13deg;--offset:-80%;--rise:9px;z-index:1}
+.title-card:nth-child(2){--angle:-1deg;--rise:-7px;z-index:2}
+.title-card:nth-child(3){--angle:12deg;--offset:80%;--rise:9px;z-index:1}
+.title-screen .title-card:is(:hover,:focus-visible){z-index:3;background:#fff3dc;color:#243448;transform:translateX(calc(-50% + var(--offset))) translateY(calc(var(--rise) - 8px)) rotate(var(--angle));box-shadow:0 0 0 2px #f7d583,0 6px 17px #20304b74}
+.title-portrait{position:relative;align-self:stretch;width:100%;min-height:0;margin:0 0 5px;display:block;overflow:hidden;border:1px solid #a89172;border-radius:7px 7px 45% 45% / 7px 7px 5% 5%;background:radial-gradient(ellipse at 70% 28%,#fff8ec,#fff7e060 48%,transparent),linear-gradient(155deg,#eff3f5,var(--hero-ink))}
+.title-portrait::before{content:"";position:absolute;inset:8%;border:1px solid #fffaf6a6;border-radius:50% 50% 45% 45%;transform:rotate(17deg)}
+.title-portrait img{position:absolute;left:-16%;top:-1%;width:132%;height:146%;max-width:none;max-height:none;object-fit:contain;object-position:center top;pointer-events:none}
+.title-card-name{display:block;margin:0 0 1px;font:750 clamp(18px,1.65vw,25px)/1.16 "Yu Mincho","Songti SC","SimSun",serif;color:#293a4f}
+.title-card-role{font-size:clamp(10px,.82vw,13px);font-weight:650;line-height:1.4;color:#615443}
+.title-card-role::after{content:"›";margin-left:.35em;color:#7a5a37}
+.title-status{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.title-status .asset-loading{margin:0;padding:0;width:min(300px,70%);background:transparent;border:0;border-radius:0;color:#f4efe2;font-size:12px;line-height:1.45}
+.title-status .asset-loading progress{height:3px;background:#a4afbc65;margin-top:6px}
+.title-status .asset-loading progress::-webkit-progress-bar{background:#a4afbc65}
+.title-status .asset-loading progress::-webkit-progress-value{background:#e2be80}
+.title-status .asset-loading progress::-moz-progress-bar{background:#e2be80}
+.title-status .asset-loading-skip{margin-top:8px;padding:3px 12px;background:#fff3d8;color:#503e2c;border-color:#fff0cf}
+.title-edition{color:#f4ede0;font-size:12px;line-height:1.5;white-space:nowrap;margin-left:auto}
+@media(max-width:840px) and (min-width:671px){
+  .title-content,.title-status{width:91%}.title-copy h1{font-size:70px}.title-content{grid-template-columns:1.18fr 1fr;gap:0}
+  .title-screen .title-card{width:35%}.title-hand{margin-bottom:8%}
+}
+@media(max-width:670px),(min-width:671px) and (max-width:900px) and (max-aspect-ratio:1/1){
+  body[data-screen=home] .topbar{height:54px;flex-wrap:nowrap;justify-content:space-between;padding:0 4%;gap:0}
+  body[data-screen=home] .brand{width:auto;padding:2px 0;gap:5px}
+  body[data-screen=home] .brand .title-brand{font-size:14px;gap:4px}
+  body[data-screen=home] .title-brand small{display:none}
+  body[data-screen=home] .topbar nav{justify-content:flex-end;gap:3px}
+  body[data-screen=home] .topbar nav>button{font-size:12px;min-height:36px;padding:5px 9px}
+  body[data-screen=home] footer{padding:9px 5%;align-items:flex-start;font-size:10px;flex-wrap:wrap}
+  .title-screen{min-height:0;display:flex;flex-direction:column;justify-content:center;padding:clamp(68px,9svh,98px) 0 clamp(18px,4svh,37px);background:#f6f1e6;color:#2d4059}
+  .title-picture{height:clamp(290px,55svh,565px);object-position:57% 30%}
+  .title-haze{height:calc(clamp(290px,55svh,565px) + 1px);background:linear-gradient(0deg,#f6f1e6 0%,#f6f1e65e 15%,transparent 36%),linear-gradient(90deg,#152642ce,#182a4361 55%,transparent)}
+  .title-stars{height:190px}
+  .title-content,.title-status{width:min(90%,490px)}
+  .title-content{display:grid;grid-template-columns:1fr;grid-template-areas:"logo" "subtitle" "legend" "hand" "gameplay" "summary" "actions";align-content:start;align-items:start;gap:0;padding-bottom:0}
+  .title-copy{display:contents}
+  .title-copy h1{grid-area:logo;justify-self:start;color:#fff8e5;font-size:clamp(47px,11.5vw,67px)}
+  .title-subtitle{grid-area:subtitle;gap:8px;font-size:16px;margin:4px 0 12px}.title-subtitle i{width:26px}
+  .title-legend{grid-area:legend;width:max-content;max-width:100%;font-size:14px;line-height:1.55;color:#fffdf4;margin:0}
+  .title-hand{grid-area:hand;align-self:start;width:min(96%,360px);height:clamp(160px,26svh,225px);margin:10px 0 13px}
+  .title-hand::before{inset:77% 4% -5%;opacity:.42}
+  .title-screen .title-card{width:34%;border-radius:8px;padding:3px 3px 6px}
+  .title-card:nth-child(1){--angle:-11deg;--offset:-88%;--rise:2px}
+  .title-card:nth-child(2){--rise:-2px}
+  .title-card:nth-child(3){--angle:11deg;--offset:88%;--rise:2px}
+  .title-portrait{margin-bottom:3px}.title-card-name{font-size:16px}.title-card-role{font-size:10px}
+  .title-gameplay{grid-area:gameplay;justify-self:center;text-align:center;max-width:28em;color:#455972;font-size:14px;line-height:1.6;text-shadow:none;margin:11px 0 13px}
+  .title-save-summary{grid-area:summary;text-align:center;color:#694f37;text-shadow:none;font-size:13px}
+  .title-actions{grid-area:actions;justify-content:center;gap:8px}
+  .title-screen .title-start{min-width:145px;min-height:48px;background:linear-gradient(165deg,#ad4f76,#87405f);border-color:#954767;color:white;box-shadow:inset 0 0 0 2px #e8b7bc5e,0 4px 9px #a9747224}
+  .title-screen .title-start:hover{background:#813d5c;color:white}
+  .title-screen .title-secondary{min-height:46px;min-width:93px;color:#614e55;border-color:#c5a5a7;background:#fffdfa}
+  .title-screen .title-secondary:hover{background:#fff3e7;color:#614e55}
+  .title-status{margin-top:clamp(21px,4svh,36px);border-top:1px solid #cbbeaa80;padding-top:13px}
+  .title-status .asset-loading{color:#4a5a6c;font-size:11px;width:min(68%,250px)}
+  .title-edition{color:#636174;font-size:10px}
+  .title-screen button:focus-visible{outline-color:#69466b}
+}
+@media(max-width:670px) and (max-height:690px){
+  .title-screen{padding:59px 0 12px}
+  .title-copy h1{font-size:44px}.title-subtitle{margin:1px 0 6px}
+  .title-hand{width:min(85%,275px);height:clamp(120px,22svh,148px);margin:8px 0 0}
+  .title-gameplay{font-size:13px;margin:8px 0 9px}
+  .title-save-summary{margin-bottom:5px}
+  .title-status{margin-top:14px;padding-top:8px}
+}
+@media(min-width:671px) and (max-height:540px){
+  body[data-screen=home] .topbar{height:44px}
+  body[data-screen=home] .topbar nav>button{min-height:32px;font-size:12px}
+  body[data-screen=home] footer{padding-block:5px;font-size:10px}
+  .title-screen{min-height:295px;padding:49px 0 10px}
+  .title-content{grid-template-columns:1.25fr 1fr;padding-bottom:8px}
+  .title-copy h1{font-size:clamp(42px,5.5vw,66px)}
+  .title-subtitle{font-size:15px;margin:2px 0 6px}
+  .title-legend{font-size:14px;line-height:1.5;margin-bottom:3px}
+  .title-gameplay{font-size:13px;margin-bottom:8px}
+  .title-save-summary{font-size:12px;margin-bottom:4px}
+  .title-screen .title-start,.title-screen .title-secondary{min-height:36px;font-size:14px;min-width:106px}
+  .title-hand{max-width:305px;height:min(47svh,185px);margin-bottom:1%}
+  .title-screen .title-card{padding-bottom:5px}
+  .title-card-name{font-size:16px}.title-card-role{font-size:10px}
+  .title-status .asset-loading,.title-edition{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  .title-stars i{animation:none;opacity:.48}
+  .title-screen .title-card,.title-screen .title-start,.title-screen .title-secondary{transition:none}
+}

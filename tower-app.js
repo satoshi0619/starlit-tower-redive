@@ -37,7 +37,7 @@
   const enemyNames={ 'Goblin Guard':'哥布林护卫','Kobold':'狗头人','Gellatina':'软泥怪','Wood Soul':'木灵','Golem':'魔像','Blue Golem':'蓝魔像','Fire Mage':'火焰法师','Werewolf':'狼人','Flaming Skulls':'火焰骷髅','Lizardman':'蜥蜴人','Sea Drake':'希德雷克','Orc Leader':'兽人首领' };
   function applyEnemyArt(unit){const cast=window.TowerEncounterCast?.enemies?.[unit.id];if(cast){unit.art=cast.art;unit.name=cast.displayName;unit.originalName=cast.originalName||cast.displayName;unit.isBoss=true;unit.castColor=cast.accent||cast.color;return unit;}const m=window.TowerEnemyMedia?.enemies?.[unit.id];if(m){unit.art=m.art;unit.combatRoleName??=unit.name;unit.name=unit.device?'封印魔像':enemyNames[m.originalName]||m.indexName||m.originalName;unit.originalName=m.originalName;}return unit;}
   // Keep changed standing art fresh for returning online players.
-  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.25.0';});
+  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.26.0';});
   Object.values(C.encounters).forEach(enc=>enc.enemies.forEach(applyEnemyArt));
   const battle = () => run?.battle;
   const inEcho = () => run?.echo?.status==='active';
@@ -129,10 +129,10 @@
   function primeEntry(){
     if(!preload||prep)return;
     const savedArt=encounterArt(C.encounters[saved?.battle?.encounterId]);
-    const firstIds=saved?.heroIds||chosen;
+    const firstIds=homePartyIds();
     const firstHeroes=firstIds.map(id=>C.heroes[id]).filter(Boolean);
     const artwork=unit=>[heroArt(unit),heroIcon(unit)];
-    const queue=['assets/ui/map_bg.webp','assets/ui/app_bg.webp',...savedArt,...firstHeroes.flatMap(artwork),
+    const queue=['assets/story/tower_appears.webp','assets/ui/map_bg.webp','assets/ui/app_bg.webp',...savedArt,...firstHeroes.flatMap(artwork),
       ...encounterArt(C.encounters.tutorial_gate),...encounterArt(C.encounters.forest_patrol),...heroes.flatMap(artwork),
       ...preload.campaignImages(C,window.TowerEncounterCast)];
     preload.prepare(queue,{priority:true,onProgress:state=>{
@@ -154,7 +154,7 @@
   function queueMedia(){
     const cache=window.TowerMediaPreload;
     if(!cache||savesData()||screen==='home'&&(!prep||prep.settled<prep.total))return;
-    const team=run?.heroIds||(screen==='home'?saved?.heroIds:null)||chosen;
+    const team=run?.heroIds||(screen==='home'?homePartyIds():chosen);
     const boss=screen==='battle'?bossCast():null;
     const media=team.map(id=>window.TowerMedia?.characters[id]?.ub);
     if(boss?.ub)media.unshift(boss.ub);
@@ -314,11 +314,61 @@
     refreshBattlePreview();showContextHint();
     paintPreload();warmCurrentScene();queueMedia();
   }
+  function homePartyIds(useDefault=true){
+    const ids=saved?.heroIds;
+    if([2,3].includes(saved?.version)&&Array.isArray(saved.deck)&&Array.isArray(ids)&&ids.length===3&&
+       new Set(ids).size===3&&ids.every(id=>typeof id==='string'&&Object.hasOwn(C.heroes,id)))return ids;
+    // Returning from an unfinished party selection can leave fewer than three picks.
+    return useDefault?[...new Set([...chosen,...C.teams[0].ids])].slice(0,3):[];
+  }
+  function renderHomeActions(){
+    const scenes={map:'选择路线',battle:'战斗中',reward:'领取战利品',camp:'营地休整',shop:'旅人的小铺',event:'旅途奇遇',result:'远征结束'};
+    const hasSave=homePartyIds(false).length===3&&Object.hasOwn(scenes,saved.screen);
+    const finished=hasSave&&saved.screen==='result';
+    const continuing=hasSave&&!finished;
+    const main=continuing?'继续远征':finished?'再组一队':'组队出发';
+    let summary='';
+    if(hasSave){
+      const act=C.acts.find(a=>a.id===Number(saved.act));
+      const chapter=act?`第${['一','二','三'][act.id-1]}幕 · ${act.name}`:'';
+      let where=scenes[saved.screen];
+      if(finished)where=saved.result==='won'?'已登顶':saved.result==='lost'?'队伍止步':where;
+      else if(saved.tutorial?.active)where='新手演练';
+      else if(saved.echo?.status==='active')where='登顶回响';
+      else if(saved.screen==='battle'&&typeof saved.room?.name==='string')where=saved.room.name||where;
+      else if(saved.screen==='map'&&Number.isInteger(saved.stage)&&saved.stage>=0)where=`第 ${saved.stage+1} 站 · 选择路线`;
+      summary=`<p class="title-save-summary">${[chapter,where].filter(Boolean).map(esc).join(' · ')}</p>`;
+    }
+    const primary=bText(main+' <span aria-hidden="true">→</span>',continuing?'continue':'new-run','','title-start');
+    const secondary=hasSave?bText(finished?'查看上次战报':'重新组队',finished?'continue':'new-run','','title-secondary'):'';
+    return summary+'<div class="title-actions">'+primary+secondary+'</div>';
+  }
   function preloadPanel(){
     return preload?`<div id="asset-loading" class="asset-loading" hidden><div class="asset-loading-detail"><span id="asset-loading-caption" class="asset-loading-caption" aria-live="polite"></span><output aria-hidden="true">0%</output></div><progress max="100" value="0" aria-labelledby="asset-loading-caption"></progress>${bText('先进入选人','skip-preload','hidden','small asset-loading-skip')}</div>`:'';
   }
   function renderHome(){
-    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div>${preloadPanel()}<div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.25 公开试玩版 · 三幕十战 · 分岔登塔路线<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
+    const party=homePartyIds().map(id=>C.heroes[id]);
+    const portraits=party.map(hero=>`
+      <button type="button" class="title-card" style="--hero-ink:${esc(hero.color)}" data-action="hero-info" data-id="${esc(hero.id)}" aria-haspopup="dialog" aria-label="查看${esc(hero.name)}的招式" title="查看${esc(hero.name)}的招式和起始牌">
+        <span class="title-portrait"><img src="${esc(heroArt(hero))}" alt="" decoding="async"></span>
+        <span class="title-card-name">${esc(hero.name)}</span><span class="title-card-role">${esc(hero.role)}</span>
+      </button>`).join('');
+    return `<section class="title-screen" aria-labelledby="title-logo">
+      <img class="title-picture" src="assets/story/tower_appears.webp" alt="" fetchpriority="high">
+      <div class="title-haze" aria-hidden="true"></div>
+      <div class="title-stars" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="title-content">
+        <div class="title-copy">
+          <h1 id="title-logo">星愿<span>高塔</span></h1>
+          <p class="title-subtitle"><i aria-hidden="true"></i>三人的远征<i aria-hidden="true"></i></p>
+          <p class="title-legend">兰德索尔的夜空，忽然多了一座高塔。<br>传说登上塔顶，就能实现一个心愿。</p>
+          <p class="title-gameplay">与三名伙伴组队，构筑专属牌组，挑战塔中熟悉的幻影。</p>
+          ${renderHomeActions()}
+        </div>
+        <div class="title-hand" aria-label="同行伙伴，选择一张查看招式">${portraits}</div>
+      </div>
+      <div class="title-status">${preloadPanel()}<span class="title-edition">v3.26 公开试玩版</span></div>
+    </section>`;
   }
   const formationPositions = ['前排','中排','后排'];
   const teamTactics = [
