@@ -10,6 +10,7 @@
   const HINTS='starlitTower.hints.v3.6';
   let hintSeen={},hintBefore=null,previewCardUid=null;
   let settings = {...defaults}, run = null, screen = 'home', chosen = ['pecorine','rei','kokkoro'];
+  let setupMode = 'teams', setupSeed = '', setupOptionsOpen = false;
   let selected = null, spendBlock = 0, consumeCurse = true, hoverTarget = null, modalContext = null;
   let bgm = null, bgmMode = '', voice = null, voiceController=null, voiceSequence=0, voiceDucking=false, activeBossPerformance=null, activePresentation = null, toastTimer = null;
   let saved = null, busy = false, eventCursor = 0, activeFeedback=null, tutorialEnabled=true, merchantLine='', merchantEntering=false, dockObserver=null, burstSession=0;
@@ -18,7 +19,15 @@
   try { hintSeen=JSON.parse(localStorage.getItem(HINTS)||'{}')||{}; }catch(_){}
   if (!C || !E || !R) { $('app').innerHTML='<div class="page"><h2>游戏文件尚未加载完整</h2><p>请确认 content.js、combat-engine.js、tower-run.js 与入口放在同一文件夹。</p></div>'; return; }
   const heroes = Object.values(C.heroes), definitions = Object.values(C.cards);
-  const heroArt = h => h.art || h.portrait;
+  const heroArt = h => {
+    const src = h.art || h.portrait;
+    if (window.TowerBuild?.testTools === false && (h.id === 'kokkoro' || h.id === 'nozomi')) {
+      return src.replace(/^[^#]+/, path => /[?&]frame=/.test(path)
+        ? path.replace(/([?&])frame=[^&]*/, '$1frame=2')
+        : path + (path.includes('?') ? '&' : '?') + 'frame=2');
+    }
+    return src;
+  };
   const heroIcon = h => window.TowerRosterArt?.[h.id]?.icon || window.TowerEncounterCast?.avatars?.[h.id]?.icon || heroArt(h);
   const clone = value => JSON.parse(JSON.stringify(value));
   const visibleHand = () => window.TowerHandOrder.sort(battle()?.hand||[],run?.heroIds||[],C.cards);
@@ -28,7 +37,7 @@
   const enemyNames={ 'Goblin Guard':'哥布林护卫','Kobold':'狗头人','Gellatina':'软泥怪','Wood Soul':'木灵','Golem':'魔像','Blue Golem':'蓝魔像','Fire Mage':'火焰法师','Werewolf':'狼人','Flaming Skulls':'火焰骷髅','Lizardman':'蜥蜴人','Sea Drake':'希德雷克','Orc Leader':'兽人首领' };
   function applyEnemyArt(unit){const cast=window.TowerEncounterCast?.enemies?.[unit.id];if(cast){unit.art=cast.art;unit.name=cast.displayName;unit.originalName=cast.originalName||cast.displayName;unit.isBoss=true;unit.castColor=cast.accent||cast.color;return unit;}const m=window.TowerEnemyMedia?.enemies?.[unit.id];if(m){unit.art=m.art;unit.combatRoleName??=unit.name;unit.name=unit.device?'封印魔像':enemyNames[m.originalName]||m.indexName||m.originalName;unit.originalName=m.originalName;}return unit;}
   // Keep changed standing art fresh for returning online players.
-  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.21.0';});
+  for(const group of ['characters','bosses','enemies'])Object.values(window.TowerEncounterCast?.[group]||{}).forEach(entry=>{if(entry.art&&!entry.art.includes('release='))entry.art+=(entry.art.includes('?')?'&':'?')+'release=3.25.0';});
   Object.values(C.encounters).forEach(enc=>enc.enemies.forEach(applyEnemyArt));
   const battle = () => run?.battle;
   const inEcho = () => run?.echo?.status==='active';
@@ -91,7 +100,8 @@
     });
     if(!controller.getState().completed)voiceController=controller;return controller;
   }
-  function hpBar(hp,max,id=null){return `<div class="hp-track ${hp/max<.35?'low':''}" ${id?`data-hp-unit="${esc(id)}"`:''}><i style="width:${Math.max(0,Math.min(100,hp/max*100))}%"></i>${id?'<span class="hp-forecast" aria-hidden="true"></span>':''}</div>`;}
+  const hpScale = (hp, max) => `scaleX(${max > 0 ? Math.max(0, Math.min(1, hp / max)) : 0})`;
+  function hpBar(hp,max,id=null){return `<div class="hp-track ${hp/max<.35?'low':''}" ${id?`data-hp-unit="${esc(id)}"`:''}><i style="transform:${hpScale(hp,max)}"></i>${id?'<span class="hp-forecast" aria-hidden="true"></span>':''}</div>`;}
 
   const preload = window.TowerAssetPreload;
   const connection = window.navigator?.connection;
@@ -122,7 +132,7 @@
     const firstIds=saved?.heroIds||chosen;
     const firstHeroes=firstIds.map(id=>C.heroes[id]).filter(Boolean);
     const artwork=unit=>[heroArt(unit),heroIcon(unit)];
-    const queue=['assets/ui/map_bg.webp',...savedArt,...firstHeroes.flatMap(artwork),
+    const queue=['assets/ui/map_bg.webp','assets/ui/app_bg.webp',...savedArt,...firstHeroes.flatMap(artwork),
       ...encounterArt(C.encounters.tutorial_gate),...encounterArt(C.encounters.forest_patrol),...heroes.flatMap(artwork),
       ...preload.campaignImages(C,window.TowerEncounterCast)];
     preload.prepare(queue,{priority:true,onProgress:state=>{
@@ -137,7 +147,9 @@
     if(!skip&&screen==='home'&&preload&&(!prep||prep.settled<prep.total)){
       waitingForRoster=true;primeEntry();paintPreload();return;
     }
-    waitingForRoster=false;stopBossPerformance();stopVoice();closeModal();if(run)save();run=null;screen='setup';render();window.scrollTo(0,0);
+    waitingForRoster=false;activePresentation?.cancel();stopBossPerformance();stopVoice();closeModal();if(run)save();run=null;screen='setup';
+    setupMode='teams';setupSeed=Date.now().toString(36).slice(-6).toUpperCase();setupOptionsOpen=false;
+    render();window.scrollTo(0,0);
   }
   function queueMedia(){
     const cache=window.TowerMediaPreload;
@@ -306,14 +318,97 @@
     return preload?`<div id="asset-loading" class="asset-loading" hidden><div class="asset-loading-detail"><span id="asset-loading-caption" class="asset-loading-caption" aria-live="polite"></span><output aria-hidden="true">0%</output></div><progress max="100" value="0" aria-labelledby="asset-loading-caption"></progress>${bText('先进入选人','skip-preload','hidden','small asset-loading-skip')}</div>`:'';
   }
   function renderHome(){
-    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div>${preloadPanel()}<div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.21 公开试玩版 · 三幕十战 · 分岔登塔路线<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
+    return `<section class="landing"><div class="landing-art" aria-hidden="true"></div><div class="landing-copy"><p class="eyebrow">兰德索尔传闻 · 一场同人原创冒险</p><h1>传闻塔顶，<br><em>能实现心愿。</em></h1><div class="landing-story"><p>兰德索尔附近，一座来历不明的高塔忽然现世。<br>随之传开的，是一个令人心动的传闻：<strong>登上塔顶，就能实现心愿。</strong></p><p>怀着各自的期盼，伙伴们三人一组，踏上登塔之旅。<br>而塔中拦路的魔物与强敌，竟是这个世界中熟悉身影的幻影……</p></div><div class="actions">${bText(saved&&saved.screen!=='result'?'开启新远征':'组队挑战高塔','new-run','','primary')}${saved?bText('继续上次远征','continue'):''}</div>${preloadPanel()}<div class="landing-notes"><div><strong>${String(heroes.length).padStart(2,'0')}</strong><span>各具特色的角色</span></div><div><strong>03</strong><span>相伴整局的伙伴</span></div><div><strong>16</strong><span>通往塔顶的抉择</span></div></div><p class="landing-footnote">v3.25 公开试玩版 · 三幕十战 · 分岔登塔路线<br>自动保存 · 固定三人构筑 · 十八位伙伴的战斗习惯</p></div><p class="landing-quote">「那么，这次也一起出发吧。」</p></section>`;
   }
-  function recommendedTeams(){
-    const labels=[['初次登塔推荐','护盾承伤 → 破甲 → 剑锋收尾','物理爆发 · 稳住前排'],['喜欢魔法与群攻','咒痕点杀 → 星痕清场 → 指路调牌','魔法输出 · 处理后排'],['喜欢治疗与容错','佩可掩护 → 凯露突破 → 优衣修复','物魔搭配 · 治疗容错']];
-    return `<section class="recommended-teams" aria-labelledby="recommended-title"><div class="recommended-heading"><div><p class="eyebrow">从一套配合开始</p><h3 id="recommended-title">先选一支推荐队伍</h3><p>点击下方队伍即可选好三人；也可以在下方自由搭配。</p></div><span class="recommend-hint">选好后，再点击「踏入高塔」</span></div><div class="recommended-grid">${C.teams.map((t,i)=>{const active=chosen.length===t.ids.length&&t.ids.every((id,n)=>chosen[n]===id);return `<button class="recommended-team ${active?'is-picked':''}" data-action="preset" data-index="${i}" aria-pressed="${active}" aria-label="选用${esc(t.name)}，${t.ids.map(id=>esc(C.heroes[id].name)).join('、')}"><span class="recommend-tag">${labels[i]?.[0]||'推荐配合'}</span><span class="recommend-title">${esc(t.name)}</span><span class="recommend-members">${t.ids.map(id=>`<span><img src="${esc(heroIcon(C.heroes[id]))}" alt=""><span>${esc(C.heroes[id].name)}</span></span>`).join('')}</span><span class="recommend-plan">${esc(labels[i]?.[1]||t.text)}</span><span class="recommend-footer"><span>${esc(labels[i]?.[2]||'三人协作')}</span><strong>${active?'✓ 已选用':'选用这支队伍 →'}</strong></span></button>`;}).join('')}</div><p class="recommend-caution">${esc(C.teams.find(t=>t.ids.length===chosen.length&&t.ids.every((id,i)=>chosen[i]===id))?.text||'自由搭配：留意承伤、输出与支援的配合；每位伙伴都会带入自己的6张起始牌。')}</p></section>`;
+  const formationPositions = ['前排','中排','后排'];
+  const teamTactics = [
+    ['护盾 · 破甲连击','佩可挡下攻势，怜趁破甲连斩，可可萝给关键一击加力。'],
+    ['咒痕 · 星痕群攻','可可萝备好护盾，凯露给后排施咒，初音用流星收场。'],
+    ['治疗 · 物魔搭配','佩可守护队友，凯露突破护甲，优衣留着治疗救急。'],
+    ['余盾 · 远程收尾','纯守住前排，真琴撕开护甲，铃奈用弓箭追击后方。'],
+    ['自疗 · 魔法爆发','宫子自疗承压，让安娜的冥火和依里的雷霆集中爆发。'],
+    ['连拳 · 指定充能','香织紧追同一目标，咲恋充能，莫妮卡为交替出牌的伙伴加盾。'],
+    ['掩护 · 牌序射击','望掩护队友，真琴施加破甲，亚里莎调整牌序射出第二箭。'],
+    ['救援 · 生命支付','安娜以生命换火力，静流和优衣用护盾与治疗接住伤势。']
+  ];
+
+  function partyFigure(id,index){
+    const position=formationPositions[index];
+    if(!id)return `<div class="party-slot is-empty"><button class="empty-party-slot" data-action="setup-mode" data-mode="roster" aria-label="选择${position}伙伴"><span aria-hidden="true">＋</span>${position}待编入</button></div>`;
+    const h=C.heroes[id];
+    const move=index ? bText('←','move-hero',`data-index="${index}" data-id="${id}" title="向前换位" aria-label="${esc(h.name)}向前换位"`,'party-move') : '';
+    return `<div class="party-slot" style="--hero:${esc(h.color)}">
+      <button class="party-figure" data-action="hero-info" data-id="${id}" aria-label="${position}${esc(h.name)}，查看招式和起始牌">
+        <span class="party-art"><img src="${esc(heroArt(h))}" alt=""></span>
+        <span class="party-plate"><span class="party-position">${position}</span><strong>${esc(h.name)}</strong></span>
+      </button>${move}</div>`;
   }
+
+  function recommendedTeams(active){
+    return `<div class="party-presets">${C.teams.map((team,i)=>{
+      const picked=i===active;
+      return `<button class="party-preset" data-action="preset" data-index="${i}" aria-pressed="${picked}" aria-label="选用${esc(team.name)}，${team.ids.map(id=>esc(C.heroes[id].name)).join('、')}">
+        <span class="party-preset-art" aria-hidden="true">${team.ids.map(id=>`<img src="${esc(heroIcon(C.heroes[id]))}" alt="">`).join('')}</span>
+        <span class="party-preset-copy"><strong>${esc(team.name)}</strong><small>${esc(teamTactics[i]?.[0]||'')}</small></span>
+        ${picked?'<span class="party-check" aria-hidden="true">✓</span>':''}</button>`;
+    }).join('')}</div>`;
+  }
+
+  function partyRoster(){
+    return `<div class="party-roster">${heroes.map(h=>{
+      const i=chosen.indexOf(h.id);
+      return `<button class="party-recruit" data-action="toggle-hero" data-id="${h.id}" aria-pressed="${i>=0}" style="--hero:${esc(h.color)}">
+        <img src="${esc(heroIcon(h))}" alt=""><span class="party-recruit-copy"><strong>${esc(h.name)}</strong>
+        <small>${esc(h.role)} · ${h.hp} HP</small></span>
+        <span class="party-recruit-state">${i>=0?formationPositions[i]:'＋'}</span>
+        <span class="party-recruit-habit">${esc(h.summary||h.passive)}</span></button>`;
+    }).join('')}</div>`;
+  }
+
   function renderSetup(){
-    return `<section class="page"><div class="page-head"><div><p class="eyebrow">YOUR PARTY · YOUR DECK</p><h2>这次，和谁一起出发？</h2><p class="muted">开局选定三人，围绕她们构筑整局。左侧角色站在最前排；战后奖励只会出现同行角色的卡牌。</p></div><span class="pill gold">每人 6 张起始牌 · 共 18 张</span></div>${recommendedTeams()}<div class="custom-party-heading"><h3>也可以自由搭配</h3><p>点击角色加入或移出队伍，最多同行三人。</p></div><div class="roster">${heroes.map(h=>{const i=chosen.indexOf(h.id);return `<button class="hero-choice ${i>=0?'selected':''}" style="--hero:${esc(h.color)}" data-action="toggle-hero" data-id="${h.id}" aria-pressed="${i>=0}"><span class="selection-index">${i>=0?i+1:'＋'}</span><img src="${esc(heroArt(h))}" alt="${esc(h.name)}"><span class="hero-copy"><span class="role">${esc(h.role)} · ${h.hp} HP</span><h3>${esc(h.name)}</h3><p>${esc(h.summary||h.passive)}</p></span></button>`;}).join('')}</div><div class="selection-bar"><div class="formation"><span>前排 → 后排</span>${chosen.map((id,i)=>`<div class="formation-chip" style="--hero:${C.heroes[id].color}">${esc(C.heroes[id].name)}${i?bText('←','move-hero',`data-index="${i}" aria-label="${esc(C.heroes[id].name)}向前换位"`):''}${bText('详情','hero-info',`data-id="${id}"`)}</div>`).join('')}</div><div class="actions"><label class="seed-field">远征种子<input id="seed-input" value="${Date.now().toString(36).slice(-6).toUpperCase()}" maxlength="24" aria-label="远征种子"></label>${bText('踏入高塔','start-run',chosen.length!==3?'disabled':'','primary')}</div></div><label class="tutorial-option"><input type="checkbox" id="tutorial-enabled" ${tutorialEnabled?'checked':''}> 出发前进行新手演练 · 固定牌序与三人必杀，可随时跳过</label><p class="danger-note" style="margin-top:16px">全队倒地才会失败。倒地伙伴本场退出，获胜后恢复25%生命。注意敌人意图，在营地恢复伤势；每场战斗可免费调度一次手牌。</p></section>`;
+    const active=C.teams.findIndex(team=>team.ids.length===chosen.length&&team.ids.every((id,i)=>chosen[i]===id));
+    const preset=C.teams[active], full=chosen.length===3;
+    const plan=teamTactics[active]?.[1] || (full?'每名伙伴带来自己的六张起始牌。点击立绘，查看她的招式。':'从伙伴名册补齐三人，或选一支推荐队伍直接出发。');
+    return `<section class="page party-page" aria-label="选择同行队伍">
+      <section class="party-stage" aria-labelledby="party-name">
+        <div class="party-brief"><p class="party-counter"><span aria-hidden="true">✦</span> 同行队伍 <b>${chosen.length} / 3</b></p>
+          <h2 id="party-name">${esc(preset?.name||(chosen.length?'自选小队':'组建小队'))}</h2>
+          <p class="party-plan">${esc(plan)}</p>
+          <div class="party-depart">${bText('踏入高塔 <span aria-hidden="true">→</span>','start-run',full?'':'disabled','primary')}${preset?bText('队伍打法','team-tactics',`data-index="${active}"`,'party-tactics'):''}</div>
+        </div>
+        <div class="party-lineup" aria-label="当前阵容，按前中后排排列">${formationPositions.map((_,i)=>partyFigure(chosen[i],i)).join('')}</div>
+      </section>
+      <div class="party-settings">
+        <label class="party-tutorial"><input type="checkbox" id="tutorial-enabled" ${tutorialEnabled?'checked':''}>出发前进行新手演练</label>
+        <details class="party-seed" ${setupOptionsOpen?'open':''}><summary>远征种子</summary>
+          <label><span>远征种子</span><input id="seed-input" value="${esc(setupSeed)}" maxlength="24" aria-label="远征种子"></label>
+        </details>
+      </div>
+      <section class="party-library" aria-label="选择组队方式"><div class="party-library-head"><div class="party-switch" role="group" aria-label="组队方式">
+        <button data-action="setup-mode" data-mode="teams" aria-pressed="${setupMode==='teams'}">推荐队伍</button>
+        <button data-action="setup-mode" data-mode="roster" aria-pressed="${setupMode==='roster'}">自由搭配</button></div>
+        <p>${setupMode==='teams'?'选择一组搭档，一起登塔。':'点击伙伴加入、移出或替换。'}</p></div>
+        ${setupMode==='teams'?recommendedTeams(active):partyRoster()}
+      </section>
+    </section>`;
+  }
+
+  // Preserve the draft and keyboard focus when changing a lineup. Only new or moving
+  // members animate; editing a seed or opening the roster never restarts the stage.
+  function refreshSetup(focusSelector){
+    const previous=new Map([...document.querySelectorAll('.party-figure')].map(figure=>[figure.dataset.id,figure.getBoundingClientRect().left]));
+    setupSeed=$('seed-input')?.value??setupSeed;
+    setupOptionsOpen=!!document.querySelector('.party-seed')?.open;
+    render();
+    document.querySelector(focusSelector)?.focus({preventScroll:true});
+    if(settings.effectsQuality==='light'||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
+    document.querySelectorAll('.party-figure').forEach(figure=>{
+      const formerLeft=previous.get(figure.dataset.id);
+      const offset=formerLeft===undefined?0:formerLeft-figure.getBoundingClientRect().left;
+      if(formerLeft!==undefined&&Math.abs(offset)<1)return;
+      const from=formerLeft===undefined?{transform:'translateY(9px)',opacity:0.25}:{transform:`translateX(${offset}px)`};
+      figure.animate?.([from,{transform:'none',opacity:1}],{duration:310,easing:'cubic-bezier(.22,.72,.26,1)'});
+    });
   }
   function renderMap(){
     const act=currentAct(),choices=R.choices(run),steps=R.mapSteps(run),labels=steps.map(s=>s.label),icons=steps.map(s=>s.icon);
@@ -345,7 +440,7 @@
       encounterTier(node.type)||'路线预览');
   }
   function fighterStatus(u,isAlly){
-    const s=[];if(u.block)s.push(`<span class="status shield">盾 ${u.block}</span>`);if(u.barrier)s.push(`<span class="status shield">魔盾 ${u.barrier}</span>`);if(u.armor)s.push(`<span class="status">护甲 ${u.armor}</span>`);if(u.stars)s.push(`<span class="status star" title="星屑最多3层，轮末结算后减少1层">✧ ${u.stars}/3</span>`);
+    const s=[];if(u.block)s.push(`<span class="status shield" data-status="block">盾 ${u.block}</span>`);if(u.barrier)s.push(`<span class="status shield" data-status="barrier">魔盾 ${u.barrier}</span>`);if(u.armor)s.push(`<span class="status">护甲 ${u.armor}</span>`);if(u.stars)s.push(`<span class="status star" title="星屑最多3层，轮末结算后减少1层">✧ ${u.stars}/3</span>`);
     if((u.curseExpires??0)>=battle().round&&u.curseExpires>0)s.push('<span class="status curse" title="重复施咒刷新时长；每轮首次主动命中附伤2，不增加附伤次数">咒痕</span>');
     if(u.breakAmount&&(u.breakExpires??0)>=battle().round){const layers=(u.breakLayers||[]).map(l=>l.amount+'点／剩'+(l.expires-battle().round+1)+'轮').join('；');s.push(`<span class="status mark" title="${esc(layers||'后续每段物理伤害增加该数值')}" >破甲 +${u.breakAmount}</span>`);}
     if(u.weak)s.push(`<span class="status mark" title="可累加；只减少下一次单体攻击的第一段，随后消耗">减攻 ${typeof u.weak==='number'?u.weak:u.weak.amount||''}</span>`);
@@ -422,7 +517,7 @@
     const rhythmText=rhythm?(form?`二阶段 · ${rhythm.currentPhaseName} ›`:`${rhythm.currentPhaseName} · ${rhythm.transitionPending?'下轮转势':rhythm.nextRound?'下轮：'+rhythm.nextRound.intent.name:'招式详解'} ›`):'';
     const transitionState=form?'active':rhythm?.transitionPending?'pending':'';
     const phaseMarker=b.bossRhythm?.phases?.[1]&&rhythm?`<span class="boss-phase-threshold" style="left:${100*rhythm.thresholdHp/unit.maxHp}%" title="${esc(rhythm.transitionHint)}" aria-hidden="true"></span>`:'';
-    return `<section class="boss-health" data-phase-state="${transitionState}" aria-label="Boss生命条" style="--boss:${esc(unit.castColor||unit.color||'#ca9cde')}"><div class="boss-heading"><span class="eyebrow">${inEcho()?'回响练招':`ACT ${run.act} · BOSS`}</span><h3>${esc(unit.name)}</h3><strong>${unit.hp} / ${unit.maxHp}</strong></div><div class="boss-hp-track" data-hp-unit="${esc(uidOf(unit))}"><i class="boss-hp-fill" style="width:${ratio*100}%"></i><span class="hp-forecast" aria-hidden="true"></span>${phaseMarker}</div>${rhythm?bText(esc(rhythmText),'boss-rhythm-info',`title="${esc(rhythm.currentSummary+' '+rhythm.transitionHint)}"`,'boss-phase rhythm-link'):`<span class="boss-phase">${phase} · ${pressureRule(b).amount<=0?'无逐轮增伤':pressureActive(b)?'伤害逐步增强':'第'+pressureRule(b).startRound+'回合起伤害逐步增强'}</span>`}</section>`;
+    return `<section class="boss-health" data-phase-state="${transitionState}" aria-label="Boss生命条" style="--boss:${esc(unit.castColor||unit.color||'#ca9cde')}"><div class="boss-heading"><span class="eyebrow">${inEcho()?'回响练招':`ACT ${run.act} · BOSS`}</span><h3>${esc(unit.name)}</h3><strong>${unit.hp} / ${unit.maxHp}</strong></div><div class="boss-hp-track" data-hp-unit="${esc(uidOf(unit))}"><i class="boss-hp-fill" style="transform:${hpScale(unit.hp,unit.maxHp)}"></i><span class="hp-forecast" aria-hidden="true"></span>${phaseMarker}</div>${rhythm?bText(esc(rhythmText),'boss-rhythm-info',`title="${esc(rhythm.currentSummary+' '+rhythm.transitionHint)}"`,'boss-phase rhythm-link'):`<span class="boss-phase">${phase} · ${pressureRule(b).amount<=0?'无逐轮增伤':pressureActive(b)?'伤害逐步增强':'第'+pressureRule(b).startRound+'回合起伤害逐步增强'}</span>`}</section>`;
   }
   function renderBattle(bossPhaseArrival=false){
     const b=battle(),enc=C.encounters[b.encounterId]||{},targets=selectedTargets(),lesson=teaching()?T.expected(run):null;
@@ -548,7 +643,7 @@
       '</div><p class="guide-footnote">以上是基础规则。角色、卡牌和遗物可能带来特殊效果，以当前牌面、状态和敌人预告为准。</p><div class="actions guide-actions">'+bText('我知道了','close-modal','','primary')+bText('查看卡牌关键词','card-keywords')+'</div></div>',
       '三人同行 · 轻松上手');
   }
-  function showSettings(){modal('声音与演出',`<div class="setting-row"><span>游戏声音<small>音乐、效果音与角色原声</small></span><input type="checkbox" id="setting-audio" ${settings.audio?'checked':''} aria-label="开启游戏声音"></div><div class="setting-row"><span>音量</span><input type="range" id="setting-volume" min="0" max="1" step=".01" value="${settings.volume}" aria-label="游戏音量"></div><div class="setting-row"><span>完整必杀演出<small>短片后接战场特效；Boss命中后即可行动，余音自然播完。快速模式省略视频</small></span><input type="checkbox" id="setting-burst" ${settings.fullBurst?'checked':''} aria-label="完整必杀演出"></div><div class="setting-row"><span>战斗特效<small>自动按屏幕选择。精致模式增加景深镜头、光轨和粒子，轻量模式保留分层战场与关键动作</small></span><select id="setting-effects" aria-label="战斗特效精细度"><option value="auto" ${settings.effectsQuality==='auto'?'selected':''}>自动</option><option value="rich" ${settings.effectsQuality==='rich'?'selected':''}>精致</option><option value="light" ${settings.effectsQuality==='light'?'selected':''}>轻量</option></select></div><div class="setting-row"><span>情境提示<small>调度、无伤蓄势、鼓舞消费各提示一次，不暂停战斗</small></span><input type="checkbox" id="setting-hints" ${settings.hints?'checked':''} aria-label="情境提示"></div><div class="divider"></div><div class="actions">${bText('查看素材来源','media-info')}${bText('返回标题','return-title')}</div><p class="media-credit" style="margin-top:20px">18名角色均已接入本人的原版短cut-in与必杀配音。短片结束后，剩余语音会自然播完；可在素材页查看每人的来源与接入状态。</p>`,'MAKE YOURSELF COMFORTABLE');}
+  function showSettings(){modal('声音与演出',`<div class="setting-row"><span>游戏声音<small>音乐、效果音与角色原声</small></span><input type="checkbox" id="setting-audio" ${settings.audio?'checked':''} aria-label="开启游戏声音"></div><div class="setting-row"><span>音量</span><input type="range" id="setting-volume" min="0" max="1" step=".01" value="${settings.volume}" aria-label="游戏音量"></div><div class="setting-row"><span>完整必杀演出<small>短片后接战场特效；命中特效收束即可行动，余音自然播完。快速模式省略视频</small></span><input type="checkbox" id="setting-burst" ${settings.fullBurst?'checked':''} aria-label="完整必杀演出"></div><div class="setting-row"><span>战斗特效<small>自动按屏幕选择。精致模式增加景深镜头、光轨和粒子，轻量模式保留分层战场与关键动作</small></span><select id="setting-effects" aria-label="战斗特效精细度"><option value="auto" ${settings.effectsQuality==='auto'?'selected':''}>自动</option><option value="rich" ${settings.effectsQuality==='rich'?'selected':''}>精致</option><option value="light" ${settings.effectsQuality==='light'?'selected':''}>轻量</option></select></div><div class="setting-row"><span>情境提示<small>调度、无伤蓄势、鼓舞消费各提示一次，不暂停战斗</small></span><input type="checkbox" id="setting-hints" ${settings.hints?'checked':''} aria-label="情境提示"></div><div class="divider"></div><div class="actions">${bText('查看素材来源','media-info')}${bText('返回标题','return-title')}</div><p class="media-credit" style="margin-top:20px">18名角色均已接入本人的原版短cut-in与必杀配音。短片结束后，剩余语音会自然播完；可在素材页查看每人的来源与接入状态。</p>`,'MAKE YOURSELF COMFORTABLE');}
   function mediaInfo(){const media=window.TowerMedia?.characters||{};modal('角色原声与演出来源',`<p class="muted">角色影音与BGM来自公主连接公开资源清单，原作魔物模型经社区镜像取得并导出完整姿势。各项来源已分别记录；立绘、魔物与影音版权属于 Cygames 等相关权利方。</p><div class="rule-grid">${heroes.map(h=>{const m=media[h.id]?.ub;return `<section><h3>${esc(h.name)}</h3><p>${m?.video?'原版短cut-in已接入':'当前使用立绘演出'} · ${m?.voice?'原版UB配音已接入':'暂无UB原声'}</p>${m?bText('试听UB','audition',`data-id="${h.id}"`,'small'):''}</section>`;}).join('')}</div><div class="divider"></div><p class="media-credit">角色影音、魔物和BGM均有独立来源清单。原作魔物模型与曲目选用不改变本作的战斗数值和剧情。</p>`,'MEDIA CREDITS');}
   function startRun(ids=chosen,seed=null){
     try{stopBossPerformance();run=R.create({heroIds:[...ids],seed:seed||$('seed-input')?.value||Date.now().toString(36),layoutVersion:2});if(tutorialEnabled)T.begin(run);selected=null;closeModal();save();render();window.scrollTo(0,0);}catch(error){toast(error.message||'无法开始远征');}
@@ -568,9 +663,17 @@
         u.hp=e.type==='downed'?0:Math.max(0,Math.min(u.maxHp,u.hp+(e.type==='heal'?1:-1)*(e.amount||0)));
         const el=Array.from($('app').querySelectorAll('.fighter[data-id]')).find(el=>el.dataset.id===String(e.target));
         const number=el?.querySelector('.hp-number'),fill=el?.querySelector('.hp-track i');
+        if(el&&e.wardsAfter){
+          for(const [key,label] of [['block','盾'],['barrier','魔盾']]){
+            const chip=el.querySelector('[data-status="'+key+'"]');
+            if(!chip)continue;
+            if(e.wardsAfter[key]>0)chip.textContent=label+' '+e.wardsAfter[key];
+            else chip.remove();
+          }
+        }
         if(number)number.textContent=`${u.hp} / ${u.maxHp}`;
-        if(fill)fill.style.width=`${u.hp/u.maxHp*100}%`;
-        if(e.target===battle()?.bossCoreUid){const bossFill=$('app').querySelector('.boss-hp-fill'),bossNumber=$('app').querySelector('.boss-heading strong');if(bossFill)bossFill.style.width=`${u.hp/u.maxHp*100}%`;if(bossNumber)bossNumber.textContent=`${u.hp} / ${u.maxHp}`;}
+        if(fill)fill.style.transform=hpScale(u.hp,u.maxHp);
+        if(e.target===battle()?.bossCoreUid){const bossFill=$('app').querySelector('.boss-hp-fill'),bossNumber=$('app').querySelector('.boss-heading strong');if(bossFill)bossFill.style.transform=hpScale(u.hp,u.maxHp);if(bossNumber)bossNumber.textContent=`${u.hp} / ${u.maxHp}`;}
       }
       const now=Date.now();
       const effect={hit:e.burst?'burst':'attack',heal:'heal',block:'block',stripBlock:'break'}[e.type];
@@ -590,9 +693,11 @@
         if(bossCue){
           const preceding=events.slice(0,bossCue.firstHitIndex);remaining=events.slice(bossCue.firstHitIndex);
           if(preceding.length){activeFeedback=playCombatFeedback({events:preceding,before});await activeFeedback;activeFeedback=null;}
-          // Cards remain usable during the previous voice tail. Only another
-          // Boss cut-in waits for that voice, so two Boss lines never overlap.
-          if(activeBossPerformance)await activeBossPerformance;
+          // Ordinary actions can proceed over a voice tail. Consecutive
+          // voiced cut-ins share the speaking slot.
+          const priorVoice=waitForBattleSpeech(bossCue.skillName);
+          if(priorVoice)await priorVoice;
+          if(battle()!==b)return false;
           stopVoice();if(bgm)bgm.volume=settings.volume*.18;
           let impact=null;
           const performance=bossPerformance.play({cue:bossCue,root:$('app'),audio:settings.audio,fullVideo:settings.fullBurst,volume:Math.min(1,settings.volume*2),onVisualComplete:()=>{
@@ -652,59 +757,83 @@
     const {reserve,hold}=window.TowerCombatPreview?.turn(battle())||{};
     modal('如果现在结束回合',`<p class="muted" style="font-size:12px">按当前护盾、星屑、减攻、掩护与锁定目标结算。继续出牌后，结果也会变化；预览不会消耗资源或改变真实牌序。</p><div class="forecast">${party}${stars?`<p>${esc(stars)}</p>`:''}${reserve?`<p class="forecast-reserve">${esc(reserve.text)}。${reserve.state==='broken'?'已支付的1行动不会退还。':''}</p>`:''}${hold?`<p class="hold-marked">${esc(hold.text)}。</p>`:''}<p>${after.status==='won'?'敌方倒下，战斗胜利。':after.status==='lost'?'全队将倒地，本次远征将失败。':'敌方行动结束后进入下一轮。'}</p></div>`,'READ THE NEXT MOVE');
   }
-  function burstAnimation(id,{before,events},done){
-    stopVoice();
-    if(activePresentation)activePresentation.cancel();
-    const session=++burstSession;let cancelled=false,localEffects=null;const current=()=>!cancelled&&session===burstSession;
+  function waitForBattleSpeech(nextName){
+    if(activePresentation){
+      $('burst-tail-name').textContent=$('burst-hero').textContent+' · 余音后接「'+nextName+'」';
+      return activePresentation.finished;
+    }
+    return activeBossPerformance;
+  }
+
+  async function burstAnimation(id,{before,events},done){
     combatLock(true);
-    const h=C.heroes[id],m=window.TowerMedia?.characters[id]?.ub,layer=$('burst-overlay'),video=$('burst-video');
-    if(voice){voice.pause();voice.onended=null;voice=null;}
+    const castBattle=battle(), h=C.heroes[id];
+    const previousVoice=waitForBattleSpeech(h.burst.name);
+    if(previousVoice)await previousVoice;
+    if(battle()!==castBattle)return;
+    stopVoice();
+    const session=++burstSession, current=()=>session===burstSession;
+    const m=window.TowerMedia?.characters[id]?.ub,layer=$('burst-overlay'),video=$('burst-video');
     $('burst-name').textContent=h.burst.name;$('burst-hero').textContent=h.name;$('burst-portrait').src=heroArt(h);
     layer.classList.remove('returning');layer.hidden=false;layer.dataset.completionReason='';
     const fullVideo=!!(settings.fullBurst&&m?.video);
     video.hidden=!fullVideo;$('burst-portrait').hidden=fullVideo;$('burst-status').textContent='必杀即将发动';
     if(bgm)bgm.volume=settings.volume*.18;
     const audioPaths=settings.audio?(settings.fullBurst?[m?.cutinVoice,m?.voice]:[m?.voice]).filter(Boolean):[];
-    let impactStarted=false,visuals=Promise.resolve();
-    function impact(immediate=false){
-      if(impactStarted||!current())return visuals;impactStarted=true;
-      visuals=(async()=>{
-        layer.classList.add('returning');
-        if(fullVideo&&!immediate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)await new Promise(resolve=>setTimeout(resolve,200));
-        if(!current())return;
-        layer.hidden=true;
-        try{localEffects=playCombatFeedback({events,before,after:battle(),owner:id,burst:true});activeFeedback=localEffects;await localEffects;}catch(_){}
-        if(!current())return;if(activeFeedback===localEffects)activeFeedback=null;
-        document.querySelectorAll('.fighter[data-id]').forEach(el=>{
-          const u=battle()?.party.concat(battle()?.enemies||[]).find(x=>uidOf(x)===el.dataset.id);if(!u)return;
-          const hp=el.querySelector('.hp-number'),fill=el.querySelector('.hp-track i');
-          if(hp)hp.textContent=`${u.hp} / ${u.maxHp}`;if(fill)fill.style.width=`${Math.max(0,u.hp/u.maxHp*100)}%`;
-          if(u.hp<=0)el.classList.add('dead');
-        });
-        const boss=battle()?.enemies.find(e=>e.uid===battle().bossCoreUid),bossFill=$('app').querySelector('.boss-hp-fill');
-        if(boss&&bossFill)bossFill.style.width=`${Math.max(0,boss.hp/boss.maxHp*100)}%`;
-        const bossNumber=$('app').querySelector('.boss-heading strong');if(boss&&bossNumber)bossNumber.textContent=`${boss.hp} / ${boss.maxHp}`;
-      })();
-      return visuals;
+    let impactStarted=false,localEffects=null;
+    async function impact(immediate=false){
+      if(impactStarted||!current())return;
+      impactStarted=true;
+      // Let the first battle frame play beneath the fading cut-in. Audio has
+      // its own completion below and never owns the ordinary action lock.
+      layer.classList.add('returning');
+      if(immediate||!fullVideo||matchMedia('(prefers-reduced-motion: reduce)').matches)layer.hidden=true;
+      try{
+        localEffects=playCombatFeedback({events,before,after:castBattle,owner:id,burst:true});
+        activeFeedback=localEffects;
+        await localEffects;
+      }catch(_){
+        toast('战场特效未能显示，战斗结果已结算。');
+      }finally{
+        if(activeFeedback===localEffects)activeFeedback=null;
+        if(current()){
+          layer.hidden=true;
+          if(battle()===castBattle)await done();
+        }
+      }
     }
-    activePresentation=window.TowerPresentation.play({video,videoSrc:m?.video,fullVideo,audioPaths,volume:Math.min(1,settings.volume*2),
-      onState:s=>{if(!current())return;layer.dataset.videoDone=String(s.videoDone);layer.dataset.audioDone=String(s.audioDone);layer.dataset.playbackPhase=s.phase;$('burst-status').textContent=s.phase==='waiting'?'正在缓冲，可等待或手动跳过':'必杀演出中';$('burst-tail').hidden=!(s.videoDone&&!s.audioDone&&!s.completed);$('burst-tail-name').textContent=h.name+' · 语音演出中';},
+    const controller=window.TowerPresentation.play({video,videoSrc:m?.video,fullVideo,audioPaths,volume:Math.min(1,settings.volume*2),
+      onState:s=>{
+        if(!current())return;
+        layer.dataset.videoDone=String(s.videoDone);layer.dataset.audioDone=String(s.audioDone);layer.dataset.playbackPhase=s.phase;
+        $('burst-status').textContent=s.phase==='waiting'?'正在缓冲，可等待或手动跳过':'必杀演出中';
+        const tail=$('burst-tail');
+        if(s.videoDone&&!s.audioDone&&!s.completed){
+          if(tail.hidden)$('burst-tail-name').textContent=h.name+' · 语音演出中';
+          tail.hidden=false;
+        }else tail.hidden=true;
+      },
       onVideoComplete:()=>impact(),
       onError:()=>toast('部分演出资源未能播放，战斗效果仍会继续。'),
-      onComplete:async reason=>{
-        layer.dataset.completionReason=reason;
-        if(reason==='cancelled'){cancelled=true;localEffects?.cancel?.();if(session===burstSession){layer.hidden=true;$('burst-tail').hidden=true;activePresentation=null;window.finishBurst=null;refreshBossAudio();combatLock(false);}return;}
-        await impact(reason==='skipped');
+      onComplete:reason=>{
         if(!current())return;
-        layer.hidden=true;$('burst-tail').hidden=true;activePresentation=null;window.finishBurst=null;
+        layer.dataset.completionReason=reason;
+        $('burst-tail').hidden=true;activePresentation=null;window.finishBurst=null;
         refreshBossAudio();
-        // Keep the action locked until both the real audio and battle effects finish.
-        await done();
+        // A skip during the movie still needs its one combat resolution. A
+        // skip (or a natural ending) during the voice tail does nothing to
+        // the next card, turn, tutorial step or reward screen.
+        if(reason==='cancelled'){
+          if(localEffects&&activeFeedback===localEffects)localEffects.cancel?.();
+          if(!impactStarted){impactStarted=true;layer.hidden=true;if(battle()===castBattle)done();}
+        }else impact(reason==='skipped');
       }
     });
-    if(activePresentation?.getState().completed)activePresentation=null;
+    if(!controller.getState().completed){
+      activePresentation=controller;
+      window.finishBurst=()=>controller.skip();
+    }
     refreshBossAudio();
-    window.finishBurst=()=>activePresentation?.skip();
   }
 
   function finishTutorial(skipped){const result=T.finish(run,skipped);if(result.ok){tutorialEnabled=false;try{localStorage.setItem(TUTORIAL_SEEN,'done');}catch(_){}selected=null;applyResult(result);window.scrollTo(0,0);}else toast(result.message);}
@@ -736,12 +865,41 @@
     if(a==='tutorial-skip'){finishTutorial(true);return;}
     if(a==='tutorial-finish'){finishTutorial(false);return;}
     if(a==='close-modal'){if(battle()?.pending)toast('请先完成已经揭示的卡牌选择。');else closeModal();return;}
-    if(a==='home'||a==='return-title'){stopBossPerformance();stopVoice();closeModal();if(run)save();run=null;screen='home';render();return;}
+    if(a==='home'||a==='return-title'){activePresentation?.cancel();stopBossPerformance();stopVoice();closeModal();if(run)save();run=null;screen='home';render();return;}
     if(a==='new-run'||a==='skip-preload'){enterSetup(a==='skip-preload');return;}
     if(a==='continue'){waitingForRoster=false;paintPreload();if(saved&&[2,3].includes(saved.version)){try{run=R.normalize(clone(saved));if(run.battle)E.normalizeBattle(run.battle);save();render();}catch(_){toast('存档暂时无法恢复，原记录仍保留。');}}else toast('没有可恢复的远征存档。');return;}
-    if(a==='toggle-hero'){const i=chosen.indexOf(id);if(i>=0)chosen.splice(i,1);else if(chosen.length<3)chosen.push(id);else{toast('先取消一名伙伴，再选择新的同行者。');return;}render();return;}
-    if(a==='preset'){chosen=[...C.teams[index].ids];render();toast(C.teams[index].text);return;}
-    if(a==='move-hero'){[chosen[index-1],chosen[index]]=[chosen[index],chosen[index-1]];render();return;}
+    if(a==='setup-mode'){
+      setupMode=el.dataset.mode;
+      refreshSetup(`.party-switch [data-mode="${setupMode}"]`);
+      if(el.classList.contains('empty-party-slot'))document.querySelector('.party-recruit[aria-pressed="false"]')?.focus();
+      return;
+    }
+    if(a==='toggle-hero'){
+      const i=chosen.indexOf(id);
+      if(i>=0)chosen.splice(i,1);
+      else if(chosen.length<3)chosen.push(id);
+      else{
+        const options=chosen.map((out,n)=>`<button class="party-swap" data-action="swap-hero" data-id="${id}" data-index="${n}">
+          <img src="${esc(heroIcon(C.heroes[out]))}" alt=""><span><small>${formationPositions[n]}</small><strong>${esc(C.heroes[out].name)}</strong></span></button>`).join('');
+        modal(`让${C.heroes[id].name}替换谁？`,`<div class="party-swap-list">${options}</div>`,'队伍换人');
+        return;
+      }
+      refreshSetup(`[data-action="toggle-hero"][data-id="${id}"]`);return;
+    }
+    if(a==='swap-hero'){
+      chosen[index]=id;closeModal();refreshSetup(`[data-action="toggle-hero"][data-id="${id}"]`);return;
+    }
+    if(a==='team-tactics'){
+      const team=C.teams[index];
+      modal(team.name,`<p class="rule-copy">${esc(team.text)}</p><p class="muted">每人带入六张起始牌，战后奖励只会出现这三位伙伴的卡牌。</p>`,'队伍打法');return;
+    }
+    if(a==='preset'){
+      chosen=[...C.teams[index].ids];refreshSetup(`[data-action="preset"][data-index="${index}"]`);return;
+    }
+    if(a==='move-hero'){
+      [chosen[index-1],chosen[index]]=[chosen[index],chosen[index-1]];
+      refreshSetup(index===1?`.party-figure[data-id="${id}"]`:`[data-action="move-hero"][data-id="${id}"]`);return;
+    }
     if(a==='start-run'){startRun();return;}
     if(a==='retry'){const ids=[...run.heroIds],seed=run.seed;chosen=ids;startRun(ids,seed);return;}
     if(a==='hero-info'){const h=C.heroes[id];modal(h.name,`<p class="eyebrow">${esc(h.role)} · ${h.hp} HP</p><p class="muted">${esc(h.passive)}</p><p class="explain">UB · ${esc(h.burst.name)}：${esc(h.burst.text)}</p><div class="reward-cards">${definitions.filter(c=>c.owner===id&&c.starter).map(c=>cardHTML({uid:c.id,defId:c.id,branch:null},'inspect-card')).join('')}</div>`,'A COMPANION FOR THE JOURNEY');return;}
@@ -798,7 +956,7 @@
   document.addEventListener('focusin',hoverPreview);
   document.addEventListener('pointerout',leavePreview);
   document.addEventListener('focusout',leavePreview);
-  document.addEventListener('input',event=>{const el=event.target;if(el.id==='tutorial-enabled')tutorialEnabled=el.checked;if(el.id==='spend-block'){spendBlock=Number(el.value);el.nextElementSibling.textContent=spendBlock;el.closest('.combat-choice').querySelector('summary').textContent='耗盾 '+spendBlock;refreshBattlePreview();}if(el.id==='consume-curse'){consumeCurse=el.checked;el.closest('.combat-choice').querySelector('summary').textContent=consumeCurse?'引爆咒痕':'保留咒痕';refreshBattlePreview();}if(el.id.startsWith('setting-')){if(el.id==='setting-audio')settings.audio=el.checked;if(el.id==='setting-burst')settings.fullBurst=el.checked;if(el.id==='setting-volume')settings.volume=Number(el.value);if(el.id==='setting-hints')settings.hints=el.checked;if(el.id==='setting-effects'&&['auto','rich','light'].includes(el.value)){settings.effectsQuality=el.value;const page=$('app').querySelector('.battle-page');if(page){page.dataset.fxQuality=el.value;const arena=page.querySelector('.arena.has-depth');if(arena)window.TowerBattleDepth?.bind(arena,el.value);}}if(bgm){refreshBgmVolume();settings.audio?bgm.play().catch(()=>{}):bgm.pause();}refreshBossAudio();if(voiceController)voiceController.setVolume(Math.min(1,settings.volume*2));if(voice&&!settings.audio)stopVoice();if(el.id==='setting-audio'||el.id==='setting-burst')queueMedia();try{localStorage.setItem(SETTINGS,JSON.stringify(settings));}catch(_){}}});
+  document.addEventListener('input',event=>{const el=event.target;if(el.id==='tutorial-enabled')tutorialEnabled=el.checked;if(el.id==='spend-block'){spendBlock=Number(el.value);el.nextElementSibling.textContent=spendBlock;el.closest('.combat-choice').querySelector('summary').textContent='耗盾 '+spendBlock;refreshBattlePreview();}if(el.id==='consume-curse'){consumeCurse=el.checked;el.closest('.combat-choice').querySelector('summary').textContent=consumeCurse?'引爆咒痕':'保留咒痕';refreshBattlePreview();}if(el.id.startsWith('setting-')){if(el.id==='setting-audio')settings.audio=el.checked;if(el.id==='setting-burst')settings.fullBurst=el.checked;if(el.id==='setting-volume')settings.volume=Number(el.value);if(el.id==='setting-hints')settings.hints=el.checked;if(el.id==='setting-effects'&&['auto','rich','light'].includes(el.value)){settings.effectsQuality=el.value;const page=$('app').querySelector('.battle-page');if(page){page.dataset.fxQuality=el.value;const arena=page.querySelector('.arena.has-depth');if(arena)window.TowerBattleDepth?.bind(arena,el.value);}}if(bgm){refreshBgmVolume();settings.audio?bgm.play().catch(()=>{}):bgm.pause();}refreshBossAudio();if(el.id==='setting-audio'||el.id==='setting-volume'){activePresentation?.setMuted(!settings.audio);activePresentation?.setVolume(Math.min(1,settings.volume*2));}if(voiceController)voiceController.setVolume(Math.min(1,settings.volume*2));if(voice&&!settings.audio)stopVoice();if(el.id==='setting-audio'||el.id==='setting-burst')queueMedia();try{localStorage.setItem(SETTINGS,JSON.stringify(settings));}catch(_){}}});
   document.addEventListener('keydown',event=>{
     const target=event.target.closest('[data-action="target"]');
     if(target&&['Enter',' '].includes(event.key)&&selectedTargets().includes(target.dataset.id)){event.preventDefault();playTarget(target.dataset.id);return;}
@@ -814,7 +972,7 @@
   });
   $('modal').addEventListener('cancel',event=>{if(battle()?.pending){event.preventDefault();toast('请先完成已经揭示的卡牌选择。');}});
   $('modal').addEventListener('close',updateTutorialPointer);
-  window.addEventListener('pagehide',()=>{stopBossPerformance();window.TowerBattleDepth?.clear($('app').querySelector('.arena.has-depth'));window.TowerTutorialPointer?.destroy();});
+  window.addEventListener('pagehide',()=>{activePresentation?.cancel();stopBossPerformance();window.TowerBattleDepth?.clear($('app').querySelector('.arena.has-depth'));window.TowerTutorialPointer?.destroy();});
   window.addEventListener('pageshow',updateTutorialPointer);
   window.TowerApp = {getRun:()=>run,getScreen:()=>screen,startRun,render,save};
   if(!savesData())primeEntry();

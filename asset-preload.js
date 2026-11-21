@@ -6,14 +6,15 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  function campaignImages(content, cast) {
+  function campaignImages(content, cast, motionAssets) {
     const images = [
       ...Object.values(content.relics).map(relic => relic.art),
       cast?.merchant?.art,
       ...Object.values(content.encounters).flatMap(encounter => encounter.enemies.map(enemy => enemy.art)),
       ...Object.values(cast?.bosses || {}).map(boss => boss.art),
       ...content.acts.map(act => act.background),
-      'assets/story/tower_appears.webp'
+      'assets/story/tower_appears.webp',
+      ...Object.values(motionAssets?.byArt || {}).flatMap(attack => [attack.src, attack.projectile?.src])
     ];
     return [...new Set(images.filter(Boolean))];
   }
@@ -80,7 +81,14 @@
       return done;
     }
 
-    return { prepare, campaignImages };
+    return {
+      prepare,
+      campaignImages(content, cast) {
+        const reduced = host.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+        return campaignImages(content, cast, reduced ? null : host.TowerEnemyMotionAssets);
+      },
+      getReadyImage: path => jobs.get(path)?.image || null
+    };
   }
 
   return { create, campaignImages };

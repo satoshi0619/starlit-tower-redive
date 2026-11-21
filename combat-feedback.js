@@ -10,26 +10,81 @@
   var indirectHits = new Set(['star', 'poison', 'reflect', 'counter', 'relic', 'passive']);
   Object.values(global.TowerContent && global.TowerContent.heroes || {}).forEach(function (h) { if (h.color) colors[h.id] = h.color; });
   var bossStyles = {
-    christina: { motif: 'blade', color: '#ffc681', defaultAttack: 'slash' },
-    fubuki: { motif: 'shell', color: '#bdefff', defaultAttack: 'projectile' },
-    ranpha: { motif: 'petal', color: '#edbfff', defaultAttack: 'projectile' },
-    misora: { motif: 'prism', color: '#ff9ed7', defaultAttack: 'projectile' },
-    kaiser: { motif: 'ember', color: '#ffb2b6', defaultAttack: 'slash' }
+    christina: { motif: 'blade', color: '#ffc681', defaultAttack: 'slash', weapon: [.25, .73] },
+    fubuki: { motif: 'shell', color: '#bdefff', defaultAttack: 'projectile', weapon: [.09, .21] },
+    ranpha: { motif: 'petal', color: '#edbfff', defaultAttack: 'projectile', weapon: [.89, .46] },
+    misora: { motif: 'prism', color: '#ff9ed7', defaultAttack: 'projectile', weapon: [.90, .23] },
+    kaiser: { motif: 'ember', color: '#ffb2b6', defaultAttack: 'slash', weapon: [.23, .37] }
   };
   var legacyBossIds = { seal_knight: 'christina', tower_crown: 'kaiser' };
   var statusLabels = { buff: '鼓舞', breakAmount: '破甲', weak: '减攻', stars: '星屑', curseExpires: '咒痕', coverFrom: '掩护' };
+  // Left/right points inside opaque art at 25%, 33%, 41% and 49% of its
+  // fitted height. Coordinates are thousandths of the cropped portrait.
+  // Insets avoid translucent wisps and the empty space beside small enemies.
+  var enemySilhouettes = {
+    'christina-full.svg': [306, 779, 192, 876, 121, 689, 189, 605],
+    'fubuki-full.svg': [65, 702, 167, 721, 332, 645, 249, 697],
+    'kaiser-full.svg': [324, 676, 275, 762, 242, 774, 287, 767],
+    'misora-full.svg': [144, 931, 111, 906, 71, 476, 65, 471],
+    'neneka-full.svg': [348, 738, 344, 662, 272, 700, 195, 803],
+    'ranpha-full.svg': [383, 706, 333, 719, 333, 724, 318, 740],
+    'yamato-full.svg': [320, 542, 250, 609, 278, 641, 267, 651],
+    'blue-golem.png': [518, 685, 404, 756, 379, 851, 179, 837],
+    'fire-mage.png': [366, 561, 288, 580, 267, 809, 238, 731],
+    'flaming-skulls.png': [326, 732, 218, 717, 216, 744, 106, 689],
+    'gellatina.png': [233, 569, 165, 555, 132, 574, 119, 602],
+    'goblin-guard.png': [144, 616, 120, 632, 100, 680, 108, 842],
+    'golem.png': [526, 689, 415, 761, 422, 856, 201, 842],
+    'kobold.png': [388, 672, 385, 870, 244, 796, 195, 797],
+    'nut-shooter-ready.png': [502, 716, 493, 792, 304, 651, 276, 528],
+    'nut-shooter.png': [211, 466, 198, 498, 185, 877, 221, 867],
+    'orc-leader.png': [391, 712, 276, 892, 184, 851, 163, 745],
+    'werewolf.png': [418, 582, 114, 643, 163, 640, 225, 788],
+    'wood-soul.png': [434, 562, 406, 619, 303, 703, 179, 691]
+  };
+  function measuredEnemySurface(artwork, yFraction, fromLeft) {
+    var src = artwork?.querySelector('.enemy-portrait')?.getAttribute?.('src');
+    if (!src) return null;
+    var name = src.split(/[?#]/)[0].split('/').pop();
+    var rows = enemySilhouettes[name === 'kaiser-insight-full.svg' ? 'kaiser-full.svg' : name];
+    if (!rows) return null;
+    var row = Math.max(0, Math.min(3, Math.round((yFraction - .25) / .08)));
+    return { x: rows[row * 2 + (fromLeft ? 0 : 1)] / 1000, y: .25 + row * .08 };
+  }
   function units(b) { return b ? (b.party || []).concat(b.enemies || []) : []; }
   function unitId(u) { return u && (u.uid || u.id); }
+  function meleeContact(origin, target, anchor, arena, compact, artwork) {
+    var side = origin.x <= target.x ? 1 : -1;
+    if (compact && Math.abs(target.x - origin.x) < origin.width * .65) {
+      side = target.x - arena.left > arena.width / 2 ? 1 : -1;
+    }
+    var top = target.y - target.height * .49;
+    var floor = Math.min(arena.top + arena.height - 2, top + target.height + 3);
+    var tentativeY = Math.max(.25, Math.min(.49, (floor - top - (1-anchor[1])*origin.height)/target.height));
+    var surface = measuredEnemySurface(artwork, tentativeY, side > 0);
+    var y = top + target.height * (surface?.y ?? tentativeY);
+    var contactX = target.x + ((surface?.x ?? (side > 0 ? .26 : .74)) - .5) * target.width;
+    var space = side > 0 ? contactX - arena.left : arena.left + arena.width - contactX;
+    var scale = Math.min(1, Math.max(.18, (space - 4) / (origin.width * Math.max(anchor[0], 1 - anchor[0]))),
+      (floor - y) / (origin.height * (1 - anchor[1])),
+      (y - arena.top - 2) / (origin.height * anchor[1]));
+    return { x: contactX, y: y, scale: scale, side: side };
+  }
   function plan(options) {
     options = options || {};
     var events = options.events || [], output = [], actionOwner = options.owner || null;
+    var activeCard, hitCounts = new Map();
     var core = options.before?.enemies?.find(function (unit) { return unitId(unit) === options.before.bossCoreUid; });
     var style = core && bossStyles[legacyBossIds[core.id] || core.id];
     var move = core && events.find(function (e) { return e.type === 'bossMove' && e.source === unitId(core); });
     var intent = core?.intent;
     var attack = move?.presentation || intent?.presentation || (intent?.type === 'aoe' ? 'wave' : intent?.hits > 1 ? 'volley' : style?.defaultAttack);
     events.forEach(function (e) {
-      if (e.type === 'play' || e.type === 'burst') actionOwner = e.source || actionOwner;
+      if (e.type === 'play' || e.type === 'burst') {
+        actionOwner = e.source || actionOwner;
+        activeCard = e.type === 'play' ? e.defId : null;
+        hitCounts.clear();
+      }
       if (e.type === 'relic' && e.relicId === 'last_ember_locket') output.push({type:'status',visual:'status',target:e.target,source:e.target,label:'命锁 · 留下1生命',amount:0});
       if (e.type === 'intentChange' && e.source) output.push(Object.assign({}, e, { target: e.source, visual: 'status' }));
       if (e === move && style && ['guard', 'chant', 'curse'].includes(e.moveType)) {
@@ -39,6 +94,11 @@
         var record = Object.assign({}, e, { source: e.source || actionOwner,
           visual: e.type === 'hit' ? (e.damageType === 'magic' || e.sourceKind === 'star' ? 'magic' : 'physical') : e.type,
           burst: !!options.burst || e.sourceKind === 'burst' });
+        if (activeCard && e.source === actionOwner && e.sourceKind === 'card' && e.type === 'hit') {
+          record.cardId = activeCard;
+          record.strikeIndex = hitCounts.get(e.target) || 0;
+          hitCounts.set(e.target, record.strikeIndex + 1);
+        }
         if (style && e.source === unitId(core) && e.sourceKind === 'enemy' && e.type === 'hit') {
           record.bossStyle = style;
           record.bossAttack = attack;
@@ -101,6 +161,10 @@
       layer.dataset.arenaBounded = 'true';
     }
     (doc.body || scope).appendChild(layer);
+    var enemyMotion = !reduce && global.TowerEnemyMotion?.create({
+      document:doc, layer:layer, bounds:bounds, light:light,
+      assets:global.TowerEnemyMotionAssets, preloader:global.TowerAssetPreload
+    });
     // The canvas renderer is optional: unsupported devices keep the original
     // DOM effects and numbers. Both renderers use the same resolved events.
     try { canvas = global.TowerVFX && global.TowerVFX.create({layer:layer,document:doc,bounds:bounds,quality:options.quality || 'auto',reducedMotion:reduce}); } catch (_) {}
@@ -109,6 +173,7 @@
       if (done) return; done = true;
       timers.forEach(function (t) { global.clearTimeout(t); });
       if (canvas) canvas.cancel();
+      if (enemyMotion) enemyMotion.cancel();
       animations.forEach(function (a) { try { a.cancel(); } catch (_) {} });
       nodes.forEach(function (n) { n.remove(); }); layer.remove();
       if (owners.get(scope) === cancel) owners.delete(scope);
@@ -138,6 +203,28 @@
       }
       return { x: r.left + r.width / 2, y: r.top + r.height * .49, width: r.width, height: r.height };
     }
+    // The zero-size attachment inherits the same lunge, rotation and camera
+    // transform as the full portrait. It stays on the weapon during a combo.
+    var weaponPins = new Map();
+    function weaponPoint(id, artwork, center, bossAnchor) {
+      var anchor = bossAnchor || global.TowerVFX?.weaponAnchors?.[id];
+      if ((!canvas && !bossAnchor) || !anchor || !artwork || !center) return;
+      if (!weaponPins.has(id)) {
+        var rect = artwork.getBoundingClientRect();
+        if (!(rect.width > 0 && rect.height > 0)) return;
+        var pin = doc.createElement('i');
+        var x = center.x + (anchor[0] - .5) * center.width;
+        var y = center.y + (anchor[1] - .49) * center.height;
+        pin.style.cssText = 'position:absolute;width:0;height:0;pointer-events:none;left:' +
+          (100 * (x - rect.left) / rect.width) + '%;top:' + (100 * (y - rect.top) / rect.height) + '%';
+        artwork.appendChild(pin); nodes.push(pin);
+        weaponPins.set(id, function () {
+          var pos = pin.getBoundingClientRect();
+          return { x: pos.left, y: pos.top };
+        });
+      }
+      return weaponPins.get(id);
+    }
     function impact(e, at) {
       if (typeof options.onImpact !== 'function') return Promise.resolve();
       return new Promise(function (yes) {
@@ -150,10 +237,10 @@
       n.style.left = (p.x - (bounds ? bounds.left : 0)) + 'px'; n.style.top = (p.y - (bounds ? bounds.top : 0)) + 'px'; n.style.setProperty('--fx-color', color);
       if (text) n.textContent = text; layer.appendChild(n); nodes.push(n); return n;
     }
-    function animate(el, frames, duration, delay, easing) {
+    function animate(el, frames, duration, delay, easing, fill) {
       if (!el || cancelled || typeof el.animate !== 'function') return Promise.resolve();
       var animation;
-      try { animation = el.animate(frames, { duration: duration, delay: delay || 0, easing: easing || 'cubic-bezier(.18,.72,.25,1)', fill: 'both' }); }
+      try { animation = el.animate(frames, { duration: duration, delay: delay || 0, easing: easing || 'cubic-bezier(.18,.72,.25,1)', fill: fill || 'both' }); }
       catch (_) { return Promise.resolve(); }
       animations.push(animation); return animation.finished.catch(function () {});
     }
@@ -161,11 +248,12 @@
       return animate(n, reduce ? [{ opacity: 0 }, { opacity: 1, offset: .25 }, { opacity: 0 }] :
         [{ opacity: 0, transform: 'translate(-50%,-50%) scale(.25)' }, { opacity: 1, offset: .2, transform: 'translate(-50%,-50%) scale(.9)' }, { opacity: 0, transform: 'translate(-50%,-50%) scale(' + (scale || 1.5) + ')' }], duration, delay);
     }
-    function float(p, color, text, delay, big, label, encouragement) {
-      var anchor = { x: p.x, y: p.y - Math.min(35, p.height * .18) };
+    function float(p, color, text, delay, big, label, encouragement, meleeSide) {
+      // Keep the weapon and the recipient's face clear at the contact frame.
+      var anchor = { x: p.x, y: meleeSide ? p.y - p.height * .49 - 8 : p.y - Math.min(35, p.height * .18) };
       if (bounds) {
         anchor.x = Math.max(bounds.left + 34, Math.min(bounds.left + bounds.width - 34, anchor.x));
-        anchor.y = Math.max(bounds.top + Math.min(58, bounds.height * .32), anchor.y);
+        anchor.y = Math.max(bounds.top + (meleeSide ? 24 : Math.min(58, bounds.height * .32)), anchor.y);
       }
       var n = mark('number' + (big ? ' big' : '') + (label ? ' label' : ''), anchor, color, text);
       if (encouragement && !light && !reduce) {
@@ -193,13 +281,13 @@
         // continue rising in their original lane.
         if (bounds) {
           var half = Math.ceil(n.offsetWidth / 2) || 55;
-          var direction = anchor.x < bounds.left + bounds.width / 2 ? 1 : -1;
+          var direction = meleeSide || (anchor.x < bounds.left + bounds.width / 2 ? 1 : -1);
           var beside = anchor.x + direction * (half + 12);
           n.style.left = Math.max(half + 3, Math.min(bounds.width - half - 3, beside - bounds.left)) + 'px';
         }
       }
       return animate(n, reduce ? [{ opacity: 0 }, { opacity: 1, offset: .2 }, { opacity: 0 }] :
-        [{ opacity: 0, transform: 'translate(-50%,10px) scale(.75)' }, { opacity: 1, transform: 'translate(-50%,-8px) scale(1.12)', offset: .22 }, { opacity: 1, offset: .6 }, { opacity: 0, transform: 'translate(-50%,-65px) scale(1)' }], reduce ? 350 : 720, delay);
+        [{ opacity: 0, transform: 'translate(-50%,10px) scale(.75)' }, { opacity: 1, transform: 'translate(-50%,-8px) scale(1.12)', offset: encouragement ? .085 : .22 }, { opacity: 1, offset: .6 }, { opacity: 0, transform: 'translate(-50%,-65px) scale(1)' }], reduce ? 350 : 720, delay);
     }
     function particles(p, color, delay, count) {
       if (reduce) return [];
@@ -210,7 +298,114 @@
       });
     }
     function size(n, value) { n.style.setProperty('--fx-size', Math.round(value) + 'px'); return n; }
-    function attackPose(sourceArt, origin, target, posture, bossAction, delay, openingHit) {
+    // A stopped blow leaves the crest intact. Damage through the ward parts
+    // it along the zigzag where the two facets meet.
+    function shieldContact(p, side, pierced, at, targetHeight) {
+      var crest = size(mark('contact-ward' + (pierced ? ' pierced' : ''), p, '#bce9ff'),
+        Math.max(28, Math.min(compact ? 43 : 64, targetHeight * .43)));
+      var facets = pierced
+        ? '<path d="M24 3 43 11 38 31 31 38 23 46 30 29 21 24 27 15Z"/><path d="M24 3 27 15 21 24 30 29 23 46 10 33 5 11Z"/>'
+        : '<path d="M24 3 43 11 38 31 23 46 10 33 5 11Z"/><path class="ward-chevron" d="m14 22 8 7 12-15"/>';
+      crest.innerHTML = '<svg viewBox="0 0 48 50" aria-hidden="true">' + facets + '</svg>';
+      var life = pierced ? 218 : 185;
+      if (pierced && !reduce) {
+        Array.from(crest.querySelectorAll?.('path') || []).forEach(function (part, i) {
+          var sign = i ? -1 : 1;
+          all.push(animate(part, [{ transform:'none' }, { offset:.26, transform:'none' },
+            { transform:'translate(' + sign * 9 + 'px,' + (i ? 8 : -3) + 'px) rotate(' + sign * 13 + 'deg)' }],
+            life, at, 'ease-out', 'none'));
+        });
+      }
+      var fixed = 'translate(-50%,-50%) rotate(' + side * -12 + 'deg)';
+      return animate(crest, [
+        { opacity:0, transform:fixed + (reduce ? '' : ' scale(.77)') },
+        { offset:.12, opacity:1, transform:fixed }, { offset:.47, opacity:1, transform:fixed },
+        { opacity:0, transform:fixed + (reduce ? '' : pierced ? ' scale(1.08)' : ' scale(.95)') }
+      ], life, at, 'linear');
+    }
+    function recoilTrack(body, beats) {
+      // Fit each recovery between actual hits so the target meets the blade
+      // again, including when a combo goes through its shield partway through.
+      beats.sort(function (a,b) { return a.at - b.at || b.force - a.force; });
+      beats = beats.filter(function (beat, i) { return !i || beat.at !== beats[i-1].at; });
+      var start = beats[0].at, last = beats[beats.length-1];
+      var total = last.at - start + last.life, frames = [];
+      function frame(at, x, y, tilt, sx, sy) {
+        frames.push({ offset:Math.min(1,(at-start)/total), composite:'add',
+          transform:'translate(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px) rotate(' + tilt.toFixed(2) + 'deg) scale(' + sx + ',' + sy + ')' });
+      }
+      beats.forEach(function (b, i) {
+        var life = Math.min(b.life, i+1 < beats.length ? beats[i+1].at - b.at : b.life);
+        frame(b.at, 0,0,0,1,1);
+        frame(b.at + life*.22, b.x, b.y, b.tilt, b.brace ? 1.03 : .985, b.brace ? .96 : 1.01);
+        frame(b.at + life*.54, b.x*.72, b.y*.58, b.tilt*.77, 1,1);
+        frame(b.at + life*.79, -b.x*.10, 0, -b.tilt*.18, 1,1);
+        frame(b.at + life, 0,0,0,1,1);
+      });
+      return animate(body, frames, total, start, 'linear', 'none');
+    }
+    // Lift only the painted portrait out of its HUD column. The outer node
+    // follows the weapon point; rotating the pose about that point lets the
+    // arm/weapon finish a strike while the wielder stays in contact range.
+    function approach(hit, sourceArt, origin, targets, delay) {
+      var portrait = sourceArt?.querySelector('img');
+      var anchor = global.TowerVFX?.weaponAnchors?.[hit.source];
+      if (!bounds || !anchor || !portrait?.naturalWidth || !portrait.cloneNode || !targets.length) return null;
+      var closest = targets.reduce(function (a, b) {
+        return Math.hypot(a.x-origin.x, a.y-origin.y) <= Math.hypot(b.x-origin.x, b.y-origin.y) ? a : b;
+      });
+      var contact = meleeContact(origin, closest, anchor, bounds, compact, art(find(closest.id)));
+      var ax = origin.x + (anchor[0] - .5) * origin.width, ay = origin.y + (anchor[1] - .49) * origin.height;
+      var actor = doc.createElement('div');
+      actor.className = 'melee-actor'; actor.dataset.source = hit.source; actor.dataset.target = closest.id;
+      actor.dataset.contactX = String(contact.x - bounds.left); actor.dataset.contactY = String(contact.y - bounds.top);
+      Object.assign(actor.style, {left: (ax - bounds.left) + 'px', top: (ay - bounds.top) + 'px'});
+      var pose = doc.createElement('div'); pose.className = 'melee-pose';
+      Object.assign(pose.style, {left: -anchor[0] * origin.width + 'px', top: -anchor[1] * origin.height + 'px',
+        width: origin.width + 'px', height: origin.height + 'px', transformOrigin: (anchor[0]*100) + '% ' + (anchor[1]*100) + '%'});
+      var sprite = portrait.cloneNode(false); sprite.className = 'melee-portrait'; sprite.alt = '';
+      var pin = doc.createElement('i'); pin.className = 'melee-weapon-pin';
+      Object.assign(pin.style, {left: (anchor[0]*100)+'%', top: (anchor[1]*100)+'%'});
+      pose.appendChild(sprite); pose.appendChild(pin); actor.appendChild(pose); layer.appendChild(actor); nodes.push(actor);
+
+      var side = contact.side, flip = Math.sign(anchor[0] - .5) === side ? 1 : -1;
+      var reach = Math.min(compact ? 12 : 25, origin.width * contact.scale * .14);
+      var dx = contact.x - ax, dy = contact.y - ay;
+      var count = 1 + targets.reduce(function (last, t) { return Math.max(last, t.strikeIndex); }, 0);
+      var lastHit = 210 + (count-1)*105, duration = lastHit + 145;
+      var path = [], poses = [];
+      function key(at, x, y, scale, angle, facing, opacity) {
+        path.push({offset: at/duration, visibility:'visible', opacity:opacity,
+          transform:'translate('+x.toFixed(2)+'px,'+y.toFixed(2)+'px) scale('+scale.toFixed(4)+')'});
+        poses.push({offset:at/duration, transform:'rotate('+(angle*side)+'deg) scaleX('+facing+')'});
+      }
+      var heavy = hit.cardId==='pecorine_heavy' || hit.source==='jun';
+      var bend = heavy ? 12 : hit.source==='kaori' || hit.source==='miyako' ? 5 : 8;
+      key(0,0,0,1,0,1,1);
+      key(50,-side*reach*.4,2,1,-bend*.55,1,1);
+      key(82,dx*.16,dy*.16-2,1,-bend*.4,1,.52);
+      key(132,dx*.91-side*reach,dy*.92-4,contact.scale,-bend,flip,.93);
+      key(165,dx-side*reach,dy-3,contact.scale,-bend*1.4,flip,1);
+      for (var beat=0; beat<count; beat++) {
+        var at=210+beat*105, angle=beat%2 ? -bend : bend;
+        key(at,dx,dy,contact.scale,angle,flip,1);
+        if (beat+1<count) key(at+54,dx-side*reach,dy+(beat%2 ? 2 : -3),contact.scale,-angle*.75,flip,1);
+      }
+      key(lastHit+31,dx-side*reach*.21,dy+1,contact.scale,bend*.38,flip,1);
+      key(lastHit+64,dx*.82-side*reach,dy*.84-3,contact.scale,-bend*.32,flip,.9);
+      key(lastHit+111,dx*.10,dy*.10-2,1,-bend*.22,1,.67);
+      key(duration,0,0,1,0,1,1);
+      // Neither visibility override survives cancel, a new action, or a
+      // resize that removes the feedback layer. The callback resolves on
+      // the pre-existing combo schedule, independently of image loading.
+      all.push(animate(portrait,[{visibility:'hidden'},{visibility:'hidden'}],duration,delay,'linear','none'));
+      all.push(animate(actor,path,duration,delay,'linear','none'));
+      all.push(animate(pose,poses,duration,delay,'linear','none'));
+      return { primary:closest.id, contact:contact, tip:function () {
+        var box=pin.getBoundingClientRect(); return { x:box.left, y:box.top };
+      }};
+    }
+    function attackPose(sourceArt, origin, target, posture, bossAction, delay, openingHit, heroHit) {
       var dx = target.x - origin.x, dy = target.y - origin.y;
       var distance = Math.max(1, Math.hypot(dx, dy));
       var ranged = posture === 'ranged', cast = posture === 'cast';
@@ -221,6 +416,10 @@
       var attackScale = openingHit && !light ? 1.18 : bossAction ? 1.12 : 1.09;
       var translate = function (a, b) { return a.toFixed(2) + 'px ' + b.toFixed(2) + 'px'; };
       var turn = function (angle) { return (depth ? '.12 .8 1 ' : '') + angle + 'deg'; };
+      if (heroHit?.cardId && global.TowerVFX?.strikePose) {
+        var frames = global.TowerVFX.strikePose(heroHit, x, y, compact, light, heroHit.comboHits);
+        if (frames) return animate(sourceArt, frames.keys, frames.duration, delay, 'linear');
+      }
       var duration = bossAction ? 560 : 390;
       var windup = cast ? translate(-x * .35, 7) : translate(-x * .25, -y * .25 + 3);
       var release = ranged ? translate(-x * .55, -y * .55 - 4) : translate(x, y - (cast ? 15 : 2));
@@ -295,6 +494,8 @@
       var style = record.bossStyle, kind = record.bossAttack, color = style.color;
       var subjectSize = Math.min(compact ? 110 : 190, origin.height * .78);
       var work = [];
+      // Positions follow the cropped standing portrait, even in the wide solo arena.
+      var tip = { x: origin.x + (style.weapon[0] - .5) * origin.width, y: origin.y + (style.weapon[1] - .49) * origin.height };
       if (kind === 'guard' || kind === 'debuff') {
         var defensive = kind === 'guard' && !record.ward ? 'rest' : kind;
         var stance = size(mark('boss-technique boss-' + defensive + ' boss-' + style.motif, origin, color), subjectSize);
@@ -311,18 +512,57 @@
         }
         work.push(fade(size(mark('boss-technique boss-wave-hit boss-' + style.motif, p, color), compact ? 74 : 130), 360, impactAt, 1.45));
       } else if (kind === 'volley' || kind === 'projectile') {
-        var dx = p.x - origin.x, dy = p.y - origin.y;
-        var flight = mark('boss-technique boss-shot boss-' + style.motif, origin, color);
+        var dx = p.x - tip.x, dy = p.y - tip.y;
+        var flash = size(mark('boss-weapon-glint', tip, color), Math.min(compact ? 29 : 43, origin.height * .28));
+        work.push(fade(flash, 145, delay + 8, 1.2));
+        var flight = mark('boss-technique boss-shot boss-' + style.motif, tip, color);
         flight.style.setProperty('--shot-angle', Math.atan2(dy, dx) + 'rad');
-        work.push(animate(flight, [
+        var flightFrames = [
           { opacity: 0, transform: 'translate(-50%,-50%) rotate(var(--shot-angle)) scale(.42)' },
           { opacity: 1, offset: .2, transform: 'translate(-50%,-50%) rotate(var(--shot-angle))' },
           { opacity: .95, transform: 'translate(calc(-50% + ' + dx + 'px),calc(-50% + ' + dy + 'px)) rotate(var(--shot-angle))' }
-        ], 136, Math.max(delay, impactAt - 136), 'ease-in').then(function () { flight.remove(); }));
+        ];
+        // Misora's cannon points away from the party. Let the prism leave
+        // the muzzle before it turns back towards the actual recipient.
+        if (style.motif === 'prism' && !light) {
+          var bend = Math.max(0, Math.min(compact ? 12 : 24, bounds.left + bounds.width - tip.x - 12));
+          flightFrames[1] = { opacity: 1, offset: .27, transform: 'translate(calc(-50% + ' + bend + 'px), -105%) rotate(-18deg)' };
+        }
+        work.push(animate(flight, flightFrames, 136, Math.max(delay, impactAt - 136), 'ease-in').then(function () { flight.remove(); }));
         work.push(fade(size(mark('boss-technique boss-shot-hit boss-' + style.motif, p, color), compact ? 62 : 98), 280, impactAt, 1.3));
       } else if (kind === 'slash') {
-        work.push(arc(p, color, impactAt - 52, style.motif === 'ember' ? 61 : -35, true));
-        if (group) work.push(arc(p, '#fff3d2', impactAt - 4, 29, true));
+        var blocked = record.absorbed > 0 && record.amount === 0;
+        var contact = blocked ? { x: p.x + Math.sign(tip.x - p.x) * p.width * .26, y: p.y } : p;
+        if (first) {
+          var gleam = size(mark('boss-weapon-glint', tip, color), Math.min(compact ? 42 : 62, origin.height * .32));
+          work.push(fade(gleam, 190, delay, 1.2));
+        }
+        var cut = mark('boss-blade-path', tip, color);
+        cut.style.width = Math.hypot(contact.x - tip.x, contact.y - tip.y) + 'px';
+        cut.style.rotate = Math.atan2(contact.y - tip.y, contact.x - tip.x) + 'rad';
+        if (typeof global.requestAnimationFrame === 'function') {
+          var readTip = weaponPoint(record.source, art(find(record.source)), origin, style.weapon);
+          var followUntil = global.performance.now() + impactAt + 55;
+          function followBlade(now) {
+            if (done || !readTip || now > followUntil) return;
+            var live = readTip(), layerBox = layer.getBoundingClientRect();
+            cut.style.left = (live.x - layerBox.left) + 'px';
+            cut.style.top = (live.y - layerBox.top) + 'px';
+            cut.style.width = Math.hypot(contact.x - live.x, contact.y - live.y) + 'px';
+            cut.style.rotate = Math.atan2(contact.y - live.y, contact.x - live.x) + 'rad';
+            if (gleam) { gleam.style.left = cut.style.left; gleam.style.top = cut.style.top; }
+            global.requestAnimationFrame(followBlade);
+          }
+          global.requestAnimationFrame(followBlade);
+        }
+        work.push(animate(cut, [
+          { opacity: 0, scale: '.02 .55' },
+          { opacity: .72, scale: '.26 .8', offset: .30 },
+          { opacity: .98, scale: '1 1', offset: .62 },
+          { opacity: 0, scale: '1 .14' }
+        ], 145, Math.max(delay, impactAt - 90), 'linear'));
+        if (!blocked) work.push(arc(contact, color, impactAt - 30, style.motif === 'ember' ? 61 : -35, true));
+        if (group && !blocked) work.push(arc(contact, '#fff3d2', impactAt - 4, 29, true));
       }
       return work;
     }
@@ -391,7 +631,7 @@
         { opacity: .8, offset: .22, transform: 'translate(-50%,-50%) scale(1)' },
         { opacity: .75, offset: .58 }, { opacity: 0, transform: 'translate(-50%,-50%) scale(1.15)' }], 1000, delay);
     }
-    var all = [], sourceMoved = new Set(), targetMoved = new Set(), lastHitAt = new Map();
+    var all = [], sourceMoved = new Set(), recoils = new Map(), lastHitAt = new Map(), meleeActors = new Map();
     var bossShots = 0;
     var lastSource = null, actionAt = 0, stageShook = false, openingPlayed = false;
     records.forEach(function (e, i) {
@@ -421,6 +661,10 @@
         return;
       }
       var sourceEl = find(e.source), sourceArt = art(sourceEl), origin = point(sourceArt) || p;
+      if (e.cardId || e.status === 'buff') {
+        origin.weapon = weaponPoint(e.source, sourceArt, origin);
+        if (e.status === 'buff') p.weapon = weaponPoint(e.target, targetArt, p);
+      }
       var color = colors[e.source] || (targetEl.classList.contains('enemy') ? '#e6c38b' : '#ff9d9d');
       if (e.source && lastSource && e.source !== lastSource) actionAt += 150;
       if (e.source) lastSource = e.source;
@@ -442,6 +686,24 @@
       if (e.type === 'hit') {
         lastHitAt.set(e.target, impactAt);
         var magic = e.visual === 'magic', enemyAttack = !targetEl.classList.contains('enemy');
+        var melee = global.TowerVFX?.isMeleeCard?.(e), actor = null, contact = p, secondary = false;
+        if (melee && !reduce && bounds) {
+          if (!meleeActors.has(e.source)) {
+            var recipients = records.filter(function (hit) {
+              return hit.source === e.source && hit.cardId === e.cardId && global.TowerVFX.isMeleeCard(hit);
+            }).map(function (hit) {
+              var body = point(art(find(hit.target)));
+              return body && Object.assign(body, {id:hit.target, strikeIndex:hit.strikeIndex || 0});
+            }).filter(Boolean);
+            meleeActors.set(e.source, approach(e, sourceArt, origin, recipients, delay));
+          }
+          actor = meleeActors.get(e.source);
+          if (actor) {
+            origin.weapon = actor.tip;
+            secondary = actor.primary !== e.target;
+            contact = secondary ? meleeContact(origin, p, global.TowerVFX.weaponAnchors[e.source], bounds, compact, targetArt) : actor.contact;
+          }
+        }
         var bossAction = e.sourceKind === 'enemy' && !!(sourceEl && (sourceEl.classList.contains('boss') || e.bossImpact));
         var openingHit = !!(openingStyle && !openingPlayed && bossAction && bounds && sourceArt && e.source === opening.unitId);
         var heavy = bossAction && (openingHit || e.bossImpact || (e.raw || e.amount) >= (phase ? 6 : 9));
@@ -456,14 +718,22 @@
         }
         var technique = !reduce && bounds && e.bossAttack && !e.bossImpact;
         if (technique) all = all.concat(bossTechnique(e, origin, p, delay, impactAt, !sourceMoved.has(e.source), group));
-        if (canvas) canvas.cue(e, {origin:origin,target:p,color:color,delay:delay,impactAt:impactAt,stageMotion:!!technique});
+        var enemyPose = enemyMotion && enemyMotion.cue(e, sourceArt, origin, p, delay, impactAt);
+        var stageMotion = !!(technique || enemyPose?.projectile);
+        if (canvas) canvas.cue(e, {origin:origin,target:p,color:color,delay:delay,impactAt:impactAt,stageMotion:stageMotion,
+          meleeContact:melee && contact,secondaryMelee:secondary});
         if (!reduce && sourceArt && e.source !== e.target && !sourceMoved.has(e.source) && !indirectHits.has(e.sourceKind)) {
           sourceMoved.add(e.source);
           var profile = global.TowerVFX && global.TowerVFX.profiles && global.TowerVFX.profiles[e.source];
           var rangedAttack = e.bossAttack === 'projectile' || e.bossAttack === 'volley' || profile?.family === 'arrow';
           var posture = group || e.bossAttack === 'wave' ? 'cast' : rangedAttack ? 'ranged' : magic ? 'cast' : 'melee';
-          all.push(attackPose(sourceArt, origin, p, posture, bossAction, delay, openingHit));
-          if (depth && bounds && posture === 'melee') all.push(departure(origin, p, color, delay));
+          if (e.cardId) e.comboHits = 1 + records.reduce(function (last, hit) {
+            return hit.cardId === e.cardId && hit.source === e.source ? Math.max(last, hit.strikeIndex || 0) : last;
+          }, 0);
+          if (!enemyPose && !actor) {
+            all.push(attackPose(sourceArt, origin, p, posture, bossAction, delay, openingHit, e));
+          }
+          if (!enemyPose && depth && bounds && posture === 'melee') all.push(departure(origin, p, color, delay));
           if (heavy && bounds) {
             var windup = size(mark('boss-windup', origin, color), Math.min(148, origin.height * .63));
             all.push(fade(windup, 285, delay, 1.2));
@@ -478,7 +748,7 @@
           }
         }
         if (!reduce && heavy && bounds && same === 0 && (!technique || e.bossAttack === 'slash')) all.push(bossStrike(origin, p, color, impactAt, group));
-        if (magic && !reduce && !canvas && !technique) {
+        if (magic && !reduce && !canvas && !stageMotion) {
           var missile = mark('missile', origin, color), dx = p.x - origin.x, dy = p.y - origin.y;
           all.push(trail(origin, p, color, delay, true));
           all.push(animate(missile, [{ opacity: 0, transform: 'translate(-50%,-50%) scale(.3)' }, { opacity: 1, offset: .15 }, { opacity: 1, transform: 'translate(calc(-50% + ' + dx + 'px),calc(-50% + ' + dy + 'px)) scale(.9)' }], 230, delay, 'ease-in'));
@@ -488,7 +758,13 @@
             all.push(animate(echo, [{ opacity: 0, transform: 'translate(-50%,-50%) scale(.25)' }, { opacity: .65, offset: .2 },
               { opacity: 0, transform: 'translate(calc(-50% + ' + dx * (1 - .15 * ghost) + 'px),calc(-50% + ' + dy * (1 - .15 * ghost) + 'px)) scale(.5)' }], 290, delay + ghost * 30, 'ease-in'));
           }
-        } else if (!reduce && !canvas && !technique) {
+        } else if (melee && !reduce && !canvas) {
+          if (!secondary) {
+            var closeCut = size(mark('melee-contact-cut', contact, color), Math.max(16, Math.min(compact ? 46 : 70, p.width * .54)));
+            closeCut.style.rotate = (same % 2 ? 32 : -28) + 'deg';
+            all.push(fade(closeCut, 140, impactAt - 15, 1.08));
+          }
+        } else if (!reduce && !canvas && !stageMotion) {
           if (sourceArt) all.push(trail(origin, p, color, delay, false));
           all.push(arc(p, color, impactAt - 65, enemyAttack ? 30 : -25, e.burst));
           if (!enemyAttack) {
@@ -497,30 +773,41 @@
           }
         }
         if (!canvas) {
-          var hit = mark(magic ? 'blast' : enemyAttack ? 'claw' : 'slash', p, color);
+          var hit = mark(melee ? 'melee-contact-spark' : magic ? 'blast' : enemyPose?.projectile ? 'impact-core' : enemyAttack ? 'claw' : 'slash', contact, color);
           all.push(fade(hit, reduce ? 220 : e.burst ? 560 : 360, impactAt, e.burst ? 2.1 : 1.45));
-          all = all.concat(particles(p, color, impactAt, e.burst ? 10 : 6));
+          if (!melee) all = all.concat(particles(p, color, impactAt, e.burst ? 10 : 6));
         }
         if (!reduce) {
-          if (!canvas) {
+          if (!canvas && !melee) {
             all.push(ring(p, color, impactAt + 15, e.burst));
             var core = mark('impact-core', p, color);
             all.push(fade(core, e.burst ? 330 : 240, impactAt, e.burst ? 1.7 : 1.2));
           }
-          if (!targetMoved.has(e.target)) {
-            targetMoved.add(e.target);
-            var push = (p.x >= origin.x ? 1 : -1) * (depth ? (compact ? 7 : heavy ? 17 : 11) : 5);
-            all.push(animate(targetArt, [{ filter: 'brightness(1)', transform: 'none' },
-              { filter: 'brightness(1.6)', transform: 'translate(' + push + 'px,2px) scale(.96,1.025)', offset: .15 },
-              { filter: 'brightness(1.35)', transform: 'translateX(' + push + 'px) scale(.98,1)', offset: .28 },
-              { transform: 'translateX(' + (-push * .25) + 'px)', offset: .58 }, { filter: 'brightness(1)', transform: 'none' }], e.burst ? 390 : 310, impactAt));
-          }
+        }
+        var side = actor ? contact.side : p.x >= origin.x ? 1 : -1;
+        if (e.absorbed > 0) {
+          var wardPoint = actor ? contact : { x:p.x - side*p.width*.18, y:p.y };
+          all.push(shieldContact(wardPoint, side, e.amount > 0, impactAt, p.height));
+        }
+        if (!reduce && (e.amount > 0 || e.absorbed > 0)) {
+          var isBossTarget = targetEl.classList.contains('boss');
+          var body = isBossTarget ? targetArt : targetArt.querySelector('img, .enemy-glyph') || targetArt;
+          var brace = !e.amount, weight = Math.min(1, (e.amount || 0)/10);
+          var maxPush = Math.min(compact ? 12 : 25, p.width*.14) * (light ? .72 : 1);
+          if (isBossTarget) maxPush *= .62;
+          var force = brace ? maxPush*.10 : maxPush*(.34+.66*weight);
+          var dy = !actor && compact ? Math.sign(p.y-origin.y)*force*.30 : 0;
+          if (magic && !brace) dy -= force*.42;
+          var beats = recoils.get(body);
+          if (!beats) recoils.set(body, beats = []);
+          beats.push({ at:impactAt, x:force*side, y:brace ? 2 : dy, tilt:side*(brace ? .45 : 1.8+weight*3.1),
+            force:force, brace:brace, life:brace ? 110 : 150+weight*86 });
         }
         if (e.encouragement) {
           var status = sourceEl?.querySelector('[data-status="buff"]');
           if (status) all.push(animate(status, [{}, { backgroundColor: '#c1ffe5', color: '#184b36', boxShadow: '0 0 0 2px #87e6b5', offset: .24 }, {}], 280, impactAt));
         }
-        all.push(float(p, e.amount > 0 ? '#fff0db' : '#bbe1ff', e.amount > 0 ? '−' + e.amount : '格挡', impactAt + 20, e.burst, false, e.encouragement));
+        all.push(float(p, e.amount > 0 ? '#fff0db' : '#bbe1ff', e.amount > 0 ? '−' + e.amount : e.absorbed > 0 ? '格挡' : '0', impactAt + (e.encouragement ? 0 : 20), e.burst, false, e.encouragement, actor && contact.side));
         if (e.absorbed > 0 && e.amount > 0) all.push(float({ x: p.x, y: p.y + 32, height: 0 }, '#b1dcff', '护盾吸收 ' + e.absorbed, impactAt + 90));
       } else {
         var heal = e.type === 'heal', block = e.type === 'block', payment = e.type === 'payHp', negative = e.type === 'debuff' || ['breakAmount', 'weak', 'curseExpires', 'stars'].includes(e.status);
@@ -646,6 +933,7 @@
         }
       }
     }
+    recoils.forEach(function (beats, body) { all.push(recoilTrack(body, beats)); });
     if (canvas) all.push(canvas.finished);
     Promise.all(all).then(cleanup, cleanup);
     return promise;

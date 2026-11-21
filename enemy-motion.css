@@ -1,0 +1,56 @@
+.battle-page .arena .fighter.enemy .enemy-art:has(> .enemy-attack-sprite) {
+  /* A forward leap or a swinging axe can travel beyond the resting portrait.
+     Keep the two HUD rows clear without cutting the attacker's face in half. */
+  overflow: visible;
+  clip-path: inset(-4% -150% 0);
+}
+.enemy-art .enemy-attack-sprite {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.enemy-attack-atlas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  will-change: transform;
+}
+
+.enemy-projectile {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  aspect-ratio: 111 / 83;
+  opacity: 0;
+}
+.enemy-projectile::before,
+.enemy-projectile::after {
+  content: '';
+  position: absolute;
+}
+.enemy-projectile::before {
+  z-index: 1;
+  inset: 0;
+  background: var(--shot-art) center / contain no-repeat;
+  filter: drop-shadow(0 2px 2px #583810ad);
+}
+.enemy-projectile::after {
+  left: 65%;
+  top: 34%;
+  width: 125%;
+  height: 33%;
+  border-radius: 50%;
+  background: linear-gradient(90deg,#ffebaecc,transparent);
+  transform-origin: 0 50%;
+}
+.enemy-projectile.is-magic:not(.has-art)::before {
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 37% 48%,#fffcdb 7%,#ffd676 33%,#ff9652 58%,transparent 74%);
+  filter: drop-shadow(0 0 5px #ff994b);
+}
+.enemy-projectile.is-magic::after { background: linear-gradient(90deg,#ffb156dc,transparent); }

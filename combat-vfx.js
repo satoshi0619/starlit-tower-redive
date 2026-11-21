@@ -30,6 +30,69 @@
   };
   Object.keys(profiles).forEach(function (id) { Object.freeze(profiles[id]); });
   Object.freeze(profiles);
+  // Normalized positions on the fitted art, measured at the sword tip, staff
+  // head, bow grip, shield rim or striking hand of the current standing pose.
+  var weaponAnchors = {
+    pecorine:[.26,.33], rei:[.87,.18], kokkoro:[.967,.024], kyaru:[.25,.32], hatsune:[.19,.09], yui:[.22,.24],
+    jun:[.35,.35], nozomi:[.099,.192], shizuru:[.20,.53], makoto:[.94,.55], suzuna:[.80,.42], arisa:[.73,.58],
+    miyako:[.83,.21], anna:[.86,.12], yori:[.96,.018], kaori:[.32,.30], saren:[.94,.53], monika:[.06,.79]
+  };
+  var heroStrokes = {
+    pecorine:'cut', rei:'cut', kokkoro:'wind', kyaru:'hex', hatsune:'starfall', yui:'radiance',
+    jun:'bash', nozomi:'echo-blade', shizuru:'cut', makoto:'fang', suzuna:'arrow', arisa:'leaf-arrow',
+    miyako:'ghost-fist', anna:'flame', yori:'lightning', kaori:'fist', saren:'ember-blade', monika:'thrust'
+  };
+  var cardStrokes = {
+    rei_dance:'sword-dance', rei_break:'thrust', rei_feint:'back-cut', pecorine_heavy:'heavy', pecorine_sweep:'sweep',
+    m3:'thrust', z3:'piercing-arrow', ar5:'piercing-arrow', hatsune_meteor:'meteor', u5:'wisp'
+  };
+  function strokeOf(hit) { return cardStrokes[hit.cardId] || heroStrokes[hit.source]; }
+  function isMeleeCard(hit) {
+    if (hit.type !== 'hit' || hit.sourceKind !== 'card' || hit.burst ||
+        hit.visual === 'magic' || hit.damageType === 'magic' || strokeOf(hit) === 'wisp') return false;
+    var family = profiles[hit.source]?.family;
+    return family === 'sword' || family === 'claw' || family === 'fist';
+  }
+  // The mechanical hits land at 210 ms and then 105 ms apart. A multi-hit
+  // card gets one continuous pose with its recoveries fitted between contacts.
+  function strikePose(hit, dx, dy, compact, light, hits) {
+    var stroke = strokeOf(hit);
+    if (!stroke) return null;
+    var family = profiles[hit.source].family;
+    var direction = dx < 0 ? -1 : 1;
+    var arrow = family === 'arrow', spell = hit.visual === 'magic';
+    var heavy = stroke === 'heavy' || stroke === 'bash' || stroke === 'sweep';
+    var jab = stroke === 'fist' || stroke === 'ghost-fist' || stroke === 'thrust';
+    var reach = arrow ? -.5 : spell ? .12 : heavy ? .97 : jab ? .86 : .78;
+    var lean = arrow ? -5 : spell ? -3 : heavy ? 9 : jab ? 3 : 8;
+    var lift = light ? 1 : compact ? 2 : 4;
+    var count = clamp(hits || 1, 1, 8), duration = 210 + (count - 1) * 105 + 145;
+    function key(at, reachPart, rise, angle, sx, sy) {
+      return {offset:at / duration, translate:(dx * reachPart).toFixed(2) + 'px ' + (dy * reachPart + rise).toFixed(2) + 'px',
+        rotate:(angle * direction).toFixed(2) + 'deg', scale:sx + ' ' + sy};
+    }
+    var keys = [key(0,0,0,0,1,1)];
+    if (arrow || spell) {
+      // The projectile leaves the bow/staff 120 ms before the target impact.
+      // An archer draws then recoils. A caster lifts and releases from the staff.
+      for (var shot = 0; shot < count; shot++) {
+        var release = 90 + shot * 105;
+        keys.push(key(release - 25, arrow ? -.22 : .08, spell ? -lift : 1, -lean * .7, .98, 1.02));
+        keys.push(key(release, arrow ? .08 : .32, spell ? -lift * 1.8 : 0, lean * .45, 1.025, .985));
+        keys.push(key(release + 34, arrow ? -.48 : .17, spell ? -lift * 1.2 : -1, lean, .985, 1.012));
+      }
+      keys.push(key(duration,0,0,0,1,1));
+      return {duration:duration, keys:keys};
+    }
+    keys.push(key(82,heavy ? -.30 : -.16,1,-lean*.62,1.015,.985));
+    for (var i = 0; i < count; i++) {
+      var contact = 210 + i * 105, swing = i % 2 ? -1 : 1;
+      keys.push(key(contact,reach * (i ? .83 : 1),spell ? -lift * 2 : -lift,lean*swing,arrow ? .97 : 1.035,.99));
+      if (i + 1 < count) keys.push(key(contact+55,reach*.40,0,-lean*swing*.35,.992,1.012));
+    }
+    keys.push(key(duration,0,0,0,1,1));
+    return {duration:duration,keys:keys};
+  }
   var bosses = {
     fubuki: { motif: 'barrage', color: '#edb77d', accent: '#fff0c2' },
     christina: { motif: 'sword-rain', color: '#ffba72', accent: '#ffeac0' },
@@ -73,6 +136,7 @@
     canvas.dataset.quality = quality;
     canvas.dataset.pixelRatio = String(Math.round(ratio * 100) / 100);
     layer.appendChild(canvas);
+    var particleStamps = new Map();
     var tasks = [], lastEnd = 0, raf = null, done = false, started = null, resolve;
     var finished = new Promise(function (yes) { resolve = yes; });
     var unit = clamp(bounds.height * .31, 54, 116);
@@ -89,6 +153,7 @@
       if (typeof global.removeEventListener === 'function') global.removeEventListener('resize', resized);
       if (typeof canvas.removeEventListener === 'function') canvas.removeEventListener('contextlost', lost);
       canvas.remove(); tasks.length = 0;
+      particleStamps.clear();
       resolve({ cancelled: !!cancelled, quality: quality, reason: reason || 'finished' });
     }
     function hidden() { if (doc.hidden) cleanup(true, 'hidden'); }
@@ -112,10 +177,10 @@
       if (elapsed >= lastEnd) { cleanup(false); return; }
       raf = global.requestAnimationFrame(frame);
     }
-    function paint(color, alpha, width) {
-      ctx.globalAlpha = clamp(alpha, 0, 1); ctx.strokeStyle = color; ctx.fillStyle = color;
-      ctx.lineWidth = width || 1; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      ctx.shadowColor = color; ctx.shadowBlur = light ? 0 : 7;
+    function paint(color, alpha, width, brush = ctx) {
+      brush.globalAlpha = clamp(alpha, 0, 1); brush.strokeStyle = color; brush.fillStyle = color;
+      brush.lineWidth = width || 1; brush.lineCap = 'round'; brush.lineJoin = 'round';
+      brush.shadowColor = color; brush.shadowBlur = light ? 0 : 7;
     }
     function path(points, color, alpha, width) {
       paint(color, alpha, width); ctx.beginPath();
@@ -124,25 +189,42 @@
     function circle(p, radius, color, alpha, width, squash) {
       paint(color, alpha, width); ctx.beginPath(); ctx.ellipse(p.x, p.y, Math.max(.1, radius), Math.max(.1, radius * (squash || 1)), 0, 0, TAU); ctx.stroke();
     }
-    function shape(kind, p, size, rotation, color, alpha) {
-      paint(color, alpha, 1.2); ctx.translate(p.x, p.y); ctx.rotate(rotation || 0); ctx.beginPath();
+    function shape(kind, p, size, rotation, color, alpha, brush = ctx) {
+      paint(color, alpha, 1.2, brush); brush.translate(p.x, p.y); brush.rotate(rotation || 0); brush.beginPath();
       if (kind === 'heart') {
-        ctx.moveTo(0, size * .8); ctx.bezierCurveTo(-size * 1.4, -.1 * size, -size * .6, -size, 0, -size * .35);
-        ctx.bezierCurveTo(size * .6, -size, size * 1.4, -.1 * size, 0, size * .8);
+        brush.moveTo(0, size * .8); brush.bezierCurveTo(-size * 1.4, -.1 * size, -size * .6, -size, 0, -size * .35);
+        brush.bezierCurveTo(size * .6, -size, size * 1.4, -.1 * size, 0, size * .8);
       } else if (kind === 'leaf' || kind === 'petal' || kind === 'feather') {
-        ctx.moveTo(0, -size); ctx.bezierCurveTo(size * .9, -size * .3, size * .65, size * .6, 0, size);
-        ctx.bezierCurveTo(-size * .45, size * .3, -size * .45, -size * .3, 0, -size);
+        brush.moveTo(0, -size); brush.bezierCurveTo(size * .9, -size * .3, size * .65, size * .6, 0, size);
+        brush.bezierCurveTo(-size * .45, size * .3, -size * .45, -size * .3, 0, -size);
       } else if (kind === 'diamond') {
-        ctx.moveTo(0, -size); ctx.lineTo(size * .55, 0); ctx.lineTo(0, size); ctx.lineTo(-size * .55, 0); ctx.closePath();
+        brush.moveTo(0, -size); brush.lineTo(size * .55, 0); brush.lineTo(0, size); brush.lineTo(-size * .55, 0); brush.closePath();
       } else {
         var sides = kind === 'star' ? 10 : 8;
         for (var i = 0; i < sides; i++) {
           var a = i / sides * TAU - Math.PI / 2, r = i % 2 ? size * .28 : size;
-          if (i) ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r); else ctx.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+          if (i) brush.lineTo(Math.cos(a) * r, Math.sin(a) * r); else brush.moveTo(Math.cos(a) * r, Math.sin(a) * r);
         }
-        ctx.closePath();
+        brush.closePath();
       }
-      ctx.fill(); ctx.stroke();
+      brush.fill(); brush.stroke();
+    }
+    // A mote only changes position, rotation, size and opacity during flight.
+    // Rasterize its outline and soft glow once per colour and size, at native
+    // resolution. Offscreen tiles live only for the current battle action.
+    function particleStamp(kind, color, size) {
+      var key = kind + ':' + color + ':' + size;
+      if (particleStamps.has(key)) return particleStamps.get(key);
+      var tile = doc.createElement('canvas');
+      var pixels = Math.ceil((size + 13) * 2 * ratio);
+      tile.width = tile.height = pixels;
+      var brush = tile.getContext('2d');
+      if (!brush) return null;
+      brush.setTransform(ratio, 0, 0, ratio, pixels / 2, pixels / 2);
+      brush.globalCompositeOperation = 'lighter';
+      shape(kind, {x:0,y:0}, size, 0, color, 1, brush);
+      particleStamps.set(key, tile);
+      return tile;
     }
     function motes(p, color, start, count, kind, radius, inward) {
       count = Math.max(0, Math.min(light ? Math.ceil(count * .42) : count, particleBudget - emitted));
@@ -151,11 +233,29 @@
         var key = i + emitted * .73;
         return { angle: seed(key) * TAU, radius: radius * (.45 + seed(key + 3) * .65), size: 2 + seed(key + 5) * (kind === 'leaf' || kind === 'feather' ? 6 : 3.5), bend: (seed(key + 9) - .5) * 36 };
       });
+      if (!light && typeof ctx.drawImage === 'function') {
+        data.forEach(function (m) {
+          m.tileSize = Math.round(m.size * 2) / 2;
+          m.tile = particleStamp(kind || 'spark', color, m.tileSize);
+        });
+      }
       add(start, 540, function (t) {
+        var intensity = envelope(t);
         data.forEach(function (m) {
           var travel = inward ? 1 - ease(t) : ease(t), a = m.angle + t * .35;
           var at = { x: p.x + Math.cos(a) * m.radius * travel, y: p.y + Math.sin(a) * m.radius * travel * .65 - t * m.bend };
-          ctx.save(); shape(kind || 'spark', at, m.size * (.8 + envelope(t) * .3), a + t, color, envelope(t) * .8); ctx.restore();
+          var size = m.size * (.8 + intensity * .3);
+          ctx.save();
+          if (m.tile) {
+            var width = m.tile.width / ratio * size / m.tileSize;
+            ctx.globalAlpha = intensity * .8;
+            ctx.translate(at.x, at.y);
+            ctx.rotate(a + t);
+            ctx.drawImage(m.tile, -width / 2, -width / 2, width, width);
+          } else {
+            shape(kind || 'spark', at, size, a + t, color, intensity * .8);
+          }
+          ctx.restore();
         });
       });
     }
@@ -188,8 +288,9 @@
         ctx.beginPath(); ctx.ellipse(0, 9, spread * .96, spread * .4, 0, Math.PI * 1.12, Math.PI * (1.12 + .8 * progress)); ctx.stroke();
       });
     }
-    function bolt(from, to, color, start, life, kind) {
+    function bolt(from, to, color, start, life, kind, releasePoint) {
       add(start, life, function (t) {
+        if (releasePoint) { from = releasePoint(); releasePoint = null; }
         var k = t * t, head = { x: from.x + (to.x - from.x) * k, y: from.y + (to.y - from.y) * k - Math.sin(t * Math.PI) * (kind === 'arrow' ? 0 : 20) };
         var back = Math.max(0, k - .22), tail = { x: from.x + (to.x - from.x) * back, y: from.y + (to.y - from.y) * back };
         path([tail, head], color, Math.min(1, t * 5) * .75, kind === 'arrow' ? 3 : 5);
@@ -235,8 +336,8 @@
         });
       })(b);
     }
-    function flame(p, color, start) {
-      add(start, 700, function (t) {
+    function flame(p, color, start, life) {
+      add(start, life || 700, function (t) {
         for (var i = -1; i <= 1; i++) {
           var s = unit * (.32 + envelope(t) * .2), x = p.x + i * unit * .25, y = p.y + unit * .35, sway = Math.sin(t * TAU + i) * s * .2;
           paint(color, envelope(t) * .45, 1.5); ctx.beginPath(); ctx.moveTo(x, y);
@@ -246,12 +347,165 @@
         }
       });
     }
+    function tracked(point) {
+      if (!point?.weapon) {
+        var fixed = local(point);
+        return function () { return fixed; };
+      }
+      return function () { return local(point.weapon()); };
+    }
+    function ribbon(curve, tail, head, width, color, accent, opacity) {
+      if (head <= tail || opacity <= 0) return;
+      var sides = [[],[]], points = [], steps = light ? 8 : 15;
+      for (var i = 0; i <= steps; i++) {
+        var u = i / steps, at = tail + (head - tail) * u, p = curve(at), next = curve(at + .001);
+        var dx = next.x - p.x, dy = next.y - p.y, length = Math.max(.001, Math.hypot(dx, dy));
+        var thickness = width * (.025 + Math.pow(Math.sin(Math.PI*u), .75));
+        points.push(p);
+        sides[0].push({x:p.x - dy / length * thickness, y:p.y + dx / length * thickness});
+        sides[1].push({x:p.x + dy / length * thickness, y:p.y - dx / length * thickness});
+      }
+      ctx.save();
+      // A layer of saturated ink under the thin glint remains readable on
+      // the bright arena floor; additive white on its own disappears there.
+      ctx.globalCompositeOperation = 'source-over';
+      paint(color,opacity,1); ctx.beginPath();
+      sides[0].concat(sides[1].reverse()).forEach(function (p, i) { if (i) ctx.lineTo(p.x,p.y); else ctx.moveTo(p.x,p.y); });
+      ctx.closePath(); ctx.fill();
+      path(points,accent,opacity,Math.max(1,width*.22)); ctx.restore();
+    }
+    function windRelay(from, to, start) {
+      add(start,285,function(t) {
+        var a=from(), b=to(), height=Math.min(unit*.55,Math.hypot(b.x-a.x,b.y-a.y)*.20);
+        // Tall staves can already reach the top of a short arena. Bend down
+        // into the battlefield there so the support trail remains visible.
+        if (Math.min(a.y,b.y)<height+12) height=-height*.70;
+        function curve(u) {
+          return {x:a.x+(b.x-a.x)*u,y:a.y+(b.y-a.y)*u-height*Math.sin(Math.PI*u)};
+        }
+        var head=clamp(t*1.32,0,1), tail=clamp((t-.35)*1.6,0,1);
+        ribbon(curve,tail,head,unit*.042,'#39bd91','#e4ffb7',envelope(t));
+        var tip=curve(head);ctx.save();shape('leaf',tip,unit*.064,-.7,'#d2ffc1',envelope(t));ctx.restore();
+      });
+    }
+    function meleeStrike(record, points, impact) {
+      var stroke = strokeOf(record), beat = record.strikeIndex || 0;
+      var blunt = ['fist', 'ghost-fist', 'bash'].includes(stroke);
+      var heavy = ['heavy', 'sweep', 'bash'].includes(stroke);
+      var thrust = stroke === 'thrust' || (stroke === 'sword-dance' && beat % 3 === 2);
+      var reverse = stroke === 'back-cut' || (stroke === 'sword-dance' && beat % 3 === 1);
+      var contact = local(points.meleeContact || points.target), from = local(points.origin || points.target);
+      var side = points.meleeContact?.side;
+      var approach = side ? (side > 0 ? 0 : Math.PI) : Math.atan2(contact.y - from.y, contact.x - from.x);
+      var forward = { x: Math.cos(approach), y: Math.sin(approach) };
+      var reach = Math.min(unit * .62, Math.max(16, (points.target.width || unit) * .35));
+      var hand = tracked(points.origin || points.target);
+      var boosted = record.encouragement?.sources?.kokkoro > 0;
+      var blocked = record.absorbed > 0 && !record.amount;
+      canvas.dataset.heroMotion = stroke;
+
+      // Dimensions below are fractions of the struck figure, independent of
+      // the space between the formations. The portrait supplies all travel.
+      function markAt(along, across) {
+        return { x: contact.x + reach * (forward.x * along - forward.y * across),
+          y: contact.y + reach * (forward.y * along + forward.x * across) };
+      }
+      if (!blunt && !points.secondaryMelee) {
+        var lead = heavy ? 45 : 33, linger = heavy ? 114 : 85;
+        add(impact - lead, lead + linger, function (t) {
+          var elapsed = t * (lead + linger) - lead;
+          if (elapsed < 0) {
+            var tip = hand();
+            if (Math.hypot(tip.x - contact.x, tip.y - contact.y) > reach) return;
+          }
+          var progress = clamp(1 + elapsed / lead, 0, 1);
+          var fade = clamp(elapsed / linger, 0, 1);
+          var wind = boosted && elapsed >= 0 && elapsed < 65;
+          function curve(u) {
+            if (thrust) return markAt(-.78 + u * .94, .13 * (1-u));
+            var edge = 2 * u - 1;
+            var belly = 1 - edge * edge;
+            var sweep = stroke === 'sweep' ? .76 * edge : (heavy ? 1.02 : .82) * edge;
+            return markAt(.52 * belly + .19 * edge - .30, reverse ? -sweep : sweep);
+          }
+          ribbon(curve, fade, progress, reach * (thrust ? .026 : heavy ? .076 : .046),
+            wind ? '#36bb90' : '#73808b', wind ? '#e4ffbb' : '#fff4de', 1 - fade);
+        });
+      }
+
+      // Fists compress against the body, shields hit rim-first, and swords
+      // shed a few short chips. Nothing flies from the attacker's home slot.
+      add(impact, blunt ? 122 : 108, function (t) {
+        var color = boosted && t < .56 ? '#36bb90' : blocked ? '#afdfff' : '#fff0ce';
+        var alpha = 1 - t;
+        if (blunt && !points.secondaryMelee) {
+          var width = stroke === 'bash' ? .37 : .21;
+          var kick = .10 + ease(t) * .16;
+          path([markAt(-.10, -width), markAt(kick, -.08), markAt(kick, .08), markAt(-.10, width)],
+            color, alpha, heavy ? 3.8 : 2.7);
+        }
+        var count = light || points.secondaryMelee ? 3 : heavy ? 6 : 4;
+        for (var i = 0; i < count; i++) {
+          var angle = -.99 + i * 1.98 / (count - 1) + (beat % 2 ? .18 : -.10);
+          var distance = (.12 + .45 * ease(t)) * (i % 2 ? .73 : 1);
+          var tail = distance - .20 * alpha;
+          path([markAt(tail * Math.cos(angle), tail * Math.sin(angle)),
+            markAt(distance * Math.cos(angle), distance * Math.sin(angle))], color, alpha, heavy ? 2.5 : 1.8);
+        }
+      });
+    }
+    function arrowStroke(stroke, hand, target, impact, color, accent, beat) {
+      var lead=120, release;
+      add(impact-lead,lead,function(t) {
+        if (!release) release=hand();
+        var dx=target.x-release.x,dy=target.y-release.y,speed=.14*t+.86*t*t;
+        var arc=(stroke==='leaf-arrow' ? .42 : .11)*unit*(beat%2 ? .65 : 1);
+        function curve(u) { return {x:release.x+dx*u,y:release.y+dy*u-arc*Math.sin(Math.PI*u)}; }
+        var distance=Math.max(32,Math.hypot(dx,dy)), tail=Math.max(0,speed-unit*(stroke==='piercing-arrow'?.75:.44)/distance);
+        ribbon(curve,tail,speed,stroke==='piercing-arrow'?4:2.6,color,accent,1);
+        var head=curve(speed), angle=Math.atan2(dy-arc*Math.PI*Math.cos(Math.PI*speed),dx);
+        ctx.save();shape('diamond',head,unit*.061,angle+Math.PI/2,accent,1);ctx.restore();
+        if (stroke==='leaf-arrow' && !light) { ctx.save();shape('leaf',curve(tail),5,angle-.5,color,.85);ctx.restore(); }
+      });
+    }
+    function heroAttack(record, points, target, start, impact, profile) {
+      var stroke=strokeOf(record), hand=tracked(points.origin || points.target), color=profile.color, accent=profile.accent;
+      var grip=hand(), beat=record.strikeIndex || 0;
+      canvas.dataset.heroMotion=stroke;
+      if (stroke==='arrow'||stroke==='leaf-arrow'||stroke==='piercing-arrow') {
+        arrowStroke(stroke,hand,target,impact,color,accent,beat);
+      } else if (record.visual==='magic') {
+        var fromSky=stroke==='meteor'||stroke==='starfall';
+        var targetOrigin=fromSky ? {x:target.x+unit*.57,y:Math.max(4,target.y-unit*1.42)} : grip;
+        rune(grip,color,start,.18,210);
+        if (stroke==='lightning') {
+          add(impact-95,160,function(t) {
+            var dx=target.x-grip.x,dy=target.y-grip.y,level=envelope(t),points=[grip];
+            for(var i=1;i<7;i++) points.push({x:grip.x+dx*i/7,y:grip.y+dy*i/7+(i%2 ? 1:-1)*level*unit*.16});
+            points.push(target);path(points,color,level,5);path(points,accent,level,1.5);
+          });
+        } else {
+          var travel=fromSky ? 165 : 120;
+          bolt(targetOrigin,target,color,impact-travel,travel,'magic',fromSky ? null : hand);
+          if (stroke==='hex') rune(target,color,impact-32,.33,245);
+          if (stroke==='flame') flame(target,color,impact-90,350);
+          if (stroke==='radiance'||stroke==='wisp') circleWave(target,accent,impact-12,.44,330);
+          if (stroke==='meteor'||stroke==='starfall') {
+            add(impact-165,165,function(t) {
+              var k=t*t, p={x:targetOrigin.x+(target.x-targetOrigin.x)*k,y:targetOrigin.y+(target.y-targetOrigin.y)*k};
+              ctx.save();shape('star',p,unit*(stroke==='meteor'?.19:.105),t*1.9,accent,.9);ctx.restore();
+            });
+          }
+        }
+      }
+    }
     function cue(record, points) {
       if (done || !record || !points || !points.target) return;
       var p = local(points.target), o = local(points.origin || points.target), start = points.delay || 0, impact = points.impactAt === undefined ? start + 210 : points.impactAt;
       var profile = profiles[record.source], color = points.color || profile && profile.color || '#c1b6ff';
       var family = profile && profile.family || (record.visual === 'magic' ? 'magic' : 'claw');
       if (record.type === 'hit') {
+        if (isMeleeCard(record)) { meleeStrike(record, points, impact); return; }
         var indirect = ['star', 'poison', 'reflect', 'counter', 'relic', 'passive'].includes(record.sourceKind);
         if (indirect) {
           // Delayed damage belongs to its victim. It must not make a dead or
@@ -260,6 +514,8 @@
         } else if (points.stageMotion) {
           // The stage layer draws the individual spell, blade, or shell.
           // Keep Canvas hit sparks and absorption without a second projectile.
+        } else if (profile && record.sourceKind==='card' && !record.burst) {
+          heroAttack(record,points,p,start,impact,profile);
         } else if (record.visual === 'magic' || family === 'arrow' || family === 'wind') {
           rune(o, color, start, .26, 300); bolt(o, p, color, start, 210, family === 'arrow' ? 'arrow' : 'magic');
         } else if (family === 'fist') {
@@ -272,9 +528,8 @@
           if (family === 'claw') [-.2, .2].forEach(function (a) { slash({ x: p.x + a * unit, y: p.y }, color, impact - 35, a - .4, .65, 340); });
         }
         if (record.amount > 0) { shock(p, color, impact, record.burst ? 1.25 : .8); motes(p, color, impact, record.burst ? 17 : 9, 'spark', unit * (record.burst ? 1.05 : .7)); }
-        else if (record.absorbed > 0) { shield(p, '#aedcff', impact, .85, 440); motes(p, '#b5e5ff', impact, 7, 'diamond', unit * .55); }
+        else if (record.absorbed > 0) { motes(p, '#b5e5ff', impact, 7, 'diamond', unit * .55); }
         else shock(p, '#d7e5f7', impact, .38);
-        if (record.absorbed > 0 && record.amount > 0) shield(p, '#aedcff', impact, .65, 340);
       } else if (record.type === 'heal' || record.type === 'cleanse') {
         add(start, 620, function (t) {
           circle({ x: p.x, y: p.y + unit * .45 }, unit * (.28 + ease(t) * .35), color, envelope(t) * .7, 2, .25);
@@ -282,7 +537,12 @@
         });
         motes(p, color, start + 50, 12, 'spark', unit * .6, true);
       } else if (record.type === 'block') { shield(p, color, start, 1.2); motes(p, color, start, 8, 'diamond', unit * .65, true); }
-      else if (record.type === 'status' || record.type === 'support' || record.type === 'debuff') { rune(p, color, start, .48, 560); motes(p, color, start + 20, 8, record.status === 'stars' ? 'star' : 'spark', unit * .65); }
+      else if (record.type === 'status' || record.type === 'support' || record.type === 'debuff') {
+        if (record.status==='buff' && record.source==='kokkoro' && record.target!=='kokkoro') {
+          windRelay(tracked(points.origin || points.target),tracked(points.target),start);
+        }
+        rune(p, color, start, .48, 560); motes(p, color, start + 20, 8, record.status === 'stars' ? 'star' : 'spark', unit * .65);
+      }
     }
     function burst(options) {
       if (done || !options || !options.focus) return;
@@ -362,8 +622,8 @@
       // A translucent perimeter closes the composition without washing out art.
       add(0, 1050, function (t) { circle(p, unit * (1.25 + ease(t) * .2), c, envelope(t) * .16, 1); });
     }
-    function circleWave(p, color, start, scale) {
-      add(start, 820, function (t) {
+    function circleWave(p, color, start, scale, life) {
+      add(start, life || 820, function (t) {
         circle({ x: p.x, y: p.y + unit * .45 }, unit * scale * (.3 + ease(t) * .8), color, envelope(t) * .5, 2, .27);
         circle({ x: p.x, y: p.y + unit * .44 }, unit * scale * (.2 + ease(t) * .7), color, envelope(t) * .28, 1, .27);
       });
@@ -413,5 +673,5 @@
     raf = global.requestAnimationFrame(frame);
     return { cue: cue, burst: burst, boss: boss, finished: finished, cancel: function () { cleanup(true, 'cancelled'); }, canvas: canvas, quality: quality };
   }
-  return { create: create, profiles: profiles, bosses: bosses };
+  return { create: create, profiles: profiles, bosses: bosses, weaponAnchors: weaponAnchors, strikePose: strikePose, isMeleeCard: isMeleeCard };
 });

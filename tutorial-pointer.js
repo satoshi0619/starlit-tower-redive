@@ -46,11 +46,11 @@
     }
     function cinematic() {
       if (!doc) return false;
-      for (var i = 0; i < 3; i++) {
-        var el = doc.getElementById && doc.getElementById(['burst-overlay', 'burst-tail', 'boss-entry'][i]);
+      for (var id of ['burst-overlay', 'boss-entry']) {
+        var el = doc.getElementById && doc.getElementById(id);
         if (el && !el.hidden && el.isConnected !== false) return true;
       }
-      return !!(doc.querySelector && doc.querySelector('.boss-performance'));
+      return !!(doc.querySelector && doc.querySelector('.boss-performance:not(.voice-tail)'));
     }
     function blocked() {
       if (!current || !current.run || !current.run.tutorial || !current.run.tutorial.active || current.run.screen !== 'battle') return 'inactive';

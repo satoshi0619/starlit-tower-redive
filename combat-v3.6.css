@@ -1,5 +1,11 @@
 /* Forecasts share existing HP tracks. The compact footer keeps cards readable. */
 .hp-track,.boss-hp-track{position:relative;overflow:hidden}
+.hp-track>i,.boss-hp-fill{width:100%;transform-origin:left center}
+.battle-page .hp-track>i{transition:transform 100ms ease-out}
+.battle-page .boss-hp-fill{transition:transform 180ms ease-out}
+@media(prefers-reduced-motion:reduce){
+  .battle-page .hp-track>i,.battle-page .boss-hp-fill{transition:none}
+}
 .hp-track .hp-forecast,.boss-hp-track .hp-forecast{position:absolute;top:0;height:100%;z-index:2;background:repeating-linear-gradient(115deg,#ffb0aa 0 3px,#b34260 3px 6px);transition:width .12s ease;pointer-events:none}
 .hp-track .hp-forecast.is-heal,.boss-hp-track .hp-forecast.is-heal{background:repeating-linear-gradient(115deg,#e4ffc9 0 3px,#68bda4 3px 6px)}
 .battle-page .fighter-info{position:relative}

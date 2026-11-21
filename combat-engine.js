@@ -285,6 +285,7 @@
     var shieldAbsorbed = Math.min(e.block || 0, n); e.block -= shieldAbsorbed; n -= shieldAbsorbed;
     var dealt = Math.min(e.hp, n); e.hp -= dealt;
     var hitDetails = { damageType: damageType, absorbed: barrierAbsorbed + shieldAbsorbed, sourceKind: ctx.kind, raw: amount };
+    if (hitDetails.absorbed) hitDetails.wardsAfter = { block:e.block, barrier:e.barrier || 0 };
     if (encouragement) hitDetails.encouragement = encouragement;
     event(b, 'hit', owner, e.uid, dealt, hitDetails);
     log(b, (hero(b, owner) || { name: owner }).name + ' → ' + e.name + '：' + dealt + (barrierAbsorbed + shieldAbsorbed ? '（吸收' + (barrierAbsorbed + shieldAbsorbed) + '）' : ''));
@@ -323,7 +324,9 @@
       relicEvent(b, 'last_ember_locket', h.uid, saved, { tpSpent: spentTp, prevented: saved });
     }
     h.hp -= dealt;
-    event(b, 'hit', e ? e.uid : null, h.uid, dealt, { absorbed: absorbed, sourceKind: kind || 'enemy', raw: n });
+    var hitDetails = { absorbed: absorbed, sourceKind: kind || 'enemy', raw: n };
+    if (absorbed) hitDetails.wardsAfter = { block:h.block, barrier:0 };
+    event(b, 'hit', e ? e.uid : null, h.uid, dealt, hitDetails);
     log(b, (e ? e.name : '状态') + ' → ' + h.name + '：' + dealt + (absorbed ? '（吸收' + absorbed + '）' : ''));
     if (dealt > 0) {
       b.flags.reserveDamaged = true;

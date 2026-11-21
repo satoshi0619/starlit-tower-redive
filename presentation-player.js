@@ -22,7 +22,8 @@
     var complete = false, reason = null, errors = [], phase = 'loading';
     var muted = !!options.muted, volume = clampVolume(options.volume === undefined ? 1 : options.volume);
     var videoMuted = options.videoMuted !== false;
-    var controller;
+    var controller, resolveFinished;
+    var finished = new Promise(function (resolve) { resolveFinished = resolve; });
     function callback(name, value) {
       if (typeof options[name] !== 'function') return;
       // A UI callback must not strand media or prevent the remaining cleanup.
@@ -63,6 +64,7 @@
       lease?.release();
       state('complete', null, why === 'error' ? '部分演出资源播放失败。' : '');
       callback('onComplete', why);
+      resolveFinished(why);
     }
     function maybeFinish() { if (!complete && videoDone && audioDone) finish(errors.length ? 'error' : 'ended'); }
     function errorMessage(track, error) {
@@ -159,6 +161,7 @@
       return track;
     }
     controller = {
+      finished: finished,
       skip: function () { finish('skipped'); },
       cancel: function () { finish('cancelled'); },
       setMuted: function (value) {
